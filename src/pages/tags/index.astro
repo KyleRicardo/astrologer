@@ -1,0 +1,14 @@
+---
+import BlogLayout from "@/layouts/BlogLayout.astro";
+import Layout from "@/layouts/Layout.astro";
+import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<Layout title={t('nav.tags')}>
+  <BlogLayout>
+    <div>Tags</div>
+  </BlogLayout>
+</Layout>

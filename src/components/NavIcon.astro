@@ -1,0 +1,17 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+  name: string;
+  href: string;
+  icon: string;
+  external: boolean;
+}
+
+const { name, href, icon, external } = Astro.props;
+---
+
+<a target={external ? '_blank' : '_self'} href={href} class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 w-8 px-0">
+  <Icon name={icon} />
+  <span class="sr-only">{name}</span>
+</a>
