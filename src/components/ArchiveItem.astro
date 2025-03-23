@@ -1,0 +1,23 @@
+---
+interface Props {
+  title: string;
+  date: Date;
+  excerpt?: string;
+}
+
+const { title, date, excerpt } = Astro.props;
+
+const formatter = new Intl.DateTimeFormat("zh-CN", {
+  month: "2-digit",
+  day: "2-digit"
+});
+
+const formattedDate = formatter.format(date);
+---
+<li>
+  <a href="#" class="flex h-10 items-center rounded-xl hover:bg-muted">
+    <time datetime={date.toISOString()} class="w-18 font-semibold text-sm text-right">{formattedDate}</time>
+    <div class="h-10 w-10"></div>
+    <h1 class="font-semibold text-base">{title}</h1>
+  </a>
+</li>

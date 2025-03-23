@@ -2,13 +2,30 @@
 import BlogLayout from "@/layouts/BlogLayout.astro";
 import Layout from "@/layouts/Layout.astro";
 import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+import { getArchives } from "@/utils/getPosts";
+import ArchiveItem from "@/components/ArchiveItem.astro";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+const postsGroupedByYear = await getArchives();
 ---
 
 <Layout title={t('nav.archives')}>
   <BlogLayout>
-    <div>Archives</div>
+    {postsGroupedByYear.map((group) => (
+      <section>
+        <div class="flex items-center">
+          <h2 class="w-18 font-semibold text-2xl text-right">{group.year}</h2>
+          <span class="h-10 w-10" />
+          <span class="text-muted-foreground">{group.posts.length} {t('archive.posts')}</span>
+        </div>
+        <ul>
+          {group.posts.map((post) => (
+            <ArchiveItem date={post.data.date} title={post.data.title} />
+          ))}
+        </ul>
+      </section>
+    ))}
   </BlogLayout>
 </Layout>

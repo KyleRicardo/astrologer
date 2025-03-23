@@ -14,7 +14,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 }).format(date);
 ---
 
-<div class="w-[720px] py-2 [&:not(:first-child)]:border-grid [&:not(:first-child)]:border-t">
+<div class="py-2 [&:not(:first-child)]:border-grid [&:not(:first-child)]:border-t">
   <div class="group flex flex-col cursor-pointer px-4 py-6 rounded-xl hover:bg-accent">
     <h1 class="text-xl font-semibold text-foreground group-hover:text-sky-500">
       <a href={`/posts/${post.id}`}>{title}</a>
