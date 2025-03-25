@@ -10,6 +10,8 @@ import sitemap from '@astrojs/sitemap';
 
 import { remarkReadingTime } from './remark-reading-time.mjs';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
   vite: {
@@ -17,7 +19,10 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [remarkReadingTime],
+    shikiConfig: {
+      theme: 'tokyo-night',
+    },
   },
 
-  integrations: [icon(), mdx(), sitemap()]
+  integrations: [icon(), mdx(), sitemap(), react()]
 });

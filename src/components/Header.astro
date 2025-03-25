@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n/utils';
 import NavIcon from "./NavIcon.astro";
+import { ModeToggle } from "./ModeToggle";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -39,10 +40,7 @@ const translatePath = useTranslatedPath(lang);
             <Icon name="ri:translate-2" />
             <span class="sr-only">Translate</span>
           </button>
-          <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-8 w-8 px-0">
-            <Icon name="ri:sun-line" />
-            <span class="sr-only">Toggle theme</span>
-          </button>
+          <ModeToggle client:load />
         </nav>
     </div>
   </div>

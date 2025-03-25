@@ -19,6 +19,7 @@ export const ui = {
     'nav.projects': '作品',
     'nav.about': '关于',
     'archive.posts': '篇文章',
+    'tags.name': '全部标签',
   },
   en: {
     'website.title': SITE_CONFIG.title_en,
@@ -30,5 +31,6 @@ export const ui = {
     'nav.projects': 'Projects',
     'nav.about': 'About',
     'archive.posts': 'posts',
+    'tags.name': 'Tags',
   },
 } as const;

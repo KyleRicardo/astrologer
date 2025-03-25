@@ -48,4 +48,4 @@ const getArchives = async (): Promise<GroupedPosts[]> => {
   return groupPostsByYear(sortedPosts);
 }
 
-export { getPostsByCategory, getPostsByTag, getArchives };
+export { type GroupedPosts, getPostsByCategory, getPostsByTag, getArchives };

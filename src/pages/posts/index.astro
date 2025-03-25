@@ -9,12 +9,13 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 
 const posts = await getCollection("blog");
+const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
 ---
 
 <Layout title={t("nav.blog")}>
   <BlogLayout>
     <div>
-      {posts.map((post) => (
+      {sortedPosts.map((post) => (
         <ArticleCard {...post} />
       ))}
     </div>
