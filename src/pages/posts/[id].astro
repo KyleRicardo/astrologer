@@ -23,7 +23,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 ---
 
 <Layout title={title}>
-  <div class="mx-auto max-w-3xl my-16">
+  <div class="mx-auto max-w-3xl my-16" astro-content>
     <header class="flex flex-col items-center gap-4">
       <div class="flex gap-4 justify-center font-semibold text-sky-500">
         {tags && tags.map(tag => (
@@ -44,3 +44,10 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
     </article>
   </div>
 </Layout>
+
+<script>
+  import mediumZoom from 'medium-zoom';
+  mediumZoom('[astro-content] > img, [astro-content] :not(a) > img', {
+    background: "var(--background)",
+  });
+</script>
