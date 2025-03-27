@@ -9,12 +9,12 @@ interface Props {
 const { parentUrl = '/categories', categories } = Astro.props
 ---
 
-<ul class="border-sidebar-border ml-3.5 flex flex-col min-w-0 gap-1 border-l pl-2.5 py-0.5">
+<ul class="border-sidebar-border ml-6.5 flex flex-col min-w-0 gap-1 border-l pl-2.5 py-0.5">
   {categories.map((category) => (
     <li>
-      <a href={`${parentUrl}/${category.name}`} class="flex justify-between items-center py-2">
-        <span class="px-2">{category.name}</span>
-        <span class="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">{category.count}</span>
+      <a href={`${parentUrl}/${category.name}`} class="flex items-center px-3 py-2 text-sm font-medium rounded-sm hover:bg-muted">
+        <span class="text-sm px-2">{category.name}</span>
+        <span class="text-sm px-2 py-0.5 ml-auto">{category.count}</span>
       </a>
       {category.children && (
         <div>

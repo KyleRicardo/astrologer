@@ -3,17 +3,13 @@ import PostList from "@/components/PostList.astro";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
+import { getTags } from "@/utils/get-tags";
 import { getPostsByTag } from "@/utils/getPosts";
-import { type CollectionEntry, getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
-	let tagList: string[] = [];
-	for (const post of posts) {
-    if (post.data.tags)
-      tagList = tagList.concat(post.data.tags);
-  }
-	return [...new Set(tagList)].map(tag => ({
-    params: { tag }
+	const tags = await getTags()
+	return tags.map(tag => ({
+    params: { tag: decodeURI(tag.name) }
   }));
 }
 type Props = CollectionEntry<'blog'>;

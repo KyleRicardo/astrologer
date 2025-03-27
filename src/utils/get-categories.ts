@@ -6,9 +6,31 @@ export interface Category {
   children?: Category[];
 }
 
+export interface CategoryLink {
+  text: string;
+  href: string;
+}
+
 interface TreeNode {
   count: number;
   children: Map<string, TreeNode>;
+}
+
+function traverseCategoryTreeSlugs(categories: Category[] | undefined, currentSlug: string | undefined, slugs: string[]) {
+  if (!categories)
+    return;
+  for (const category of categories) {
+    const slug = currentSlug ? `${currentSlug}/${category.name}` : category.name;
+    slugs.push(slug);
+    traverseCategoryTreeSlugs(category.children, slug, slugs);
+  }
+}
+
+export async function generateCategorySlugs(): Promise<string[]> {
+  const categories = await getCategories();
+  const slugs: string[] = [];
+  traverseCategoryTreeSlugs(categories, undefined, slugs);
+  return slugs;
 }
 
 export async function getCategories(): Promise<Category[]> {
@@ -25,12 +47,15 @@ export async function getCategories(): Promise<Category[]> {
     for (const path of paths) {
       let currentNode = root;
       for (const name of path) {
-        if (!currentNode.children.has(name)) {
-          currentNode.children.set(name, { count: 0, children: new Map() });
+        const node = currentNode.children.get(name);
+        if (!node) {
+          const newNode = { count: 1, children: new Map() }
+          currentNode.children.set(name, newNode)
+          currentNode = newNode
+        } else {
+          node.count++;
+          currentNode = node;
         }
-        const node = currentNode.children.get(name)!;
-        node.count++;
-        currentNode = node;
       }
     }
   }

@@ -25,13 +25,13 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
 <Layout title={title}>
   <div class="mx-auto max-w-3xl my-16" astro-content>
     <header class="flex flex-col items-center gap-4">
-      <div class="flex gap-4 justify-center font-semibold text-sky-500">
+      <div class="flex flex-wrap gap-4 justify-center font-semibold text-sky-500">
         {tags && tags.map(tag => (
           <a href="#">{`#${tag}`}</a>
         ))}
       </div>
-      <h1 class="font-bold text-4xl">{title}</h1>
-      <div class="flex gap-4 justify-center text-sm font-semibold text-muted-foreground">
+      <h1 class="font-bold text-4xl text-center">{title}</h1>
+      <div class="flex gap-4 justify-center text-sm font-semibold text-muted-foreground text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
         <div class="flex gap-2">
           <a href="#" class="hover:text-primary">{categories}</a>

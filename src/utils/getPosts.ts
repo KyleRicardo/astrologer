@@ -36,11 +36,11 @@ const getPostsByCategory = async (category: string[]): Promise<GroupedPosts[]> =
         if (!categories)
           return false;
         if (typeof categories === 'string') {
-          return category.length === 1 && category[0] === categories
+          return category.length === 1 && category[0] === categories;
         }
-        categories
+        return categories
           .map((item) => Array.isArray(item) ? item : [item])
-          .some((c) => c.length >= category.length && category.every((value, index) => value === c[index]))
+          .some((c) => c.length >= category.length && category.every((value, index) => value === c[index]));
       })
       .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return groupPostsByYear(filteredPosts);

@@ -12,9 +12,9 @@ const { categories } = Astro.props
 <ul class="w-full max-w-md flex flex-col gap-1 mt-6">
   {categories.map((category) => (
     <li>
-      <a href={`categories/${category.name}`} class="flex justify-between items-center py-2">
+      <a href={`categories/${category.name}`} class="flex justify-between items-center px-3 py-2 text-sm font-medium rounded-sm hover:bg-muted">
         <span class="px-2">{category.name}</span>
-        <span class="text-xs px-2 py-1 rounded-full bg-muted text-muted-foreground">{category.count}</span>
+        <span class="px-2 py-0.5">{category.count}</span>
       </a>
       {category.children && (
         <div>
