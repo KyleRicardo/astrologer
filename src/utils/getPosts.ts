@@ -28,23 +28,35 @@ const groupPostsByYear = (posts: CollectionEntry<'blog'>[]): GroupedPosts[] => {
 };
 
 // 获取分类下的文章列表
-const getPostsByCategory = async (category: string): Promise<GroupedPosts[]> => {
+const getPostsByCategory = async (category: string[]): Promise<GroupedPosts[]> => {
   const posts = await getCollection("blog");
-  const filteredPosts = posts.filter((i) => i.data.categories?.includes(category)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
+  const filteredPosts = posts
+      .filter((post) => {
+        const categories = post.data.categories;
+        if (!categories)
+          return false;
+        if (typeof categories === 'string') {
+          return category.length === 1 && category[0] === categories
+        }
+        categories
+          .map((item) => Array.isArray(item) ? item : [item])
+          .some((c) => c.length >= category.length && category.every((value, index) => value === c[index]))
+      })
+      .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return groupPostsByYear(filteredPosts);
 }
 
 // 获取标签下的文章列表
 const getPostsByTag = async (tag: string): Promise<GroupedPosts[]> => {
   const posts = await getCollection("blog");
-  const filteredPosts = posts.filter((i) => i.data.tags?.includes(tag)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
+  const filteredPosts = posts.filter((i) => i.data.tags?.includes(tag)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return groupPostsByYear(filteredPosts);
 }
 
 // 获取归档列表
 const getArchives = async (): Promise<GroupedPosts[]> => {
   const posts = await getCollection("blog");
-  const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
+  const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return groupPostsByYear(sortedPosts);
 }
 
