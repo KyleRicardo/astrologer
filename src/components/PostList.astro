@@ -16,8 +16,8 @@ const t = useTranslations(lang);
   {posts.map((group) => (
     <section class="flex-1">
       <div class="flex items-center">
-        <h2 class="w-18 font-semibold text-2xl text-right">{group.year}</h2>
-        <span class="relative h-10 w-10 before:w-2 before:h-2 before:absolute before:left-1/2 before:top-1/2 before:translate-x-[-50%] before:translate-y-[-50%] before:block before:rounded-lg before:bg-zinc-300" />
+        <h2 class="w-18 font-semibold text-xl text-right">{group.year}</h2>
+        <span class="relative h-10 w-10 before:w-2 before:h-2 before:absolute before:left-1/2 before:top-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:block before:rounded-lg before:bg-zinc-300" />
         <span class="text-muted-foreground">{group.posts.length} {t('archive.posts')}</span>
       </div>
       <ul>

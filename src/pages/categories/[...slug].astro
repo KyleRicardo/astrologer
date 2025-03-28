@@ -7,7 +7,6 @@ import { generateCategorySlugs } from "@/utils/get-categories";
 import { getPostsByCategory } from "@/utils/getPosts";
 export async function getStaticPaths() {
 	const slugs = await generateCategorySlugs();
-  console.log(slugs);
   
   return slugs.map(slug => ({
     params: { slug },
@@ -15,7 +14,7 @@ export async function getStaticPaths() {
 }
 const { slug } = Astro.params;
 const category = slug.split('/');
-console.log(category)
+
 const posts = await getPostsByCategory(category);
 const leafCategory = category.pop()
 

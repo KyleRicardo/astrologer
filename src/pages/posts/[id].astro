@@ -30,7 +30,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
           <a href="#">{`#${tag}`}</a>
         ))}
       </div>
-      <h1 class="font-bold text-4xl text-center">{title}</h1>
+      <h1 class="font-bold text-4xl text-center tracking-wide">{title}</h1>
       <div class="flex gap-4 justify-center text-sm font-semibold text-muted-foreground text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
         <div class="flex gap-2">
@@ -39,7 +39,7 @@ const formattedDate = new Intl.DateTimeFormat('en-US', {
         <div>{remarkPluginFrontmatter.minutesRead}</div>
       </div>
     </header>
-    <article class="prose dark:prose-invert mt-8">
+    <article class="mx-auto prose dark:prose-invert mt-8">
       <Content />
     </article>
   </div>
