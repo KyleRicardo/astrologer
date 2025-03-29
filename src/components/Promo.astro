@@ -1,0 +1,21 @@
+---
+import { Icon } from "astro-icon/components";
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+
+type Props = CollectionEntry<'promo'>
+
+const props = Astro.props
+const { cover, icon, title, description, github, homepage, liveDemo } = props.data;
+---
+
+<div class="grid lg:grid-cols-2 items-center">
+  <Image src={cover} alt={title} class="rounded-lg" />
+  <div class="lg:px-8 py-8">
+    <h2 class="font-bold text-4xl leading-tight mb-8">{title}</h2>
+    <p class="text-xl text-muted-foreground tracking-wide">{description}</p>
+    <div aria-label="promo footer" class="mt-8">
+      <a href="#">Release Notes <Icon name="ri:arrow-right-line" class="inline" /></a>
+    </div>
+  </div>
+</div>

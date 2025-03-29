@@ -1,6 +1,11 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getLangFromUrl, useTranslations } from '@/i18n/utils';
+import Promo from '@/components/Promo.astro';
+import { getCollection } from 'astro:content';
+
+const promo = await getCollection('promo');
+const latestPromo = promo.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())[0]
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -9,5 +14,7 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={t('nav.home')}>
-	<div>Home</div>
+	<section aria-label="promo" class="container mx-auto max-w-[1400px] px-4 my-8">
+    <Promo {...latestPromo} />
+  </section>
 </Layout>

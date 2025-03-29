@@ -19,8 +19,10 @@ export const ui = {
     'nav.projects': '作品',
     'nav.about': '关于',
     'archive.posts': '篇文章',
-    'categories.name': '全部分类',
-    'tags.name': '全部标签',
+    'categories.title': '全部分类',
+    'tags.title': '全部标签',
+    'projects.title': '作品',
+    'projects.description': '我创作的一些有趣的项目或开源作品'
   },
   en: {
     'website.title': SITE_CONFIG.title_en,
@@ -32,7 +34,9 @@ export const ui = {
     'nav.projects': 'Projects',
     'nav.about': 'About',
     'archive.posts': 'posts',
-    'categories.name': 'Categories',
-    'tags.name': 'Tags',
+    'categories.title': 'Categories',
+    'tags.title': 'Tags',
+    'projects.title': 'Projects',
+    'projects.description': 'Interesting works or open source projects I created'
   },
 } as const;

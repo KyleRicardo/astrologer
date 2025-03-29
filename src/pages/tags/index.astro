@@ -13,7 +13,7 @@ const tags = await getTags();
 <Layout title={t('nav.tags')}>
   <BlogLayout>
     <div class="flex flex-col items-center flex-1 my-8">
-      <h1 class="text-3xl font-semibold">{t('tags.name')}</h1>
+      <h1 class="text-3xl font-semibold">{t('tags.title')}</h1>
       <ul class="flex flex-wrap justify-center gap-6 mt-8">
         {tags.map((tag) => (
           <li>
