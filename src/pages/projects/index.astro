@@ -19,7 +19,7 @@ const t = useTranslations(lang);
     <section aria-label="promo" class="container mx-auto px-4 my-8">
       <Promo {...latestPromo} />
     </section>
-    <section aria-label="projects" class="relative flex gap-2 snap-x snap-mandatory mb-8 overflow-x-auto px-4 md:container md:mx-auto md:snap-none md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-8">
+    <section aria-label="projects" class="relative flex gap-2 snap-x snap-mandatory mb-16 overflow-x-auto px-4 md:container md:mx-auto md:snap-none md:grid md:grid-cols-2 xl:grid-cols-3 md:gap-8">
       {projects.map(project => (
         <ProjectCard {...project} />
       ))}

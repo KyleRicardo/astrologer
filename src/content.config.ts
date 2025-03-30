@@ -49,6 +49,8 @@ const promo = defineCollection({
     icon: image(),
 		title: z.string(),
     description: z.string(),
+    linkText: z.string().optional(),
+    linkTarget: z.string(),
 		// Transform string to Date object
 		date: z.coerce.date(),
 		updated: z.coerce.date().optional(),

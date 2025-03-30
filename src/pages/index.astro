@@ -3,9 +3,18 @@ import Layout from '@/layouts/Layout.astro';
 import { getLangFromUrl, useTranslations } from '@/i18n/utils';
 import Promo from '@/components/Promo.astro';
 import { getCollection } from 'astro:content';
+import ArticleCard from '@/components/ArticleCard.astro';
+import { Button } from '@/components/ui/button';
+import ProjectCard from '@/components/ProjectCard.astro';
 
 const promo = await getCollection('promo');
 const latestPromo = promo.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())[0]
+
+const posts = await getCollection("blog");
+const sortedPosts = posts.slice(0, 5).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
+
+const projects = await getCollection('project');
+const sortedProjects = projects.slice(0, 4).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -14,7 +23,46 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={t('nav.home')}>
-	<section aria-label="promo" class="container mx-auto max-w-[1400px] px-4 my-8">
+  <section aria-label="promo" class="container mx-auto max-w-[720px] px-4 my-8">
     <Promo {...latestPromo} />
+  </section>
+  <section aria-label="posts" class="container mx-auto max-w-[720px] px-4 py-16">
+    <header class="text-center">
+      <h2 class="font-bold text-3xl">精选文章</h2>
+    </header>
+    <div class="my-12">
+      {sortedPosts.map((post) => (
+        <ArticleCard {...post} />
+      ))}
+    </div>
+    <footer class="flex flex-col items-center">
+      <a href="/posts">
+        <Button className="cursor-pointer">更多文章</Button>
+      </a>
+    </footer>
+  </section>
+  <section aria-label="projects" class="md:container mx-auto max-w-[720px] md:px-4 py-16">
+    <header class="text-center">
+      <h2 class="font-bold text-3xl">最近作品</h2>
+    </header>
+    <div aria-label="projects" class="relative flex gap-2 snap-x snap-mandatory overflow-x-auto px-4 my-16 md:container md:max-w-[720px] md:mx-auto md:snap-none md:grid md:grid-cols-2 md:gap-8">
+      {projects.map(project => (
+        <ProjectCard {...project} />
+      ))}
+      {projects.map(project => (
+        <ProjectCard {...project} />
+      ))}
+      {projects.map(project => (
+        <ProjectCard {...project} />
+      ))}
+      {projects.map(project => (
+        <ProjectCard {...project} />
+      ))}
+    </div>
+    <footer class="flex flex-col items-center">
+      <a href="/projects">
+        <Button className="cursor-pointer">更多作品</Button>
+      </a>
+    </footer>
   </section>
 </Layout>
