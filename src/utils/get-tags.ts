@@ -7,7 +7,9 @@ interface Tag {
 
 export async function getTags(): Promise<Tag[]> {
   // Get all blog posts using Astro.glob
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
   // Create a map to store tag counts
   const tagCount = new Map<string, number>();
 

@@ -5,7 +5,9 @@ import { getFlatCategoryInfo } from "@/utils/get-categories";
 import { type CollectionEntry, getCollection } from "astro:content";
 import { render } from "astro:content";
 export async function getStaticPaths() {
-	const posts = await getCollection('blog');
+	const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
 	return posts.map((post) => ({
 		params: { id: post.id },
 		props: post,

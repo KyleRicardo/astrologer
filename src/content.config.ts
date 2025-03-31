@@ -14,7 +14,7 @@ const blog = defineCollection({
 		cover: z.string().optional(),
     categories: z.union([z.string(), z.array(z.union([z.string(), z.array(z.string())]))]).optional(),
     tags: z.array(z.string()).optional(),
-    published: z.boolean().optional(),
+    draft: z.boolean().optional(),
     pinned: z.boolean().optional(),
 	}),
 });
@@ -31,11 +31,11 @@ const project = defineCollection({
 		// Transform string to Date object
 		date: z.coerce.date(),
 		updated: z.coerce.date().optional(),
-    github: z.string().optional(),
-    homepage: z.string().optional(),
-    liveDemo: z.string().optional(),
+    github: z.string().url().optional(),
+    homepage: z.string().url().optional(),
+    liveDemo: z.string().url().optional(),
     tags: z.array(z.string()).optional(),
-    published: z.boolean().optional(),
+    draft: z.boolean().optional(),
     pinned: z.boolean().optional(),
 	}),
 });
@@ -50,13 +50,13 @@ const promo = defineCollection({
 		title: z.string(),
     description: z.string(),
     linkText: z.string().optional(),
-    linkTarget: z.string(),
+    linkTarget: z.string().url(),
 		// Transform string to Date object
 		date: z.coerce.date(),
 		updated: z.coerce.date().optional(),
-    github: z.string().optional(),
-    homepage: z.string().optional(),
-    liveDemo: z.string().optional(),
+    github: z.string().url().optional(),
+    homepage: z.string().url().optional(),
+    liveDemo: z.string().url().optional(),
 	}),
 });
 

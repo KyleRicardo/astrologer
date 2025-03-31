@@ -77,7 +77,9 @@ function buildCategoryTree(categoryPaths: string[][], root: TreeNode) {
 }
 
 export async function getCategories(): Promise<Category[]> {
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
   
   // Step 1: 构建树形结构
   const root: TreeNode = {

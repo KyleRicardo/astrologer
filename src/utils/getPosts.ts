@@ -29,7 +29,9 @@ const groupPostsByYear = (posts: CollectionEntry<'blog'>[]): GroupedPosts[] => {
 
 // 获取分类下的文章列表
 const getPostsByCategory = async (category: string[]): Promise<GroupedPosts[]> => {
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
   const filteredPosts = posts
       .filter((post) => {
         const categories = post.data.categories;
@@ -48,14 +50,18 @@ const getPostsByCategory = async (category: string[]): Promise<GroupedPosts[]> =
 
 // 获取标签下的文章列表
 const getPostsByTag = async (tag: string): Promise<GroupedPosts[]> => {
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
   const filteredPosts = posts.filter((i) => i.data.tags?.includes(tag)).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return groupPostsByYear(filteredPosts);
 }
 
 // 获取归档列表
 const getArchives = async (): Promise<GroupedPosts[]> => {
-  const posts = await getCollection("blog");
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
   const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return groupPostsByYear(sortedPosts);
 }
