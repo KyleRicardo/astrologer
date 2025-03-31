@@ -1,4 +1,5 @@
 ---
+import IconTextLink from "@/components/IconTextLink.astro";
 import { getLangFromUrl } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { Image } from "astro:assets";
@@ -22,21 +23,34 @@ const formattedDate = date.toLocaleDateString(lang, {dateStyle: 'medium'});
 ---
 
 <Layout title={title}>
-  <div class="mx-auto max-w-3xl p-4 my-4 md:my-16">
-    <header class="flex flex-col items-center gap-4 tracking-wide">
-      <div aria-label="cover" class="md:mx-10 mb-6">
+  <div class="mx-auto container max-w-3xl p-4 my-4 md:my-16">
+    <header class="flex flex-col items-center gap-4 md:gap-6 tracking-wide">
+      <div aria-label="cover" class="max-w-[60ch] mb-6">
         <Image src={cover} alt={title} class="rounded-lg" />
       </div>
-      <h1 class="font-semibold md:font-bold text-2xl md:text-3xl text-center">{title}</h1>
-      <div class="flex gap-4 justify-center text-xs font-semibold text-muted-foreground text-nowrap">
+      <h1 class="font-semibold md:font-bold text-3xl md:text-4xl lg:text-5xl text-center">{title}</h1>
+      <div class="flex gap-4 justify-center text-sm font-semibold text-muted-foreground text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        <div class="flex flex-wrap gap-4 text-sm justify-center font-medium md:font-semibold text-sky-500">
+        <span>·</span>
+        <div class="flex flex-wrap gap-4 justify-center font-medium md:font-semibold">
           {tags && tags.map(tag => (
-            <a href={`/tags/${tag}`}>{`#${tag}`}</a>
+            <span>{tag}</span>
           ))}
         </div>
       </div>
-      <div>GitHub</div>
+      <div>
+        <ul class="flex justify-center gap-4 text-sm md:text-base">
+          <li>
+            {github && <IconTextLink name="GitHub Repo" href={github} icon="ri:github-fill" external />}
+          </li>
+          <li>
+            {homepage && <IconTextLink name="Homepage" href={homepage} icon="ri:home-4-line" external />}
+          </li>
+          <li>
+            {liveDemo && <IconTextLink name="Live Demo" href={liveDemo} icon="ri:global-line" external />}
+          </li>
+        </ul>
+      </div>
     </header>
     <article class="mx-auto prose dark:prose-invert mt-8" astro-content>
       <Content />
