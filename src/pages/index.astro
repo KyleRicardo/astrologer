@@ -25,10 +25,10 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={t('nav.home')}>
-  <section aria-label="promo" class="container mx-auto max-w-[720px] px-4 my-8">
+  <section aria-label="promo" class="container mx-auto max-w-[980px] px-4 my-8">
     <Promo {...latestPromo} />
   </section>
-  <section aria-label="posts" class="container mx-auto max-w-[720px] px-4 py-16">
+  <section aria-label="posts" class="container mx-auto max-w-[980px] px-4 py-16">
     <header class="text-center">
       <h2 class="font-bold text-3xl">精选文章</h2>
     </header>
@@ -39,15 +39,15 @@ const t = useTranslations(lang);
     </div>
     <footer class="flex flex-col items-center">
       <a href="/posts">
-        <Button className="cursor-pointer">更多文章</Button>
+        <Button className="cursor-pointer px-8 rounded-full" variant="outline">更多文章</Button>
       </a>
     </footer>
   </section>
-  <section aria-label="projects" class="md:container mx-auto max-w-[720px] md:px-4 py-16">
+  <section aria-label="projects" class="container mx-auto max-w-[980px] md:px-4 py-16">
     <header class="text-center">
       <h2 class="font-bold text-3xl">最近作品</h2>
     </header>
-    <div aria-label="projects" class="relative flex gap-2 snap-x snap-mandatory overflow-x-auto px-4 my-16 md:container md:max-w-[720px] md:mx-auto md:snap-none md:grid md:grid-cols-2 md:gap-8">
+    <div aria-label="projects" class="relative flex gap-2 snap-x snap-mandatory overflow-x-auto no-scrollbar my-16 md:container md:max-w-[980px] md:mx-auto md:snap-none md:grid md:grid-cols-2 md:gap-8">
       {projects.map(project => (
         <ProjectCard {...project} />
       ))}
@@ -63,7 +63,7 @@ const t = useTranslations(lang);
     </div>
     <footer class="flex flex-col items-center">
       <a href="/projects">
-        <Button className="cursor-pointer">更多作品</Button>
+        <Button className="cursor-pointer px-8 rounded-full" variant="outline">更多作品</Button>
       </a>
     </footer>
   </section>
