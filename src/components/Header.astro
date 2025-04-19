@@ -3,6 +3,7 @@ import { Icon } from "astro-icon/components";
 import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n/utils';
 import NavIcon from "./NavIcon.astro";
 import { ModeToggle } from "./ModeToggle";
+import Logo from "../assets/logo.svg";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -42,7 +43,7 @@ const translatePath = useTranslatedPath(lang);
     </div>
     <div class="mr-4 flex">
       <a class="mr-4 flex items-center gap-2 lg:mr-6" href="/">
-        <Icon name="ri:quill-pen-fill" class="hidden md:inline-block" />
+        <Logo width={16} height={16} />
         <span class="font-bold inline-block ml-8 md:ml-0">Kyle's Blog</span>
       </a>
       <nav class="hidden md:flex items-center gap-4 text-sm xl:gap-6">
@@ -145,6 +146,9 @@ const translatePath = useTranslatedPath(lang);
     window.addEventListener('resize', handleResize);
     document.getElementById('mobile-menu')?.setAttribute('data-state', 'closed');
     menuOpen = false;
+    document.getElementById('translate')?.addEventListener('click', () => {
+    console.log('translate');
+  });
   })
   
 </script>

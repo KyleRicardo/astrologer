@@ -3,17 +3,19 @@ import { Image } from "astro:assets";
 import type { CollectionEntry } from 'astro:content';
 import NavIcon from "./NavIcon.astro";
 
-type Props = CollectionEntry<'project'>
+interface Props {
+  project: CollectionEntry<'project'>
+}
 
-const project = Astro.props
+const { project } = Astro.props
 const { cover, icon, title, description, github, homepage, liveDemo, tags } = project.data;
 ---
 
 <div class="relative rounded-xl border hover:border-primary overflow-clip snap-center snap-always shrink-0 w-[calc(100vw-32px)] min-w-xs sm:w-full">
   <a href={`/projects/${project.id}`} class="absolute inset-0 z-0" />
-  <div class="relative flex flex-col z-10 pointer-events-none">
-    <Image src={cover} alt={title} />
-    <div class="flex flex-col gap-4 p-6">
+  <div class="relative h-full flex flex-col z-10 pointer-events-none">
+    <Image src={cover} alt={title} class="max-h-54 object-cover" />
+    <div class="flex flex-col flex-1 gap-4 p-6">
       <div class="flex gap-4 items-center">
         <div class="w-12 h-12 shrink-0 rounded-lg overflow-clip">
           <Image src={icon} alt={title} />
@@ -23,7 +25,7 @@ const { cover, icon, title, description, github, homepage, liveDemo, tags } = pr
           <p class="text-sm text-muted-foreground">{description}</p>
         </div>
       </div>
-      <div aria-label="footer" class="flex items-center">
+      <div aria-label="footer" class="flex items-center mt-auto">
         {tags && tags.length > 0 && (
           <div aria-label="project tags">
             <ul>

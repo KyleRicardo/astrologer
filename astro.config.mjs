@@ -9,6 +9,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 import { remarkReadingTime } from './remark-reading-time.mjs';
+import { remarkAutoExcerpt } from './remark-auto-excerpt.mjs';
 
 import react from '@astrojs/react';
 
@@ -18,7 +19,10 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
   markdown: {
-    remarkPlugins: [remarkReadingTime],
+    remarkPlugins: [
+      remarkReadingTime,
+      remarkAutoExcerpt,
+    ],
     shikiConfig: {
       theme: 'tokyo-night',
     },

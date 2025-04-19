@@ -54,9 +54,14 @@ const flatCategoryInfo = getFlatCategoryInfo(categories);
   </div>
 </Layout>
 
+
 <script>
-  import mediumZoom from 'medium-zoom';
-  mediumZoom('[astro-content] > img, [astro-content] :not(a) > img', {
-    background: "var(--background)",
+  import mediumZoom from 'medium-zoom/dist/pure'
+  import 'medium-zoom/dist/style.css'
+
+  document.addEventListener('astro:page-load', () => {
+    mediumZoom('[astro-content] > img, [astro-content] :not(a) > img', {
+      background: "var(--background)",
+    });
   });
 </script>

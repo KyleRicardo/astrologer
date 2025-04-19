@@ -21,19 +21,7 @@ const t = useTranslations(lang);
     </section>
     <section aria-label="projects" class="relative flex gap-2 snap-x snap-mandatory mb-16 overflow-x-auto no-scrollbar px-4 sm:container sm:mx-auto sm:snap-none sm:grid md:grid-cols-2 xl:grid-cols-3 sm:gap-8">
       {projects.map(project => (
-        <ProjectCard {...project} />
-      ))}
-      {projects.map(project => (
-        <ProjectCard {...project} />
-      ))}
-      {projects.map(project => (
-        <ProjectCard {...project} />
-      ))}
-      {projects.map(project => (
-        <ProjectCard {...project} />
-      ))}
-      {projects.map(project => (
-        <ProjectCard {...project} />
+        <ProjectCard project={project} />
       ))}
     </section>
   </ProjectLayout>
