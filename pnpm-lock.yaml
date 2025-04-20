@@ -23,21 +23,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.0
         version: 1.2.0(@types/react@19.1.2)(react@19.1.0)
-      '@tailwindcss/vite':
-        specifier: ^4.1.4
-        version: 4.1.4(vite@6.3.2(@types/node@22.13.11)(jiti@2.4.2)(lightningcss@1.29.2))
-      '@types/react':
-        specifier: ^19.1.2
-        version: 19.1.2
-      '@types/react-dom':
-        specifier: ^19.1.2
-        version: 19.1.2(@types/react@19.1.2)
       astro:
         specifier: ^5.7.4
         version: 5.7.4(@types/node@22.13.11)(jiti@2.4.2)(lightningcss@1.29.2)(rollup@4.35.0)(typescript@5.8.2)
-      astro-icon:
-        specifier: ^1.1.5
-        version: 1.1.5
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -50,9 +38,6 @@ importers:
       lucide-react:
         specifier: ^0.501.0
         version: 0.501.0(react@19.1.0)
-      mdast-util-to-string:
-        specifier: ^4.0.0
-        version: 4.0.0
       medium-zoom:
         specifier: ^1.1.0
         version: 1.1.0
@@ -71,15 +56,6 @@ importers:
       tailwind-merge:
         specifier: ^3.2.0
         version: 3.2.0
-      tailwindcss:
-        specifier: ^4.1.4
-        version: 4.1.4
-      tw-animate-css:
-        specifier: ^1.2.5
-        version: 1.2.5
-      unist-util-visit:
-        specifier: ^5.0.0
-        version: 5.0.0
     devDependencies:
       '@biomejs/biome':
         specifier: ^1.9.4
@@ -90,6 +66,30 @@ importers:
       '@tailwindcss/typography':
         specifier: ^0.5.16
         version: 0.5.16(tailwindcss@4.1.4)
+      '@tailwindcss/vite':
+        specifier: ^4.1.4
+        version: 4.1.4(vite@6.3.2(@types/node@22.13.11)(jiti@2.4.2)(lightningcss@1.29.2))
+      '@types/react':
+        specifier: ^19.1.2
+        version: 19.1.2
+      '@types/react-dom':
+        specifier: ^19.1.2
+        version: 19.1.2(@types/react@19.1.2)
+      astro-icon:
+        specifier: ^1.1.5
+        version: 1.1.5
+      mdast-util-to-string:
+        specifier: ^4.0.0
+        version: 4.0.0
+      tailwindcss:
+        specifier: ^4.1.4
+        version: 4.1.4
+      tw-animate-css:
+        specifier: ^1.2.5
+        version: 1.2.5
+      unist-util-visit:
+        specifier: ^5.0.0
+        version: 5.0.0
 
 packages:
 
