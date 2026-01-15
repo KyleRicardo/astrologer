@@ -4,6 +4,13 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@property --mask-radius {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -120,8 +127,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html,
   body {
     @apply bg-background text-foreground;
+    overscroll-behavior: none;
+    scrollbar-gutter: stable;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: default;
   }
 }
 
@@ -152,7 +168,57 @@
   }
 }
 
+
 .medium-zoom-overlay,
 .medium-zoom-image--opened {
   z-index: 999;
 }
+
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-group(root) {
+  z-index: 9999;
+}
+
+.theme-transition::view-transition-old(root),
+.theme-transition::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Light -> Dark: New (Dark) on top, masked */
+.dark.theme-transition::view-transition-old(root) {
+  z-index: 1;
+}
+.dark.theme-transition::view-transition-new(root) {
+  z-index: 999;
+  mask-image: radial-gradient(
+    circle at var(--mask-x, 50%) var(--mask-y, 50%),
+    black 0%,
+    black var(--mask-radius, 0%),
+    transparent calc(var(--mask-radius, 0%) + 20%)
+  );
+  mask-size: 100% 100%;
+}
+
+/* Dark -> Light: Old (Dark) on top, masked */
+.theme-transition::view-transition-old(root) {
+  z-index: 999;
+  mask-image: radial-gradient(
+    circle at var(--mask-x, 50%) var(--mask-y, 50%),
+    black 0%,
+    black var(--mask-radius, 100%),
+    transparent calc(var(--mask-radius, 100%) + 20%)
+  );
+  mask-size: 100% 100%;
+}
+.theme-transition::view-transition-new(root) {
+  z-index: 1;
+}
+
+
