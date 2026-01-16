@@ -5,18 +5,21 @@ import { Button } from "@/components/ui/button"
 
 export function ModeToggle() {
   const [theme, setThemeState] = React.useState<"light" | "dark">("light")
-
+  
   React.useEffect(() => {
     const isDarkMode = document.documentElement.classList.contains("dark")
     setThemeState(isDarkMode ? "dark" : "light")
   }, [])
-
+  
   const toggleTheme = (event: React.MouseEvent) => {
     const isDark = theme === "dark"
     const nextTheme = isDark ? "light" : "dark"
 
-    // @ts-ignore
-    if (!document.startViewTransition) {
+    // @ts-expect-error experimental API
+    const isAppearanceTransition = document.startViewTransition
+      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (!isAppearanceTransition) {
       setThemeState(nextTheme)
       applyTheme(nextTheme)
       return
@@ -29,35 +32,35 @@ export function ModeToggle() {
       Math.max(y, innerHeight - y)
     )
 
-    document.documentElement.style.setProperty("--mask-x", `${x}px`)
-    document.documentElement.style.setProperty("--mask-y", `${y}px`)
-
-    document.documentElement.classList.add("theme-transition")
-
-    // @ts-ignore
     const transition = document.startViewTransition(() => {
       setThemeState(nextTheme)
       applyTheme(nextTheme)
     })
 
-    transition.ready.then(() => {
+    transition.ready
+    .then(() => {
+      const clipPath = [
+        `circle(0px at ${x}px ${y}px)`,
+        `circle(${endRadius}px at ${x}px ${y}px)`,
+      ]
       document.documentElement.animate(
         {
-          "--mask-radius": isDark ? ["100%", "0%"] : ["0%", "100%"],
+          clipPath: !isDark
+            ? clipPath.reverse()
+            : clipPath,
         },
         {
-          duration: 500,
-          easing: "ease-in-out",
-          pseudoElement: isDark
-            ? "::view-transition-old(root)"
-            : "::view-transition-new(root)",
-        }
+          duration: 400,
+          easing: 'ease-out',
+          fill: 'forwards',
+          pseudoElement: !isDark
+            ? '::view-transition-old(root)'
+            : '::view-transition-new(root)',
+        },
       )
     })
 
-    transition.finished.then(() => {
-      document.documentElement.classList.remove("theme-transition")
-    })
+
   }
 
   const applyTheme = (newTheme: "light" | "dark") => {
