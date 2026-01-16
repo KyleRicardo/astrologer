@@ -5,9 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @property --mask-radius {
-  syntax: "<percentage>";
+  syntax: "<length>";
   inherits: true;
-  initial-value: 0%;
+  initial-value: 0px;
 }
 
 
@@ -174,21 +174,28 @@
   z-index: 999;
 }
 
+.theme-transition::view-transition-new(root) {
+  mask: radial-gradient(
+    circle at var(--x) var(--y), 
+    black var(--mask-radius), 
+    transparent calc(var(--mask-radius) + 180px)
+  ) no-repeat;
+  
+  /* -webkit-mask-composite: source-over;
+  mask-composite: add; */
+  
+}
+
 ::view-transition-old(root),
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
 }
+
 ::view-transition-old(root) {
-  z-index: 1;
-}
-::view-transition-new(root) {
-  z-index: 9999;
-}
-.dark::view-transition-old(root) {
-  z-index: 9999;
-}
-.dark::view-transition-new(root) {
-  z-index: 1;
+  z-index: 0;
 }
 
+::view-transition-new(root) {
+  z-index: 1;
+}

@@ -37,27 +37,33 @@ export function ModeToggle() {
       applyTheme(nextTheme)
     })
 
-    transition.ready
-    .then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ]
-      document.documentElement.animate(
+    transition.ready.then(() => {
+      const root = document.documentElement
+      root.classList.add('theme-transition')
+      root.style.setProperty('--x', `${x}px`)
+      root.style.setProperty('--y', `${y}px`)
+      root.style.setProperty('--mask-radius', '0px')
+
+      // 动画：从 0 扩散到覆盖整个屏幕
+      root.animate(
         {
-          clipPath: !isDark
-            ? clipPath.reverse()
-            : clipPath,
+          '--mask-radius': `${endRadius}px`
         },
         {
-          duration: 400,
+          duration: 500,
           easing: 'ease-out',
-          fill: 'forwards',
-          pseudoElement: !isDark
-            ? '::view-transition-old(root)'
-            : '::view-transition-new(root)',
-        },
+          fill: 'both',
+          pseudoElement: '::view-transition-new(root)'
+        }
       )
+    })
+
+    transition.finished.then(() => {
+      const root = document.documentElement
+      root.classList.remove('theme-transition')
+      root.style.removeProperty('--x')
+      root.style.removeProperty('--y')
+      root.style.removeProperty('--mask-radius')
     })
 
 
