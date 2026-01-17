@@ -171,7 +171,6 @@
   html,
   body {
     @apply bg-background text-foreground;
-    overscroll-behavior: none;
     scrollbar-gutter: stable;
   }
   button {
@@ -190,6 +189,7 @@
 @utility prose {
   text-autospace: ideograph-alpha ideograph-numeric;
   blockquote {
+    --tw-prose-quote-borders: var(--color-primary);
     font-style: normal;
     /* Disable adding quote marks to block-quotes: https://github.com/tailwindlabs/tailwindcss-typography/issues/66 */
     p {

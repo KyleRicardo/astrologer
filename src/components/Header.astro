@@ -8,6 +8,12 @@ import Logo from "../assets/logo.svg";
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
+
+interface Props {
+  showProgressBar?: boolean;
+}
+
+const { showProgressBar = false } = Astro.props;
 ---
 
 <header class="border-grid sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -73,7 +79,7 @@ const translatePath = useTranslatedPath(lang);
             <NavIcon name="Bluesky" href="https://bsky.app/profile/kylericardo.bsky.social" icon="ri:bluesky-line" external={true} />
           </li>
           <li>
-            <NavIcon name="RSS Feed" href="https://example.com" icon="ri:rss-fill" external={true} />
+            <NavIcon name="RSS Feed" href="/rss.xml" icon="ri:rss-fill" external={true} />
           </li>
         </ul>
       </div>
@@ -86,6 +92,13 @@ const translatePath = useTranslatedPath(lang);
       </div>
     </div>
   </div>
+  {showProgressBar && (
+    <div 
+      id="reading-progress" 
+      class="absolute -bottom-px left-0 h-0.5 w-full bg-primary origin-left transition-transform duration-100 ease-out z-50"
+      style="transform: scaleX(0);"
+    ></div>
+  )}
 </header>
 
 <script>
@@ -139,6 +152,44 @@ const translatePath = useTranslatedPath(lang);
     
     previouslyWideScreen = isWideScreen;
   }
+
+  // Reading Progress Bar Logic
+  function initProgressBar() {
+    const progressBar = document.getElementById('reading-progress');
+    if (!progressBar) return;
+
+    function updateProgress() {
+      if (!progressBar) return;
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = docHeight > 0 ? Math.min(Math.max(scrollTop / docHeight, 0), 1) : 0;
+      progressBar.style.transform = `scaleX(${scrollPercent})`;
+    }
+
+    // Initial update
+    updateProgress();
+    
+    // Update on scroll
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    
+    // Cleanup on unmount (Astro handles this mostly via page-load, but good practice)
+    // For now we just add listener, subsequent page loads might accumulate if not careful? 
+    // Actually astro:page-load is triggered on every navigation.
+    // Ideally we should remove the old listener, but since we are replacing the document body or part of it, it might be fine.
+    // However, window event listeners persist.
+    // Let's store the reference to remove it later if needed, OR just checking if element exists inside the handler is enough 
+    // but `updateProgress` closes over `progressBar`, so we need to be careful.
+    // A simpler way for View Transitions is to add the listener and remove it on `astro:before-swap` or similar?
+    // Or just make sure we don't duplicate logic.
+    // The easiest way with `astro:page-load` is often sufficient if we don't worry about minor leaks, OR we clean up.
+    
+    // Let's try to be clean.
+    const cleanUp = () => {
+      window.removeEventListener('scroll', updateProgress);
+    };
+    
+    document.addEventListener('astro:before-swap', cleanUp, { once: true });
+  }
   
   // Add event listeners  
   document.addEventListener('astro:page-load', () => {
@@ -147,8 +198,10 @@ const translatePath = useTranslatedPath(lang);
     document.getElementById('mobile-menu')?.setAttribute('data-state', 'closed');
     menuOpen = false;
     document.getElementById('translate')?.addEventListener('click', () => {
-    console.log('translate');
-  });
+      console.log('translate');
+    });
+    
+    initProgressBar();
   })
   
 </script>
