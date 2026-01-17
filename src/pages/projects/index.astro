@@ -16,10 +16,10 @@ const t = useTranslations(lang);
 
 <Layout title={t('nav.projects')}>
   <ProjectLayout>
-    <section aria-label="promo" class="container mx-auto px-4 my-16">
+    <section aria-label="promo" class="container mx-auto px-4">
       <Promo {...latestPromo} />
     </section>
-    <section aria-label="projects" class="relative flex gap-2 snap-x snap-mandatory mb-16 overflow-x-auto no-scrollbar px-4 sm:container sm:mx-auto sm:snap-none sm:grid md:grid-cols-2 xl:grid-cols-3 sm:gap-8">
+    <section aria-label="projects" class="grid gap-8 py-16 px-4 container mx-auto md:grid-cols-2 xl:grid-cols-3">
       {projects.map(project => (
         <ProjectCard project={project} />
       ))}

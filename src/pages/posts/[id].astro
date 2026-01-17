@@ -32,9 +32,9 @@ const flatCategoryInfo = getFlatCategoryInfo(categories);
 <Layout title={title}>
   <div class="mx-auto max-w-3xl p-4 my-4 md:my-16" astro-content>
     <header class="flex flex-col items-center gap-4 tracking-wide">
-      <div class="flex flex-wrap gap-4 text-sm justify-center font-medium md:font-semibold text-sky-500">
+      <div class="flex flex-wrap gap-4 text-sm justify-center font-medium md:font-semibold">
         {tags && tags.map(tag => (
-          <a href={`/tags/${tag}`}>{`#${tag}`}</a>
+          <a href={`/tags/${tag}`} class="text-primary hover:text-primary/90">{`#${tag}`}</a>
         ))}
       </div>
       <h1 class="font-semibold md:font-bold text-2xl md:text-3xl text-center">{title}</h1>
@@ -43,8 +43,9 @@ const flatCategoryInfo = getFlatCategoryInfo(categories);
           <a href={category.href} class="pointer-events-auto hover:text-primary">{category.name}</a>
         ))}
       </div>
-      <div class="flex gap-4 justify-center text-xs font-semibold text-muted-foreground text-nowrap">
+      <div class="flex justify-center text-sm font-semibold text-muted-foreground text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
+        <span class="mx-2">•</span>
         <div>{readingMinuteText}</div>
       </div>
     </header>

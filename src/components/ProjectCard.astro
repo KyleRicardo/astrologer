@@ -11,7 +11,7 @@ const { project } = Astro.props
 const { cover, icon, title, description, github, homepage, liveDemo, tags } = project.data;
 ---
 
-<div class="relative rounded-xl border hover:border-primary overflow-clip snap-center snap-always shrink-0 w-[calc(100vw-32px)] min-w-xs sm:w-full">
+<div class="relative rounded-xl border hover:shadow-md overflow-clip shrink-0 w-[calc(100vw-32px)] min-w-xs sm:w-full">
   <a href={`/projects/${project.id}`} class="absolute inset-0 z-0" />
   <div class="relative h-full flex flex-col z-10 pointer-events-none">
     <Image src={cover} alt={title} class="max-h-54 object-cover" />

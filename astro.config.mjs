@@ -24,7 +24,10 @@ export default defineConfig({
       remarkAutoExcerpt,
     ],
     shikiConfig: {
-      theme: 'tokyo-night',
+      themes: {
+        light: 'one-light',
+        dark: 'plastic',
+      },
     },
   },
 

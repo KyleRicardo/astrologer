@@ -54,73 +54,114 @@
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.141 0.005 285.823);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.141 0.005 285.823);
+  /* 基础背景与前景 */
+  --background: oklch(0.9766 0.0046 107.57); /* #f8f9f5 */
+  --foreground: oklch(0.28 0.03 107.57);     /* 深暖灰墨水色 */
+
+  /* 卡片：纯白或极淡的暖色，使其从背景中微微浮起 */
+  --card: oklch(1 0 0); 
+  --card-foreground: oklch(0.28 0.03 107.57);
+
+  /* 悬浮层 */
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.21 0.006 285.885);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.967 0.001 286.375);
-  --secondary-foreground: oklch(0.21 0.006 285.885);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.21 0.006 285.885);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0.004 286.32);
-  --border-dashed: oklch(0.92 0.004 286.32 / 0.5);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.705 0.015 286.067);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-primary: oklch(0.21 0.006 285.885);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.705 0.015 286.067);
+  --popover-foreground: oklch(0.28 0.03 107.57);
+
+  /* 品牌主色 - #40a7c9 */
+  --primary: oklch(0.6743 0.122 233.15);
+  --primary-foreground: oklch(1 0 0); /* 主色上的文字用纯白 */
+
+  /* 次级颜色：暖灰，用于不那么重要的按钮 */
+  --secondary: oklch(0.94 0.01 107.57);
+  --secondary-foreground: oklch(0.35 0.03 107.57);
+
+  /* 静音色：用于次要文本或禁用状态 */
+  --muted: oklch(0.94 0.01 107.57);
+  --muted-foreground: oklch(0.55 0.02 107.57);
+
+  /* 强调色：用于 hover 状态，极淡的暖灰 */
+  --accent: oklch(0.94 0.01 107.57);
+  --accent-foreground: oklch(0.28 0.03 107.57);
+
+  /* 破坏/错误色：Flexoki Red */
+  --destructive: oklch(0.6 0.15 25);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* 边框与输入框：温暖的浅灰色，去除了冷感 */
+  --border: oklch(0.90 0.01 107.57);
+  --input: oklch(0.90 0.01 107.57);
+  --ring: oklch(0.6743 0.122 233.15); /* Focus ring 使用主色 */
+
+  /* 图表色：Flexoki 风格的柔和彩虹色 */
+  --chart-1: oklch(0.6743 0.122 233.15); /* Primary Cyan */
+  --chart-2: oklch(0.6 0.11 160);        /* Green */
+  --chart-3: oklch(0.65 0.13 55);        /* Orange */
+  --chart-4: oklch(0.6 0.12 300);        /* Purple */
+  --chart-5: oklch(0.65 0.13 85);        /* Yellow */
+
+  /* 侧边栏：稍微深一点点的暖白，增加层次感 */
+  --sidebar: oklch(0.965 0.005 107.57);
+  --sidebar-foreground: oklch(0.35 0.03 107.57);
+  --sidebar-primary: oklch(0.6743 0.122 233.15);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.93 0.01 107.57);
+  --sidebar-accent-foreground: oklch(0.28 0.03 107.57);
+  --sidebar-border: oklch(0.90 0.01 107.57);
+  --sidebar-ring: oklch(0.6743 0.122 233.15);
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.92 0.004 286.32);
-  --primary-foreground: oklch(0.21 0.006 285.885);
-  --secondary: oklch(0.274 0.006 286.033);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --border-dashed: oklch(0.274 0.006 286.033);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.552 0.016 285.938);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.552 0.016 285.938);
+  /* 基础背景：深沉的暖灰色 (Hue 107) */
+  --background: oklch(0.20 0.01 107.57);
+  --foreground: oklch(0.90 0.01 107.57); /* 暖白文字 */
+
+  /* 卡片：比背景稍微亮一点点，形成层级 */
+  --card: oklch(0.23 0.01 107.57);
+  --card-foreground: oklch(0.90 0.01 107.57);
+
+  --popover: oklch(0.23 0.01 107.57);
+  --popover-foreground: oklch(0.90 0.01 107.57);
+
+  /* 品牌色：保持一致，或微调亮度 (0.67 -> 0.70) 增加可读性 */
+  --primary: oklch(0.70 0.122 233.15); 
+  --primary-foreground: oklch(1 0 0); /* 依然用白色保持对比 */
+
+  /* 次级颜色：深色暖灰 */
+  --secondary: oklch(0.28 0.01 107.57);
+  --secondary-foreground: oklch(0.90 0.01 107.57);
+
+  /* 静音色 */
+  --muted: oklch(0.28 0.01 107.57);
+  --muted-foreground: oklch(0.65 0.01 107.57);
+
+  /* 强调色 */
+  --accent: oklch(0.28 0.01 107.57);
+  --accent-foreground: oklch(0.90 0.01 107.57);
+
+  /* 破坏色：降低亮度以适应暗黑模式 */
+  --destructive: oklch(0.5 0.15 25);
+  --destructive-foreground: oklch(1 0 0);
+
+  /* 边框：低对比度深灰 */
+  --border: oklch(0.30 0.01 107.57);
+  --input: oklch(0.30 0.01 107.57);
+  --ring: oklch(0.70 0.122 233.15);
+
+  /* 图表色：暗色模式下稍微提亮一点点 */
+  --chart-1: oklch(0.70 0.122 233.15);
+  --chart-2: oklch(0.65 0.11 160);
+  --chart-3: oklch(0.70 0.13 55);
+  --chart-4: oklch(0.65 0.12 300);
+  --chart-5: oklch(0.70 0.13 85);
+
+  /* 侧边栏：比背景更深一点，或者保持一致 */
+  --sidebar: oklch(0.18 0.01 107.57);
+  --sidebar-foreground: oklch(0.90 0.01 107.57);
+  --sidebar-primary: oklch(0.70 0.122 233.15);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.25 0.01 107.57);
+  --sidebar-accent-foreground: oklch(0.90 0.01 107.57);
+  --sidebar-border: oklch(0.30 0.01 107.57);
+  --sidebar-ring: oklch(0.70 0.122 233.15);
 }
 
 @layer base {
@@ -143,11 +184,13 @@
 
 @utility border-grid {
   border-style: dashed;
-  border-color: var(--color-border-dashed);
+  border-color: var(--color-border);
 }
 
 @utility prose {
+  text-autospace: ideograph-alpha ideograph-numeric;
   blockquote {
+    font-style: normal;
     /* Disable adding quote marks to block-quotes: https://github.com/tailwindlabs/tailwindcss-typography/issues/66 */
     p {
         &:first-of-type::before,
@@ -155,6 +198,22 @@
             content: none;
         }
     }
+  }
+  :not(pre) > code {
+    &::before,
+    &::after {
+      content: none;
+    }
+    @apply border font-normal bg-muted rounded-sm p-[3px] mx-0.5;
+  }
+  a {
+    text-underline-offset: 3.5px;
+    text-decoration-thickness: 1.5px;
+    text-decoration-color: var(--color-primary);
+    &:hover {
+      text-decoration-thickness: 2px;
+    }
+    transition: 0.2s ease-in-out;
   }
 }
 
@@ -198,4 +257,16 @@
 
 ::view-transition-new(root) {
   z-index: 1;
+}
+
+.dark {
+  .astro-code,
+  .astro-code span {
+    color: var(--shiki-dark) !important;
+    background-color: var(--shiki-dark-bg) !important;
+    /* Optional, if you also want font styles */
+    font-style: var(--shiki-dark-font-style) !important;
+    font-weight: var(--shiki-dark-font-weight) !important;
+    text-decoration: var(--shiki-dark-text-decoration) !important;
+  }
 }
