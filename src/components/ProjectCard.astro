@@ -11,10 +11,12 @@ const { project } = Astro.props
 const { cover, icon, title, description, github, homepage, liveDemo, tags } = project.data;
 ---
 
-<div class="relative rounded-xl border hover:shadow-md overflow-clip shrink-0 w-[calc(100vw-32px)] min-w-xs sm:w-full">
-  <a href={`/projects/${project.id}`} class="absolute inset-0 z-0" />
+<div class="group relative rounded-xl border overflow-clip">
+  <a href={`/projects/${project.id}`} class="before:absolute before:inset-0 before:z-0" />
   <div class="relative h-full flex flex-col z-10 pointer-events-none">
-    <Image src={cover} alt={title} class="max-h-54 object-cover" />
+    <div class="max-h-54 overflow-hidden">
+      <Image src={cover} alt={title} class="max-h-54 w-full object-cover group-hover:scale-105 transition-transform duration-300" />
+    </div>
     <div class="flex flex-col flex-1 gap-4 p-6">
       <div class="flex gap-4 items-center">
         <div class="w-12 h-12 shrink-0 rounded-lg overflow-clip">

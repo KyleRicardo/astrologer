@@ -7,8 +7,8 @@
 - [ ] Add read progress bar
 - [x] Button should be pointer cursor
 - [x] Refactor theme toggle
-- [ ] Refactor article card
-- [ ] Refactor project card
+- [x] Refactor article card
+- [x] Refactor project card
 - [ ] Back to top button
 - [ ] Adjust margins and paddings, refer to supabase
 - [ ] RSS
