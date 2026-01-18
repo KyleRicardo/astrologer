@@ -22,34 +22,27 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || ''; // 
 
 <div class="py-2 not-first:border-grid not-first:border-t">
   <div class="relative group cursor-pointer md:px-4 py-3 md:py-6 rounded-xl hover:bg-accent">
-    <a href={`/posts/${post.id}`} class="before:absolute before:inset-0 before:z-0" />
-    <div class="relative z-10 flex flex-col pointer-events-none tracking-wide">
-      <h2 class="text-xl font-semibold">
-        {title}
-      </h2>
-      
-      <div class="flex mt-2 text-sm font-semibold text-muted-foreground overflow-hidden whitespace-nowrap">
+    <div class="flex flex-col tracking-wide">
+      <div class="flex mb-3 text-sm font-semibold text-muted-foreground overflow-hidden whitespace-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
         <span class="mx-2">•</span>
         {flatCategoryInfo.length > 0 && (
-          <div class="inline space-x-2">
+          <div class="inline space-x-2 z-10">
             {flatCategoryInfo.map(category => (
-              <a href={category.href} class="pointer-events-auto hover:text-primary">{category.name}</a>
+              <a href={category.href} class="hover:text-primary">{category.name}</a>
             ))}
           </div>
         )}
       </div>
-    
-      <p class="my-2 text-base text-muted-foreground line-clamp-4">
+      
+      <h2 class="text-2xl font-semibold">
+        <a href={`/posts/${post.id}`} class="before:absolute before:inset-0">
+          {title}
+        </a>
+      </h2>
+      <p class="mt-2 text-base text-muted-foreground line-clamp-3">
         {displayExcerpt}
       </p>
-
-      {tags && <div class="inline space-x-2 text-sm text-muted-foreground/80">
-          {tags.map((tag: string) => (
-            <a href={`/tags/${tag}`} class="pointer-events-auto hover:text-primary">#{tag}</a>
-          ))}
-        </div>
-      }
     </div>
   </div>
 </div>

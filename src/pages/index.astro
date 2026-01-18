@@ -43,12 +43,12 @@ const t = useTranslations(lang);
       </a>
     </footer>
   </section>
-  <section aria-label="projects" class="container mx-auto max-w-[980px] md:px-4 py-16">
+  <section aria-label="projects" class="container mx-auto max-w-7xl md:px-4 py-16">
     <header class="text-center">
       <h2 class="font-bold text-3xl">最近作品</h2>
     </header>
-    <div aria-label="projects" class="grid gap-8 px-4 my-16 container max-w-[980px] mx-auto md:grid-cols-2">
-      {projects.map(project => (
+    <div aria-label="projects" class="grid gap-8 px-4 my-16 container mx-auto md:grid-cols-2 xl:grid-cols-3">
+      {sortedProjects.map(project => (
         <ProjectCard project={project} />
       ))}
     </div>

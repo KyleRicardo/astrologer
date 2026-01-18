@@ -95,7 +95,7 @@ const { showProgressBar = false } = Astro.props;
   {showProgressBar && (
     <div 
       id="reading-progress" 
-      class="absolute -bottom-px left-0 h-0.5 w-full bg-primary origin-left transition-transform duration-100 ease-out z-50"
+      class="absolute -bottom-px left-0 h-0.5 w-full bg-primary origin-left transition-transform duration-100 ease-out z-50 will-change-transform"
       style="transform: scaleX(0);"
     ></div>
   )}

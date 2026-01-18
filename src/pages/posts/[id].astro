@@ -30,26 +30,25 @@ const flatCategoryInfo = getFlatCategoryInfo(categories);
 ---
 
 <Layout title={title} showProgressBar={true}>
-  <div class="mx-auto max-w-3xl p-4 my-4 md:my-16" astro-content>
-    <header class="flex flex-col items-center gap-4 tracking-wide">
-      <div class="flex flex-wrap gap-4 text-sm justify-center font-medium md:font-semibold">
-        {tags && tags.map(tag => (
-          <a href={`/tags/${tag}`} class="text-primary hover:text-primary/90">{`#${tag}`}</a>
-        ))}
-      </div>
-      <h1 class="font-semibold md:font-bold text-2xl md:text-3xl text-center">{title}</h1>
-      <div class="flex gap-4 justify-center text-sm font-semibold text-muted-foreground text-nowrap">
-        {flatCategoryInfo.length > 0 && flatCategoryInfo.map(category => (
-          <a href={category.href} class="pointer-events-auto hover:text-primary">{category.name}</a>
-        ))}
-      </div>
-      <div class="flex justify-center text-sm font-semibold text-muted-foreground text-nowrap">
+  <div class="mx-auto max-w-5xl p-4 my-4 md:my-16" astro-content>
+    <header class="flex flex-col gap-4 tracking-wide">
+      <div class="flex text-sm font-semibold text-muted-foreground/80 text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
+        <span class="mx-2">•</span>
+        {flatCategoryInfo.length > 0 && flatCategoryInfo.map(category => (
+          <a href={category.href} class="pointer-events-auto hover:text-primary/90">{category.name}</a>
+        ))}
         <span class="mx-2">•</span>
         <div>{readingMinuteText}</div>
       </div>
+      <h1 class="font-semibold md:font-bold text-2xl md:text-3xl">{title}</h1>
+      <div class="flex flex-wrap gap-4 text-sm font-medium md:font-semibold">
+        {tags && tags.map(tag => (
+          <a href={`/tags/${tag}`} class="text-muted-foreground hover:text-primary/90">{`#${tag}`}</a>
+        ))}
+      </div>
     </header>
-    <article class="mx-auto prose dark:prose-invert mt-8">
+    <article class="prose dark:prose-invert mt-8">
       <Content />
     </article>
   </div>
