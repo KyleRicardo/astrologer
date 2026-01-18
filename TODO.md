@@ -18,9 +18,12 @@
 - [ ] Config abstraction
 - [ ] i18n
 - [ ] Add site banner for announcement
+- [ ] Rethink font size on mobile
 
 ## Bugfix
 
 - [x] Layout shift due to scrollbar
 - [x] need to disable overscroll
 - [ ] Nav menu on mobile
+- [ ] hash link scroll not working
+- [ ] toc should not squeeze prose
