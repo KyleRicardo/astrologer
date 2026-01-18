@@ -52,7 +52,7 @@ const { showProgressBar = false } = Astro.props;
         <Logo width={16} height={16} class="hidden lg:block" />
         <span class="font-bold inline-block ml-8 md:ml-0">Kyle's Blog</span>
       </a>
-      <nav class="hidden md:flex items-center gap-4 text-sm xl:gap-6">
+      <nav class="hidden md:flex items-center gap-4 text-sm lg:gap-6">
         <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/posts')}>{t('nav.blog')}</a>
         <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/projects')}>{t('nav.projects')}</a>
         <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/about')}>{t('nav.about')}</a>
