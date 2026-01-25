@@ -5,14 +5,14 @@ const blog = defineCollection({
 	// Load Markdown and MDX files in the `src/content/blog/` directory.
 	loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
 	// Type-check frontmatter using a schema
-	schema: z.object({
+	schema: ({ image }) => z.object({
 		title: z.string(),
     description: z.string().optional(),
 		// Transform string to Date object
 		date: z.coerce.date(),
 		updated: z.coerce.date().optional(),
 		excerpt: z.string().optional(),
-		cover: z.string().optional(),
+		cover: image().optional(),
     categories: z.union([z.string(), z.array(z.union([z.string(), z.array(z.string())]))]).optional(),
     tags: z.array(z.string()).optional(),
     draft: z.boolean().optional(),
