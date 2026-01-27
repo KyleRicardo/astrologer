@@ -172,6 +172,7 @@
   body {
     @apply bg-background text-foreground;
     scrollbar-gutter: stable;
+    text-autospace: normal;
   }
   button {
     cursor: pointer;
@@ -187,7 +188,6 @@
 }
 
 @utility prose {
-  text-autospace: normal;
   blockquote {
     --tw-prose-quote-borders: var(--color-primary);
     font-style: normal;

@@ -24,7 +24,7 @@ const lang = getLangFromUrl(Astro.url);
 const formattedDate = date.toLocaleDateString(lang, {dateStyle: 'medium'});
 const readingMinutes = Math.ceil(remarkPluginFrontmatter.minutesRead as number)
 const readingMinuteText = lang === 'zh' ?
-  `阅读约需 ${Math.ceil(readingMinutes)} 分钟` :
+  `阅读约需${Math.ceil(readingMinutes)}分钟` :
   `${readingMinutes} min read`;
 
 const categoryInfo = getCategoryInfo(category);
