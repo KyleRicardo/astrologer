@@ -9,12 +9,13 @@
 - [x] Refactor theme toggle
 - [x] Refactor article card
 - [x] Refactor project card
+- [x] Article card add full-bleed cover image
 - [ ] Back to top button
 - [ ] Adjust margins and paddings, refer to supabase
 - [x] RSS
 - [ ] Open graph
 - [ ] Global search
-- [ ] Refactor category
+- [x] Refactor category
 - [ ] Config abstraction
 - [ ] i18n
 - [ ] Add site banner for announcement
@@ -27,3 +28,4 @@
 - [ ] Nav menu on mobile
 - [ ] hash link scroll not working
 - [ ] toc should not squeeze prose
+- [ ] card layout should be uniformed on any UGCs

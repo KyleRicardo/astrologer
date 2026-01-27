@@ -1,6 +1,6 @@
 ---
 import { getLangFromUrl } from '@/i18n/utils';
-import { getFlatCategoryInfo } from '@/utils/get-categories';
+import { getCategoryInfo } from '@/utils/get-categories';
 import { render, type CollectionEntry } from 'astro:content';
 import coverPlaceholder from '@/assets/astro.svg';
 import { Image } from "astro:assets";
@@ -11,13 +11,13 @@ interface Props {
 
 const { post } = Astro.props;
 
-const { cover, title, description, date, categories, tags } = post.data;
+const { cover, title, description, date, category, tags } = post.data;
 const { remarkPluginFrontmatter } = await render(post);
 
 const lang = getLangFromUrl(Astro.url);
 const formattedDate = date.toLocaleDateString(lang, {dateStyle: 'medium'});
 
-const flatCategoryInfo = getFlatCategoryInfo(categories);
+const categoryInfo = getCategoryInfo(category);
 
 const displayExcerpt = description || remarkPluginFrontmatter.excerpt || ''; // Fallback chain
 ---
@@ -33,16 +33,14 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || ''; // 
   </div>
   
   <!-- Content -->
-  <div class="flex flex-1 flex-col justify-center p-4 md:p-6 tracking-wide">
+  <div class="flex flex-1 flex-col p-4 md:p-6 tracking-wide">
     <div class="flex mb-3 text-sm font-semibold text-muted-foreground overflow-hidden whitespace-nowrap">
       <time datetime={date.toISOString()}>{formattedDate}</time>
-      <span class="mx-2">•</span>
-      {flatCategoryInfo.length > 0 && (
-        <div class="inline space-x-2 z-10">
-          {flatCategoryInfo.map(category => (
-            <a href={category.href} class="hover:text-primary">{category.name}</a>
-          ))}
-        </div>
+      {categoryInfo && (
+        <>
+          <span class="mx-2">•</span>
+          <a href={categoryInfo.href} class="z-10 hover:text-primary">{categoryInfo.name}</a>
+        </>
       )}
     </div>
     
@@ -51,7 +49,7 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || ''; // 
         {title}
       </a>
     </h2>
-    <p class="mt-2 text-base text-muted-foreground line-clamp-2 sm:line-clamp-3">
+    <p class="mt-2 text-base text-muted-foreground line-clamp-2 md:line-clamp-3">
       {displayExcerpt}
     </p>
   </div>

@@ -28,22 +28,12 @@ const groupPostsByYear = (posts: CollectionEntry<'blog'>[]): GroupedPosts[] => {
 };
 
 // 获取分类下的文章列表
-const getPostsByCategory = async (category: string[]): Promise<GroupedPosts[]> => {
+const getPostsByCategory = async (category: string): Promise<GroupedPosts[]> => {
   const posts = await getCollection('blog', ({ data }) => {
     return import.meta.env.PROD ? data.draft !== true : true;
   });
   const filteredPosts = posts
-      .filter((post) => {
-        const categories = post.data.categories;
-        if (!categories)
-          return false;
-        if (typeof categories === 'string') {
-          return category.length === 1 && category[0] === categories;
-        }
-        return categories
-          .map((item) => Array.isArray(item) ? item : [item])
-          .some((c) => c.length >= category.length && category.every((value, index) => value === c[index]));
-      })
+      .filter((post) => post.data.category === category)
       .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return groupPostsByYear(filteredPosts);
 }

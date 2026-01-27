@@ -13,7 +13,7 @@ const blog = defineCollection({
 		updated: z.coerce.date().optional(),
 		excerpt: z.string().optional(),
 		cover: image().optional(),
-    categories: z.union([z.string(), z.array(z.union([z.string(), z.array(z.string())]))]).optional(),
+    category: z.string().optional(),
     tags: z.array(z.string()).optional(),
     draft: z.boolean().optional(),
     pinned: z.boolean().optional(),
