@@ -4,6 +4,7 @@ import { getLangFromUrl, useTranslations, useTranslatedPath } from '@/i18n/utils
 import NavIcon from "./NavIcon.astro";
 import { ModeToggle } from "./ModeToggle";
 import Logo from "../assets/logo.svg";
+import { siteConfig } from "@/site.config";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -69,18 +70,13 @@ const { showProgressBar = false } = Astro.props;
       </div>
       <div aria-label="" class="hidden md:inline-block ml-2">
         <ul class="flex items-center gap-1">
-          <li>
-            <NavIcon name="GitHub" href="https://github.com/KyleRicardo" icon="ri:github-fill" external={true} />
-          </li>
-          <li>
-            <NavIcon name="Twitter" href="https://x.com/KyleRicardo666" icon="ri:twitter-x-line" external={true} />
-          </li>
-          <li>
-            <NavIcon name="Bluesky" href="https://bsky.app/profile/kylericardo.bsky.social" icon="ri:bluesky-line" external={true} />
-          </li>
-          <li>
-            <NavIcon name="RSS Feed" href="/rss.xml" icon="ri:rss-fill" external={true} />
-          </li>
+          {
+            siteConfig.socials.map(social => (
+              <li>
+                <NavIcon name={social.name} href={social.url} icon={social.icon} external={true} />
+              </li>
+            ))
+          }
         </ul>
       </div>
       <div aria-label="display options" class="ml-1">

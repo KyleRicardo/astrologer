@@ -1,4 +1,4 @@
-import SITE_CONFIG from '@/config';
+import { siteConfig } from '@/site.config';
 
 export const languages = {
   zh: '中文',
@@ -10,7 +10,7 @@ export const showDefaultLang = false;
 
 export const ui = {
   zh: {
-    'website.title': SITE_CONFIG.title_zh,
+    'website.title': siteConfig.title_zh,
     'nav.home': '首页',
     'nav.blog': '博客',
     'nav.archives': '归档',
@@ -25,7 +25,7 @@ export const ui = {
     'projects.description': '我创作的一些有趣的项目或开源作品'
   },
   en: {
-    'website.title': SITE_CONFIG.title_en,
+    'website.title': siteConfig.title_en,
     'nav.home': 'Home',
     'nav.blog': 'Blog',
     'nav.archives': 'Archives',

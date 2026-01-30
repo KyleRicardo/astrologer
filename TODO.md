@@ -20,6 +20,7 @@
 - [ ] i18n
 - [ ] Add site banner for announcement
 - [ ] Rethink font size on mobile
+- [ ] Use view transition when navigate
 
 ## Bugfix
 
@@ -29,3 +30,5 @@
 - [ ] hash link scroll not working
 - [ ] toc should not squeeze prose
 - [ ] card layout should be uniformed on any UGCs
+- [ ] prose style should conform to global
+- [ ] throw error when there is orphan headings
