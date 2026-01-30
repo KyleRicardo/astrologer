@@ -16,7 +16,7 @@
 - [ ] Open graph
 - [ ] Global search
 - [x] Refactor category
-- [ ] Config abstraction
+- [x] Config abstraction
 - [ ] i18n
 - [ ] Add site banner for announcement
 - [ ] Rethink font size on mobile

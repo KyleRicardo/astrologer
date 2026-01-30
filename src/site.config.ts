@@ -21,6 +21,8 @@ export interface SiteConfig {
   // 主页是否显示最近项目
   enableRecentProjectsOnHomepage: boolean;
   // 主页最近文章个数
+  recentPostsCount: number;
+  // 主页最近项目个数
   recentProjectsCount: number;
   // 项目页面是否显示推广信息
   enablePromotionOnProjectsPage: boolean;
@@ -63,6 +65,8 @@ export const siteConfig: SiteConfig = {
   // 主页是否显示最近项目
   enableRecentProjectsOnHomepage: true,
   // 主页最近文章个数
+  recentPostsCount: 6,
+  // 主页最近项目个数
   recentProjectsCount: 3,
   // 项目页面是否显示推广信息
   enablePromotionOnProjectsPage: true,

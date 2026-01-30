@@ -58,7 +58,7 @@ const { title, showProgressBar = false } = Astro.props;
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css"> -->
 		<meta name="generator" content={Astro.generator} />
     <ClientRouter />
-    <link rel="alternate" type="application/rss+xml" title="Kyle's Blog" href={new URL("rss.xml", Astro.site)} />
+    <link rel="alternate" type="application/rss+xml" title={t('website.title') || "Kyle's Blog"} href={new URL("rss.xml", Astro.site)} />
 		<title>{`${title} | ${t('website.title')}`}</title>
 	</head>
 	<body class="min-h-svh bg-background antialiased">

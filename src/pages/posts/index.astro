@@ -16,10 +16,10 @@ const sortedPosts = posts.sort((a, b) => b.data.date.valueOf() - a.data.date.val
 
 <Layout title={t("nav.blog")}>
   <BlogLayout>
-    <div class="mt-8 space-y-8">
+    <section aria-label="posts" class="my-8 space-y-8">
       {sortedPosts.map((post) => (
         <ArticleCard post={post} />
       ))}
-    </div>
+    </section>
   </BlogLayout>
 </Layout>

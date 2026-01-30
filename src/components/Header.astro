@@ -17,7 +17,7 @@ interface Props {
 const { showProgressBar = false } = Astro.props;
 ---
 
-<header class="border-grid sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+<header class="border-grid sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
   <div class="mx-auto container max-w-[1400px] flex px-4 h-14 items-center gap-2 md:gap-4">
     <div class="globalnav-menutrigger absolute top-0 left-0 z-3 md:hidden">
       <button class="relative flex justify-center items-center h-14 w-14" id="globalnav-menutrigger-button" aria-controls="globalnav-list" aria-label="Menu" data-topnav-menu-label-open="Menu" data-topnav-menu-label-close="Close" data-topnav-flyout-trigger-compact="menu" class="globalnav-menutrigger-button"><svg width="18" height="18" viewBox="0 0 18 18"><polyline id="globalnav-menutrigger-bread-bottom" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="2 12, 16 12" class="globalnav-menutrigger-bread globalnav-menutrigger-bread-bottom"><animate id="globalnav-anim-menutrigger-bread-bottom-open" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 2 12, 16 12; 2 9, 16 9; 3.5 15, 15 3.5"></animate><animate id="globalnav-anim-menutrigger-bread-bottom-close" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 3.5 15, 15 3.5; 2 9, 16 9; 2 12, 16 12"></animate></polyline><polyline id="globalnav-menutrigger-bread-top" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" points="2 5, 16 5" class="globalnav-menutrigger-bread globalnav-menutrigger-bread-top"><animate id="globalnav-anim-menutrigger-bread-top-open" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 2 5, 16 5; 2 9, 16 9; 3.5 3.5, 15 15"></animate><animate id="globalnav-anim-menutrigger-bread-top-close" attributeName="points" keyTimes="0;0.5;1" dur="0.24s" begin="indefinite" fill="freeze" calcMode="spline" keySplines="0.42, 0, 1, 1;0, 0, 0.58, 1" values=" 3.5 3.5, 15 15; 2 9, 16 9; 2 5, 16 5"></animate></polyline></svg>
@@ -28,35 +28,41 @@ const { showProgressBar = false } = Astro.props;
         <li>
           <a href={translatePath('/posts')}>{t('nav.blog')}</a>
         </li>
+        {
+          siteConfig.enableProjectsShowcase && (
+            <li>
+              <a href={translatePath('/projects')}>{t('nav.projects')}</a>
+            </li>
+          )
+        }
+        {
+          siteConfig.enableAboutMe && (
+            <li>
+              <a href={translatePath('/about')}>{t('nav.about')}</a>
+            </li>
+          )
+        }
+        {
+          siteConfig.socials.map(social => (
+            <li>
+              <a href={social.url} rel="noopener noreferrer" target="_blank">{social.name}</a>
+            </li>
+          ))
+        }
         <li>
-          <a href={translatePath('/projects')}>{t('nav.projects')}</a>
-        </li>
-        <li>
-          <a href={translatePath('/about')}>{t('nav.about')}</a>
-        </li>
-        <li>
-          <a href="https://github.com/KyleRicardo" rel="noopener noreferrer" target="_blank">GitHub</a>
-        </li>
-        <li>
-          <a href="https://x.com/KyleRicardo666" rel="noopener noreferrer" target="_blank">Twitter</a>
-        </li>
-        <li>
-          <a href="https://bsky.app/profile/kylericardo.bsky.social" rel="noopener noreferrer" target="_blank">Bluesky</a>
-        </li>
-        <li>
-          <a href="https://example.com" rel="noopener noreferrer" target="_blank">RSS Feed</a>
+          <a href="/rss.xml" rel="noopener noreferrer" target="_blank">RSS Feed</a>
         </li>
       </ul>
     </div>
     <div class="mr-4 flex">
       <a class="mr-4 flex items-center gap-2 lg:mr-6" href="/">
         <Logo width={16} height={16} class="hidden lg:block" />
-        <span class="font-bold inline-block ml-8 md:ml-0">Kyle's Blog</span>
+        <span class="font-bold inline-block ml-8 md:ml-0">{siteConfig.title_zh}</span>
       </a>
       <nav class="hidden md:flex items-center gap-4 text-sm lg:gap-6">
         <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/posts')}>{t('nav.blog')}</a>
-        <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/projects')}>{t('nav.projects')}</a>
-        <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/about')}>{t('nav.about')}</a>
+        {siteConfig.enableProjectsShowcase && <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/projects')}>{t('nav.projects')}</a>}
+        {siteConfig.enableAboutMe && <a class="transition-colors hover:text-foreground/80 text-foreground/80" href={translatePath('/about')}>{t('nav.about')}</a>}
       </nav>
     </div>
     <div class="ml-auto flex items-center md:flex-1 md:justify-end">
@@ -77,6 +83,9 @@ const { showProgressBar = false } = Astro.props;
               </li>
             ))
           }
+          <li>
+            <NavIcon name="RSS Feed" href="/rss.xml" icon="ri:rss-fill" external={true} />
+          </li>
         </ul>
       </div>
       <div aria-label="display options" class="ml-1">
