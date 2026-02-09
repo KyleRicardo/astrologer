@@ -174,11 +174,9 @@
     scrollbar-gutter: stable;
     text-autospace: normal;
   }
-  button {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
     cursor: pointer;
-  }
-  button:disabled {
-    cursor: default;
   }
 }
 
