@@ -77,7 +77,7 @@ const { showProgressBar = false } = Astro.props;
       <div aria-label="" class="hidden md:inline-block ml-2">
         <ul class="flex items-center gap-1">
           {
-            siteConfig.socials.map(social => (
+            siteConfig.socials.filter(social => social.showOnHeader).map(social => (
               <li>
                 <NavIcon name={social.name} href={social.url} icon={social.icon} external={true} />
               </li>

@@ -34,6 +34,7 @@ export interface SocialLink {
   name: string;
   url: string;
   icon: string;
+  showOnHeader?: boolean;
 }
 
 export const siteConfig: SiteConfig = {
@@ -81,11 +82,13 @@ export const siteConfig: SiteConfig = {
       name: 'GitHub',
       url: 'https://github.com/KyleRicardo',
       icon: 'ri:github-fill',
+      showOnHeader: true,
     },
     {
       name: 'Twitter',
       url: 'https://twitter.com/KyleRicardo666',
       icon: 'ri:twitter-x-line',
+      showOnHeader: true,
     },
     {
       name: 'Mastodon',
