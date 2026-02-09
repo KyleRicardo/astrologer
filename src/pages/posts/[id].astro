@@ -34,7 +34,7 @@ const categoryInfo = getCategoryInfo(category);
 <Layout title={title} showProgressBar={true}>
   <div class="mx-auto max-w-5xl p-4 md:p-8 my-4 md:my-16" astro-content>
     <header class="flex flex-col gap-4 tracking-wide">
-      <div class="flex justify-center lg:justify-start text-sm font-semibold text-muted-foreground/80 text-nowrap">
+      <div class="flex justify-center lg:justify-start text-sm font-semibold text-muted-foreground text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
         <span class="mx-2">•</span>
         {categoryInfo && (
@@ -51,7 +51,7 @@ const categoryInfo = getCategoryInfo(category);
       </div>
     </header>
     <div class="flex gap-8 lg:gap-12 mt-8">
-      <article class="prose dark:prose-invert flex-1 min-w-0 mx-auto lg:mx-0">
+      <article class="prose flex-1 min-w-0 mx-auto lg:mx-0">
         {cover && <Image src={cover} alt={title} class="w-full rounded-xl mb-8 object-cover" />}
         <Content />
       </article>
