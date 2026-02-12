@@ -30,8 +30,8 @@ export default defineConfig({
     ],
     shikiConfig: {
       themes: {
-        light: 'one-light',
-        dark: 'plastic',
+        light: 'github-light',
+        dark: 'github-dark',
       },
     },
   },

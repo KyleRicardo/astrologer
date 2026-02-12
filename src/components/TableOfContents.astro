@@ -21,43 +21,28 @@ if (tocTree.length === 0) {
   class="toc hidden lg:block w-64 shrink-0 ml-auto"
 >
   <div class="toc-inner sticky top-30">
-    <h2 class="text-sm font-semibold text-foreground mb-3">目录</h2>
+    <div class="text-sm font-semibold text-foreground mb-3">目录</div>
     <ul class="toc-list space-y-1">
-      {tocTree.map((h1) => (
+      {tocTree.map((h2) => (
         <li>
           <a
-            href={`#${h1.slug}`}
+            href={`#${h2.slug}`}
             class="toc-link block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-            data-slug={h1.slug}
+            data-slug={h2.slug}
           >
-            {h1.text}
+            {h2.text}
           </a>
-          {h1.children.length > 0 && (
+          {h2.children.length > 0 && (
             <ul class="pl-3 space-y-1">
-              {h1.children.map((h2) => (
+              {h2.children.map((h3) => (
                 <li>
                   <a
-                    href={`#${h2.slug}`}
+                    href={`#${h3.slug}`}
                     class="toc-link block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                    data-slug={h2.slug}
+                    data-slug={h3.slug}
                   >
-                    {h2.text}
+                    {h3.text}
                   </a>
-                  {h2.children.length > 0 && (
-                    <ul class="pl-3 space-y-1">
-                      {h2.children.map((h3) => (
-                        <li>
-                          <a
-                            href={`#${h3.slug}`}
-                            class="toc-link block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
-                            data-slug={h3.slug}
-                          >
-                            {h3.text}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
                 </li>
               ))}
             </ul>

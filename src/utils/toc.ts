@@ -13,7 +13,7 @@ export interface TocHeading {
  * Only includes h1, h2, h3 (depth 1-3).
  */
 export function buildTocTree(headings: Array<{ depth: number; slug: string; text: string }>): TocHeading[] {
-  const filtered = headings.filter(h => h.depth >= 1 && h.depth <= 3);
+  const filtered = headings.filter(h => h.depth >= 2 && h.depth <= 3);
   const root: TocHeading[] = [];
   const stack: TocHeading[] = [];
 
