@@ -10,6 +10,7 @@ import sitemap from '@astrojs/sitemap';
 
 import { remarkReadingTime } from './remark-reading-time.mjs';
 import { remarkAutoExcerpt } from './remark-auto-excerpt.mjs';
+import rehypeCallouts from 'rehype-callouts';
 
 import react from '@astrojs/react';
 
@@ -24,6 +25,9 @@ export default defineConfig({
       remarkReadingTime,
       remarkAutoExcerpt,
     ],
+    rehypePlugins: [
+      rehypeCallouts,
+    ],
     shikiConfig: {
       themes: {
         light: 'one-light',
@@ -32,5 +36,10 @@ export default defineConfig({
     },
   },
 
-  integrations: [icon(), mdx(), sitemap(), react()]
+  integrations: [
+    icon(),
+    mdx(),
+    sitemap(),
+    react(),
+  ]
 });
