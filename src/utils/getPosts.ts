@@ -1,4 +1,5 @@
 
+import type { Lang } from "@/i18n/utils";
 import { getCollection, type CollectionEntry } from "astro:content";
 
 interface GroupedPosts {
@@ -56,4 +57,28 @@ const getArchives = async (): Promise<GroupedPosts[]> => {
   return groupPostsByYear(sortedPosts);
 }
 
-export { type GroupedPosts, getPostsByCategory, getPostsByTag, getArchives };
+export function getPostSlug(id: string) {
+  return id.split('/').slice(1).join('/')
+}
+
+export const DEFAULT_COVER_PATH = '/og/default-cover.png'
+
+function getPostOgImagePath(id: string) {
+  const [lang, ...rest] = id.split('/')
+  const slug = rest.join('/')
+  return `/og/posts/${lang}/${slug}.png`
+}
+
+export async function getPostPaths(lang: Lang) {
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
+  return posts
+    .filter((post) => post.id.startsWith(`${lang}/`))
+    .map((post) => ({
+      params: { slug: getPostSlug(post.id) },
+      props: post,
+    }))
+}
+
+export { type GroupedPosts, getPostsByCategory, getPostsByTag, getArchives, getPostOgImagePath };

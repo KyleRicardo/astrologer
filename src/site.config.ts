@@ -1,7 +1,9 @@
 export interface SiteConfig {
   title_zh: string;
   title_en: string;
-  // 访问的域名
+  tagline: string;
+  domain: string;
+  // 访问的URL
   site: string;
   subtitle: string;
   description: string;
@@ -40,7 +42,9 @@ export interface SocialLink {
 export const siteConfig: SiteConfig = {
   title_zh: "Kyle's Blog",
   title_en: "Kyle's Blog",
-  // 访问的域名
+  tagline: 'To make the world better, and life easier.',
+  domain: 'kylericardo.com',
+  // 访问的URL
   site: 'https://kylericardo.com',
   subtitle: 'To make the world better, and life easier.',
   description: 'Kyle Ricardo的个人博客，分享技术、生活、创作等内容。',

@@ -1,0 +1,13 @@
+---
+import ArticleDetail from "@/components/ArticleDetail.astro";
+import { getPostPaths } from "@/utils/getPosts";
+import { defaultLang } from "@/i18n/ui";
+
+export async function getStaticPaths() {
+	return getPostPaths(defaultLang)
+}
+
+const post = Astro.props;
+---
+
+<ArticleDetail post={post} lang={Astro.currentLocale ?? defaultLang} />

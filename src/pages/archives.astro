@@ -13,7 +13,7 @@ const postsGroupedByYear = await getArchives();
 
 <Layout title={t('nav.archives')}>
   <BlogLayout>
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl w-full mx-auto">
       <PostList posts={postsGroupedByYear} />
     </div>
   </BlogLayout>

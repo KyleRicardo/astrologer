@@ -1,38 +1,42 @@
 ---
-import { getLangFromUrl } from "@/i18n/utils";
+import { getLangFromUrl, useTranslations, type Lang } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { getCategoryInfo } from "@/utils/get-categories";
 import { type CollectionEntry, getCollection } from "astro:content";
 import { render } from "astro:content";
 import TableOfContents from "@/components/TableOfContents.astro";
 import { Image } from "astro:assets";
+import { getPostOgImagePath, getPostPaths } from "@/utils/getPosts";
+import { defaultLang } from "@/i18n/ui";
+
 export async function getStaticPaths() {
-	const posts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true;
-  });
-	return posts.map((post) => ({
-		params: { id: post.id },
-		props: post,
-	}));
+	return getPostPaths(defaultLang)
 }
-type Props = CollectionEntry<'blog'>;
 
-const post = Astro.props;
+interface Props {
+  post: CollectionEntry<'blog'>
+  lang: Lang
+}
+
+const { post, lang } = Astro.props;
+
+const t = useTranslations(lang)
+
+const { title, description, date, category, tags, cover } = post.data;
 const { Content, remarkPluginFrontmatter, headings } = await render(post);
-const { title, date, category, tags, excerpt, cover } = post.data;
 
-const lang = getLangFromUrl(Astro.url);
+const ogImage = post.data.cover ?? getPostOgImagePath(post.id)
+
+
 const formattedDate = date.toLocaleDateString(lang, {dateStyle: 'medium'});
 const readingMinutes = Math.ceil(remarkPluginFrontmatter.minutesRead as number)
-const readingMinuteText = lang === 'zh' ?
-  `阅读约需${Math.ceil(readingMinutes)}分钟` :
-  `${readingMinutes} min read`;
+const readingMinuteText = t('post.readingMinutes', { minutes: readingMinutes })
 
 const categoryInfo = getCategoryInfo(category);
 ---
 
-<Layout title={title} showProgressBar={true}>
-  <div class="mx-auto max-w-5xl p-4 md:p-8 my-8 md:my-16" astro-content>
+<Layout title={title} description={description} image={ogImage} ogType="article" showProgressBar={true}>
+  <main class="flex flex-1 flex-col mx-auto w-full max-w-5xl p-4 md:p-8 my-8 md:my-16" astro-content>
     <header class="flex flex-col gap-4 tracking-wide">
       <div class="flex justify-center lg:justify-start text-sm font-semibold text-muted-foreground text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
@@ -52,12 +56,11 @@ const categoryInfo = getCategoryInfo(category);
     </header>
     <div class="flex gap-8 lg:gap-12 mt-8">
       <article class="prose flex-1 min-w-0 max-w-3xl w-full mx-auto lg:mx-0">
-        {cover && <Image src={cover} alt={title} class="w-full rounded-xl mb-8 object-cover" />}
         <Content />
       </article>
       <TableOfContents headings={headings} />
     </div>
-  </div>
+  </mai>
 </Layout>
 
 
