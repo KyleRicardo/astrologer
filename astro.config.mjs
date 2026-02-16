@@ -10,7 +10,10 @@ import sitemap from '@astrojs/sitemap';
 
 import { remarkReadingTime } from './remark-reading-time.mjs';
 import { remarkAutoExcerpt } from './remark-auto-excerpt.mjs';
+import remarkMath from 'remark-math';
 import rehypeCallouts from 'rehype-callouts';
+import rehypeKatex from 'rehype-katex';
+
 
 import react from '@astrojs/react';
 
@@ -22,11 +25,13 @@ export default defineConfig({
   },
   markdown: {
     remarkPlugins: [
+      remarkMath,
       remarkReadingTime,
       remarkAutoExcerpt,
     ],
     rehypePlugins: [
       rehypeCallouts,
+      rehypeKatex,
     ],
     shikiConfig: {
       themes: {

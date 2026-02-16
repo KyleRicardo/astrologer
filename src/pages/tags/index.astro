@@ -14,7 +14,7 @@ const tags = await getTags();
   <BlogLayout>
     <div class="flex flex-col items-center flex-1 my-16">
       <h1 class="text-3xl font-semibold">{t('tags.title')}</h1>
-      <ul class="flex flex-wrap justify-center gap-6 mt-16">
+      <ul class="flex flex-wrap max-w-lg justify-center gap-6 mt-16">
         {tags.map((tag) => (
           <li>
             <a href={`/tags/${tag.name}`} class="group flex gap-2 items-center border-b border-grid hover:border-primary">

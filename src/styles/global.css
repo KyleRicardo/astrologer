@@ -179,6 +179,12 @@
   [role="button"]:not(:disabled) {
     cursor: pointer;
   }
+
+  span.katex-display {
+    overflow-x: auto;
+    padding: 0.5rem;
+  }
+
 }
 
 @utility border-grid {

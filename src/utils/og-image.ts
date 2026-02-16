@@ -7,9 +7,7 @@ import { Resvg } from '@resvg/resvg-js'
 import satori, { type Font } from 'satori'
 import { siteConfig } from '@/site.config'
 import { ui } from '@/i18n/ui'
-import { getLocaleFromLang, useTranslations, type Lang } from '@/i18n/utils'
-import { html } from 'satori-html'
-
+import { getLocaleFromLang, useTranslations, type Lang } from '@/i18n/utils'            
 
 interface OgOptions {
   title: string
@@ -171,6 +169,7 @@ export async function renderOgImage(options: OgOptions) {
                 fontSize: 64,
                 fontWeight: 700,
                 color: '#dedfd7',
+                maxWidth: 800,
                 textWrap: 'balance',
                 letterSpacing: '-0.04em',
                 lineClamp: 2,
