@@ -1,5 +1,5 @@
 ---
-import { getPostSlug } from '@/utils/getPosts';
+import { getSlugById } from '@/utils/getPosts';
 
 interface Props {
   id: string;
@@ -17,7 +17,7 @@ const formatter = new Intl.DateTimeFormat("zh-CN", {
 
 const formattedDate = formatter.format(date);
 
-const postSlug = getPostSlug(id);
+const postSlug = getSlugById(id);
 ---
 <li>
   <a href={`/posts/${postSlug}`} class="group flex h-10 items-center rounded-lg hover:bg-muted">

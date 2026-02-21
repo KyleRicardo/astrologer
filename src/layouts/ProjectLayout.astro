@@ -5,7 +5,7 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<main class="flex flex-1 flex-col mx-auto container max-w-[1400px] min-w-xs">
+<main class="flex flex-1 flex-col mx-auto container max-w-7xl min-w-xs px-4">
   <header class="text-center py-8 md:py-16">
     <h1 class="text-4xl font-bold mb-4">{t('projects.title')}</h1>
     <p class="font-medium text-muted-foreground">{t('projects.description')}</p>

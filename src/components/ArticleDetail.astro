@@ -6,7 +6,7 @@ import { type CollectionEntry, getCollection } from "astro:content";
 import { render } from "astro:content";
 import TableOfContents from "@/components/TableOfContents.astro";
 import { Image } from "astro:assets";
-import { getPostOgImagePath, getPostPaths } from "@/utils/getPosts";
+import { DEFAULT_COVER_PATH, getPostOgImagePath, getPostPaths, getSlugById, sanitizeSlug } from "@/utils/getPosts";
 import { defaultLang } from "@/i18n/ui";
 
 export async function getStaticPaths() {
@@ -27,35 +27,62 @@ const { Content, remarkPluginFrontmatter, headings } = await render(post);
 
 const ogImage = post.data.cover ?? getPostOgImagePath(post.id)
 
+const postSlug = getSlugById(post.id)
+const cardTransitionName = `post-card-${lang}-${sanitizeSlug(postSlug)}`
+const titleTransitionName = `post-title-${lang}-${sanitizeSlug(postSlug)}`
+const timeTransitionName = `post-time-${lang}-${sanitizeSlug(postSlug)}`
+const categoryTransitionName = `post-category-${lang}-${sanitizeSlug(postSlug)}`
 
 const formattedDate = date.toLocaleDateString(lang, {dateStyle: 'medium'});
 const readingMinutes = Math.ceil(remarkPluginFrontmatter.minutesRead as number)
 const readingMinuteText = t('post.readingMinutes', { minutes: readingMinutes })
 
 const categoryInfo = getCategoryInfo(category);
+
+const hasCustomCover = cover !== undefined
+const coverImage = cover ?? DEFAULT_COVER_PATH
+const coverTransitionName = `post-cover-${lang}-${postSlug}`
 ---
 
 <Layout title={title} description={description} image={ogImage} ogType="article" showProgressBar={true}>
   <main class="flex flex-1 flex-col mx-auto w-full max-w-5xl p-4 md:p-8 my-8 md:my-16" astro-content>
     <header class="flex flex-col gap-4 tracking-wide">
       <div class="flex justify-center lg:justify-start text-sm font-semibold text-muted-foreground text-nowrap">
-        <time datetime={date.toISOString()}>{formattedDate}</time>
+        <time datetime={date.toISOString()} transition:name={timeTransitionName}>{formattedDate}</time>
         <span class="mx-2">•</span>
         {categoryInfo && (
-          <a href={categoryInfo.href} class="pointer-events-auto hover:text-primary/90">{categoryInfo.name}</a>
+          <a href={categoryInfo.href} class="pointer-events-auto hover:text-primary/90" transition:name={categoryTransitionName}>{categoryInfo.name}</a>
         )}
         <span class="mx-2">•</span>
-        <div>{readingMinuteText}</div>
+        <div>
+          {readingMinuteText}
+        </div>
       </div>
-      <h1 class="text-center text-balance lg:text-left font-semibold md:font-bold text-2xl md:text-3xl lg:text-4xl">{title}</h1>
-      <div class="flex flex-wrap justify-center lg:justify-start gap-4 text-sm font-medium md:font-semibold">
+      <h1 class="text-center text-balance lg:text-left font-semibold md:font-bold text-2xl md:text-3xl lg:text-4xl">
+        <span
+          transition:name={titleTransitionName}
+        >
+          {title}
+        </span>
+      </h1>
+      <div class="flex flex-wrap justify-center lg:justify-start gap-4 text-sm text-muted-foreground font-medium md:font-semibold">
         {tags && tags.map(tag => (
-          <a href={`/tags/${tag}`} class="text-muted-foreground hover:text-primary/90">{`#${tag}`}</a>
+          <a href={`/tags/${tag}`} class="hover:text-primary/90">{`#${tag}`}</a>
         ))}
       </div>
     </header>
     <div class="flex gap-8 lg:gap-12 mt-8">
       <article class="prose flex-1 min-w-0 max-w-3xl w-full mx-auto lg:mx-0">
+        {hasCustomCover && (
+          <Image
+            src={coverImage} 
+            alt={title}
+            width={720}
+            height={480}
+            class="rounded-xl w-full"
+            transition:name={coverTransitionName}
+          />
+        )}
         <Content />
       </article>
       <TableOfContents headings={headings} />

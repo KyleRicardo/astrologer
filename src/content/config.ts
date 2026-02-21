@@ -25,7 +25,7 @@ const project = defineCollection({
 	loader: glob({ base: './src/content/project', pattern: '**/*.{md,mdx}' }),
 	// Type-check frontmatter using a schema
 	schema: ({ image }) => z.object({
-		cover: image(),
+		cover: z.string().optional(),
     icon: image(),
 		title: z.string(),
     description: z.string(),

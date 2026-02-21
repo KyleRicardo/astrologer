@@ -2,6 +2,8 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from 'astro:content';
 import NavIcon from "./NavIcon.astro";
+import { getLangFromUrl, useTranslatedPath, type Lang } from "@/i18n/utils";
+import { DEFAULT_COVER_PATH, getSlugById, sanitizeSlug } from "@/utils/getPosts";
 
 interface Props {
   project: CollectionEntry<'project'>
@@ -9,12 +11,31 @@ interface Props {
 
 const { project } = Astro.props
 const { cover, icon, title, description, github, homepage, liveDemo, tags } = project.data;
+
+const lang = getLangFromUrl(Astro.url);
+
+const translatePath = useTranslatedPath(lang)
+
+const projectSlug = getSlugById(project.id)
+const cardTransitionName = `project-card-${lang}-${sanitizeSlug(projectSlug)}`
+const titleTransitionName = `project-title-${lang}-${sanitizeSlug(projectSlug)}`
+const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
+
+const hasCustomCover = cover !== undefined
+const coverImage = cover ?? DEFAULT_COVER_PATH
 ---
 
-<div class="group relative rounded-xl border overflow-clip">
+<div class="group relative rounded-xl border overflow-clip" transition:name={cardTransitionName}>
   <div class="relative h-full flex flex-col z-10">
     <div class="max-h-54 overflow-hidden">
-      <Image src={cover} alt={title} class="max-h-54 w-full object-cover group-hover:scale-103 transition-transform duration-400 will-change-transform" />
+      <Image
+        src={coverImage}
+        alt={title}
+        width={720}
+        height={480}
+        class="max-h-54 w-full rounded-t-xl object-cover group-hover:scale-103 transition-transform duration-400 will-change-transform"
+        transition:name={coverTransitionName}
+      />
     </div>
     <div class="flex flex-col flex-1 gap-4 px-6 py-4">
       <div class="flex gap-4 items-center">
@@ -23,8 +44,8 @@ const { cover, icon, title, description, github, homepage, liveDemo, tags } = pr
         </div>
         <div class="flex flex-col justify-center md:gap-1">
           <h2 class="font-semibold text-lg md:text-2xl">
-            <a href={`/projects/${project.id}`} class="before:absolute before:inset-0">
-              {title}
+            <a href={translatePath(`/projects/${projectSlug}`)} class="before:absolute before:inset-0">
+              <span transition:name={titleTransitionName}>{title}</span>
             </a>
           </h2>
           <p class="text-sm text-muted-foreground">{description}</p>

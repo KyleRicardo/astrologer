@@ -32,6 +32,8 @@ export function ModeToggle() {
       Math.max(y, innerHeight - y)
     )
 
+    document.documentElement.classList.add('theme-transition')
+
     const transition = document.startViewTransition(() => {
       setThemeState(nextTheme)
       applyTheme(nextTheme)
@@ -39,7 +41,6 @@ export function ModeToggle() {
 
     transition.ready.then(() => {
       const root = document.documentElement
-      root.classList.add('theme-transition')
       root.style.setProperty('--x', `${x}px`)
       root.style.setProperty('--y', `${y}px`)
       root.style.setProperty('--mask-radius', '0px')

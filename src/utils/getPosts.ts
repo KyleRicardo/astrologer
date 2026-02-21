@@ -57,7 +57,7 @@ const getArchives = async (): Promise<GroupedPosts[]> => {
   return groupPostsByYear(sortedPosts);
 }
 
-export function getPostSlug(id: string) {
+export function getSlugById(id: string) {
   return id.split('/').slice(1).join('/')
 }
 
@@ -76,9 +76,31 @@ export async function getPostPaths(lang: Lang) {
   return posts
     .filter((post) => post.id.startsWith(`${lang}/`))
     .map((post) => ({
-      params: { slug: getPostSlug(post.id) },
+      params: { slug: getSlugById(post.id) },
       props: post,
     }))
+}
+
+export function getProjectOgImagePath(id: string) {
+  const [lang, ...rest] = id.split('/')
+  const slug = rest.join('/')
+  return `/og/projects/${lang}/${slug}.png`
+}
+
+export async function getProjectPaths(lang: Lang) {
+  const projects = await getCollection('project', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
+  return projects
+    .filter((project) => project.id.startsWith(`${lang}/`))
+    .map((project) => ({
+      params: { slug: getSlugById(project.id) },
+      props: project,
+    }))
+}
+
+export function sanitizeSlug(slug: string) {
+  return slug.toLowerCase().replaceAll(/[^a-z0-9_-]+/g, '-').replaceAll(/^-+|-+$/g, '')
 }
 
 export { type GroupedPosts, getPostsByCategory, getPostsByTag, getArchives, getPostOgImagePath };

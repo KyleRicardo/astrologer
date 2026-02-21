@@ -1,34 +1,55 @@
 ---
 import IconTextLink from "@/components/IconTextLink.astro";
-import { getLangFromUrl } from "@/i18n/utils";
+import { defaultLang } from "@/i18n/ui";
+import { getLangFromUrl, type Lang } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
+import { DEFAULT_COVER_PATH, getProjectOgImagePath, getProjectPaths, getSlugById, sanitizeSlug } from "@/utils/getPosts";
 import { Image } from "astro:assets";
-import { type CollectionEntry, getCollection } from "astro:content";
+import { type CollectionEntry } from "astro:content";
 import { render } from "astro:content";
+
 export async function getStaticPaths() {
-	const projects = await getCollection('project');
-	return projects.map((post) => ({
-		params: { id: post.id },
-		props: post,
-	}));
+	return getProjectPaths(defaultLang)
 }
-type Props = CollectionEntry<'project'>;
 
-const post = Astro.props;
-const { Content } = await render(post);
-const { cover, title, description, date, tags, github, homepage, liveDemo } = post.data;
+interface Props {
+  project: CollectionEntry<'project'>
+  lang: Lang
+}
 
-const lang = getLangFromUrl(Astro.url);
+const { project, lang } = Astro.props;
+const { Content } = await render(project);
+const { cover, title, description, date, tags, github, homepage, liveDemo } = project.data;
+
 const formattedDate = date.toLocaleDateString(lang, {dateStyle: 'medium'});
+
+const ogImage = project.data.cover ?? getProjectOgImagePath(project.id)
+
+const projectSlug = getSlugById(project.id)
+
+const titleTransitionName = `project-title-${lang}-${sanitizeSlug(projectSlug)}`
+const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
+
+const hasCustomCover = cover !== undefined
+const coverImage = cover ?? DEFAULT_COVER_PATH
 ---
 
-<Layout title={title}>
-  <main class="flex flex-1 flex-col mx-auto w-full max-w-3xl px-4">
+<Layout title={title} description={description} image={ogImage} ogType="article">
+  <main class="flex flex-1 flex-col mx-auto w-full max-w-3xl px-4 my-16">
     <header class="flex flex-col items-center gap-4 md:gap-6 tracking-wide">
-      <div aria-label="cover" class="max-w-[60ch] mb-6">
-        <Image src={cover} alt={title} class="rounded-lg" />
+      <div aria-label="cover" class="w-full mb-6">
+        <Image 
+          src={coverImage} 
+          alt={title} 
+          width={720}
+          height={480}
+          class="w-full rounded-xl" 
+          transition:name={coverTransitionName}
+        />
       </div>
-      <h1 class="text-balance font-semibold md:font-bold text-3xl md:text-4xl lg:text-5xl text-center">{title}</h1>
+      <h1 class="text-balance font-semibold md:font-bold text-3xl md:text-4xl lg:text-5xl text-center">
+        <span transition:name={titleTransitionName}>{title}</span>
+      </h1>
       <div class="flex gap-4 justify-center text-sm font-semibold text-muted-foreground text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
         <span>·</span>
