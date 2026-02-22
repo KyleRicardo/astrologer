@@ -1,7 +1,6 @@
 export interface SiteConfig {
   title_zh: string;
   title_en: string;
-  tagline: string;
   domain: string;
   // 访问的URL
   site: string;
@@ -10,6 +9,14 @@ export interface SiteConfig {
   keywords: string[];
   author: string;
   avatar: string;
+  tagline: string;
+  techStack: string[];
+  promo: {
+    active: boolean;
+    label?: string;
+    title: string;
+    link: string;
+  }
   // Cover 网站缩略图
   cover: string;
   // 网站创建时间
@@ -42,7 +49,6 @@ export interface SocialLink {
 export const siteConfig: SiteConfig = {
   title_zh: "Kyle's Blog",
   title_en: "Kyle's Blog",
-  tagline: 'To make the world better, and life easier.',
   domain: 'kylericardo.com',
   // 访问的URL
   site: 'https://kylericardo.com',
@@ -56,7 +62,21 @@ export const siteConfig: SiteConfig = {
     '独立开发者',
   ],
   author: 'Kyle Ricardo',
-  avatar: '/assets/logo.svg',
+  avatar: '/avatar.jpg',
+  tagline: 'A full-stack developer and design engineer',
+  techStack: [
+    'Java',
+    'Go',
+    'Rust',
+    'Node.js',
+    'React',
+  ],
+  promo: {
+    active: true,
+    label: 'New',
+    title: 'TD2BD is now available! Join waitlist',
+    link: 'https://github.com/KyleRicardo/td2bd',
+  },
   // Cover 网站缩略图
   cover: '/assets/astro.svg',
   // 网站创建时间
@@ -74,7 +94,7 @@ export const siteConfig: SiteConfig = {
   // 主页最近项目个数
   recentProjectsCount: 3,
   // 项目页面是否显示推广信息
-  enablePromotionOnProjectsPage: true,
+  enablePromotionOnProjectsPage: false,
   // 社交链接
   socials: [
     {

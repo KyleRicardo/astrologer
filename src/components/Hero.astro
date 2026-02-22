@@ -1,0 +1,91 @@
+---
+import { siteConfig } from '@/site.config';
+import { Icon } from 'astro-icon/components';
+
+const { promo } = siteConfig;
+const showPromo = promo.active;
+---
+
+<section aria-label="hero" class="relative flex flex-col justify-center items-center container mx-auto max-w-5xl px-4 sm:px-16 py-16">
+  <!-- 背景装饰：一个巨大的、极其模糊的暖色光晕，营造氛围 -->
+  <div class="absolute inset-0 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+
+  <!-- Promo Pill -->
+  {showPromo && (
+    <a 
+      href={promo.link} 
+      target="_blank"
+      rel="noopener noreferrer"
+      class="group inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/40 bg-muted/50 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors mb-8"
+    >
+      {/* 那个呼吸灯效果 */}
+      <span class="relative flex h-2 w-2">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+      </span>
+      
+      {/* 内容 */}
+      <span>
+        {promo.label && <span class="font-bold text-foreground mr-1">{promo.label}:</span>}
+        {promo.title}
+      </span>
+      
+      <Icon name="ri:arrow-right-line" class="size-3.5 text-muted-foreground/50 group-hover:translate-x-1 transition-transform ease-in-out duration-200" />
+    </a>
+  )}
+
+  <!-- Avatar & Headlines -->
+  <div class="flex flex-col md:flex-row items-center gap-8 lg:gap-16 mt-8 md:mt-12 w-full max-w-4xl mx-auto">
+    {/* Avatar */}
+    <div class="shrink-0 flex items-center justify-center">
+      <div class="relative size-64 rounded-full overflow-hidden border-4 border-background shadow-xl ring-2 ring-border">
+        <img 
+          src={siteConfig.avatar} 
+          alt={siteConfig.author} 
+          class="w-full h-full object-cover"
+        />
+      </div>
+    </div>
+
+    {/* Info */}
+    <div class="flex flex-col items-center md:items-start text-center md:text-left space-y-6 flex-1">
+      <div>
+        <h1 class="text-4xl md:text-5xl font-bold tracking-tight mb-3.5">
+          {siteConfig.author}
+        </h1>
+        <p class="text-xl md:text-2xl text-muted-foreground font-medium">
+          {siteConfig.tagline}
+        </p>
+      </div>
+
+      {/* Tech Stack */}
+      {siteConfig.techStack && siteConfig.techStack.length > 0 && (
+        <div class="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-2">
+          {siteConfig.techStack.map(tech => (
+            <span class="px-3 py-1 bg-secondary text-secondary-foreground text-sm rounded-md font-medium">
+              {tech}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Socials */}
+      {siteConfig.socials && siteConfig.socials.length > 0 && (
+        <div class="flex items-center gap-4">
+          {siteConfig.socials.map(social => (
+            <a 
+              href={social.url} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-muted-foreground hover:text-foreground transition-colors p-2 hover:bg-secondary rounded-full"
+              aria-label={social.name}
+              title={social.name}
+            >
+              <Icon name={social.icon} class="size-6" />
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</section>

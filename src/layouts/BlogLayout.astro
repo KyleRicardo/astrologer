@@ -2,11 +2,21 @@
 import NavLink from "@/components/NavLink.astro";
 ---
 <main class="flex flex-1 flex-col mx-auto container px-4 max-w-5xl" >
-  <nav class="flex gap-4 justify-center items-center h-16 border-b border-grid">
-    <NavLink name="文章" href="/posts" />
-    <NavLink name="归档" href="/archives" />
-    <NavLink name="分类" href="/categories" />
-    <NavLink name="标签" href="/tags" />
+  <nav class="flex justify-center items-center h-16 mt-8">
+    <ul class="flex gap-4 px-8 py-4">
+      <li>
+        <NavLink name="文章" href="/posts" />
+      </li>
+      <li>
+        <NavLink name="归档" href="/archives" />
+      </li>
+      <li>
+        <NavLink name="分类" href="/categories" />
+      </li>
+      <li>
+        <NavLink name="标签" href="/tags" />
+      </li>
+    </ul>
   </nav>
   <slot />
 </main>

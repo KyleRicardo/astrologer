@@ -14,7 +14,7 @@ const categories = await getCategories();
 <Layout title={t('nav.categories')}>
   <BlogLayout>
     <div class="w-full">
-      <div class="flex flex-col items-center flex-1 my-16">
+      <div class="flex flex-col items-center flex-1 my-8 md:my-16">
         <h2 class="text-3xl font-semibold">{t('categories.title')}</h2>
         <CategoryList categories={categories} />
       </div>

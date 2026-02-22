@@ -1,15 +1,12 @@
 ---
 import Layout from '@/layouts/Layout.astro';
 import { getLangFromUrl, useTranslations } from '@/i18n/utils';
-import Promo from '@/components/Promo.astro';
 import { getCollection } from 'astro:content';
 import ArticleCard from '@/components/ArticleCard.astro';
 import { Button } from '@/components/ui/button';
 import ProjectCard from '@/components/ProjectCard.astro';
 import { siteConfig } from '@/site.config';
-
-const promo = await getCollection('promo');
-const latestPromo = promo.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())[0]
+import Hero from '@/components/Hero.astro';
 
 const posts = await getCollection('blog', ({ data }) => {
   return import.meta.env.PROD ? data.draft !== true : true;
@@ -26,14 +23,10 @@ const t = useTranslations(lang);
 ---
 
 <Layout title={t('nav.home')}>
-  {siteConfig.enablePromotionOnHomepage && (
-    <section aria-label="promo" class="container mx-auto max-w-5xl px-4 py-16">
-      <Promo {...latestPromo} />
-    </section>
-  )}
-  <section aria-label="posts" class="container mx-auto max-w-5xl px-4 py-16">
+  <Hero />
+  <section aria-label="posts" class="mx-auto max-w-lg md:max-w-5xl px-4 py-16">
     <header class="text-center">
-      <h2 class="font-bold text-3xl">最近文章</h2>
+      <h2 class="font-bold text-3xl">{t('home.recentPosts')}</h2>
     </header>
     <div class="my-12 space-y-8">
       {sortedPosts.map((post) => (
@@ -42,23 +35,23 @@ const t = useTranslations(lang);
     </div>
     <footer class="flex flex-col items-center">
       <a href="/posts">
-        <Button className="cursor-pointer px-8 rounded-full" variant="outline">更多文章</Button>
+        <Button className="text-base cursor-pointer px-8 rounded-full" variant="outline">{t('home.morePosts')}</Button>
       </a>
     </footer>
   </section>
   {siteConfig.enableRecentProjectsOnHomepage && (
-    <section aria-label="projects" class="container mx-auto max-w-7xl md:px-4 py-16">
+    <section aria-label="projects" class="mx-auto max-w-lg md:max-w-5xl xl:max-w-7xl px-4 py-16">
       <header class="text-center">
-        <h2 class="font-bold text-3xl">最近作品</h2>
+        <h2 class="font-bold text-3xl">{t('home.recentProjects')}</h2>
       </header>
-      <div aria-label="projects" class="grid gap-8 px-4 my-16 container mx-auto md:grid-cols-2 xl:grid-cols-3">
+      <div aria-label="projects" class="grid gap-8 my-16 mx-auto md:grid-cols-2 xl:grid-cols-3">
         {sortedProjects.map(project => (
           <ProjectCard project={project} />
         ))}
       </div>
       <footer class="flex flex-col items-center">
         <a href="/projects">
-          <Button className="cursor-pointer px-8 rounded-full" variant="outline">更多作品</Button>
+          <Button className="text-base cursor-pointer px-8 rounded-full" variant="outline">{t('home.moreProjects')}</Button>
         </a>
       </footer>
     </section>

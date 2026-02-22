@@ -1,15 +1,11 @@
 ---
 import ProjectCard from "@/components/ProjectCard.astro";
-import Promo from "@/components/Promo.astro";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import ProjectLayout from "@/layouts/ProjectLayout.astro";
 import { getCollection } from "astro:content";
-import { siteConfig } from "@/site.config";
 
 const projects = await getCollection('project');
-const promo = await getCollection('promo');
-const latestPromo = promo.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf())[0]
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -18,12 +14,7 @@ const sortedProjects = projects.sort((a, b) => b.data.date.valueOf() - a.data.da
 
 <Layout title={t('nav.projects')}>
   <ProjectLayout>
-    {siteConfig.enablePromotionOnProjectsPage && (
-      <section aria-label="promo" class="container mx-auto px-4">
-        <Promo {...latestPromo} />
-      </section>
-    )}
-    <section aria-label="projects" class="grid gap-8 py-16 px-4 container mx-auto md:grid-cols-2 xl:grid-cols-3">
+    <section aria-label="projects" class="grid gap-8 px-4 container mx-auto md:grid-cols-2 xl:grid-cols-3">
       {sortedProjects.map(project => (
         <ProjectCard project={project} />
       ))}
