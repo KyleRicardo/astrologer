@@ -32,7 +32,11 @@ export function ModeToggle() {
       Math.max(y, innerHeight - y),
     )
 
-    document.documentElement.classList.add('theme-transition')
+    const root = document.documentElement
+    root.classList.add('theme-transition')
+    root.style.setProperty('--x', `${x}px`)
+    root.style.setProperty('--y', `${y}px`)
+    root.style.setProperty('--mask-radius', '0px')
 
     const transition = document.startViewTransition(() => {
       setThemeState(nextTheme)
@@ -40,13 +44,8 @@ export function ModeToggle() {
     })
 
     transition.ready.then(() => {
-      const root = document.documentElement
-      root.style.setProperty('--x', `${x}px`)
-      root.style.setProperty('--y', `${y}px`)
-      root.style.setProperty('--mask-radius', '0px')
-
       // 动画：从 0 扩散到覆盖整个屏幕
-      root.animate(
+      const animation = root.animate(
         {
           '--mask-radius': `${endRadius}px`,
         },
@@ -57,14 +56,15 @@ export function ModeToggle() {
           pseudoElement: '::view-transition-new(root)',
         },
       )
-    })
 
-    transition.finished.then(() => {
-      const root = document.documentElement
-      root.classList.remove('theme-transition')
-      root.style.removeProperty('--x')
-      root.style.removeProperty('--y')
-      root.style.removeProperty('--mask-radius')
+      transition.finished.then(() => {
+        animation.cancel()
+
+        root.classList.remove('theme-transition')
+        root.style.removeProperty('--x')
+        root.style.removeProperty('--y')
+        root.style.removeProperty('--mask-radius')
+      })
     })
   }
 
