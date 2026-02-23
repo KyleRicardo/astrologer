@@ -324,11 +324,11 @@ z' = \dfrac {-z}{-z} = 1\\
 $$
 这正是计算投影点P'坐标的方程式（暂时不用考虑z'的问题）。那么问题来了，能否有可能通过点乘以矩阵来获得这个结果？如果可以，那个矩阵是什么样子的？其实很简单，我们回到上面的齐次坐标知识点。坐标（x', y', z'）即$$\left(\frac{x}{-z}, \frac{y}{-z}, \frac{-z}{-z}\right)$$相当于齐次坐标$$\left(\frac{x}{-z}, \frac{y}{-z}, \frac{-z}{-z}, 1\right)$$也即$$\left(\frac{x}{-z}, \frac{y}{-z}, \frac{-z}{-z}, \frac{-z}{-z}\right)$$。我们将其四个维度均放大-z倍，可以得到齐次坐标（x, y, -z, -z）。这样的话我们的计算法则为：
 $$
-\begin{array}{l}
-x' = x * 1 + y * 0 + z * 0 + w * 0 &=&x\\
-y' = x * 0 + y * 1 + z * 0 + w * 0 &=&y\\
-z' = x * 0 + y * 0 + z * -1 + w * 0 &=&-z\\
-w' = x * 0 + y * 0 + z * -1 + (w=1) * 0 &=&-z\\
+\begin{array}{lll}
+x' = x * 1 + y * 0 + z * 0 + w * 0 & = & x\\
+y' = x * 0 + y * 1 + z * 0 + w * 0 & = & y\\
+z' = x * 0 + y * 0 + z * -1 + w * 0 & = & -z\\
+w' = x * 0 + y * 0 + z * -1 + (w=1) * 0 & = & -z\\
 \end{array}
 $$
 我们要的矩阵已经呼之欲出了：
@@ -449,11 +449,14 @@ Ps_z = \dfrac{0 \cdot P_x + 0 \cdot P_y + A \cdot P_z + B \cdot P_w}{Ps_w = -P_z
 $$
 我们需要解出A和B的值。所幸的是我们知道当$P_z$位于近端截面时，$Ps_z$需要被重新映射为-1；当$P_z$位于远端截面时，$Ps_z$需要被重新映射为1。所以我们需要把$Ps_z$替换为 $n$ 和 $f$ 来得到两个方程。注意 $n$ 和 $f$ 都是正数，而$-P_z$也是正数。
 $$
-\left\{ \begin{array}{ll} \dfrac{(P_z=-n)A + B}{(-P_z=-(-n)=n)} = -1 &\text{ when } P_z = n\\ \dfrac{(P_z=-f)A + B}{(P_z=-(-f)=f)} = 1 & \text{ when } P_z = f \end{array} \right. \\ \rightarrow  \left\{ \begin{array}{ll} {-nA + B} = -n & (1)\\  {-fA + B} = f & (2) \end{array} \right.
+\begin{aligned}
+\left\{ \begin{array}{ll} \dfrac{(P_z=-n)A + B}{(-P_z=-(-n)=n)} = -1 &\text{ when } P_z = n\\ \dfrac{(P_z=-f)A + B}{(P_z=-(-f)=f)} = 1 & \text{ when } P_z = f \end{array} \right. \\ 
+\rightarrow  \left\{ \begin{array}{ll} {-nA + B} = -n & (1)\\  {-fA + B} = f & (2) \end{array} \right.
+\end{aligned}
 $$
 解方程组，得：
 $$
-\left\{ \begin{array}{ll} A = -\dfrac{f + n}{f - n}\\  B = -\dfrac{2fn}{f - n} \end{array} \right.
+\left\{ \begin{array}{l} A = -\dfrac{f + n}{f - n}\\  B = -\dfrac{2fn}{f - n} \end{array} \right.
 $$
 替换矩阵中的未知值，我们总算得到了完整的矩阵：
 $$
@@ -482,8 +485,10 @@ bottom = -top
 $$
 同理，我们还可以有如下等式：
 $$
-right = \tan\left( \dfrac{ FOV_X } {2}\right) \cdot near \\
-left = -right
+\begin{aligned}
+right &= \tan\left( \dfrac{ FOV_X } {2}\right) \cdot near \\
+left &= -right
+\end{aligned}
 $$
 将上面这4个等式代入我们的矩阵中，可以得到以FOV表示的矩阵：
 $$
@@ -506,8 +511,10 @@ $$
 
 这里我们对投影空间到屏幕空间坐标计算做一下公式化阐述：
 $$
-Screen.x = Proj.x \cdot \dfrac{ScreenWidth}{2} + \dfrac{ScreenWidth}{2} \\
-Screen.y = -Proj.y \cdot \dfrac{ScreenHeight}{2} + \dfrac{ScreenHeight}{2}
+\begin{aligned}
+Screen.x &= Proj.x \cdot \dfrac{ScreenWidth}{2} + \dfrac{ScreenWidth}{2} \\
+Screen.y &= -Proj.y \cdot \dfrac{ScreenHeight}{2} + \dfrac{ScreenHeight}{2}
+\end{aligned}
 $$
 
 ### WorldToScreen函数代码编写

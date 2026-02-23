@@ -3,7 +3,7 @@ pre-commit:
   commands:
     format:
       glob: "*.{ts,tsx,js,jsx,astro,html,css,json,md,mdx}"
-      run: pnpm format {staged_files}
+      run: pnpm format {staged_files} --allow-no-files
       stage_fixed: true
 
     lint:
