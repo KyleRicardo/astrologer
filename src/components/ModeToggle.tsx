@@ -1,19 +1,19 @@
-import * as React from "react"
-import { Moon, Sun } from "lucide-react"
+import * as React from 'react'
+import { Moon, Sun } from 'lucide-react'
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button'
 
 export function ModeToggle() {
-  const [theme, setThemeState] = React.useState<"light" | "dark">("light")
-  
+  const [theme, setThemeState] = React.useState<'light' | 'dark'>('light')
+
   React.useEffect(() => {
-    const isDarkMode = document.documentElement.classList.contains("dark")
-    setThemeState(isDarkMode ? "dark" : "light")
+    const isDarkMode = document.documentElement.classList.contains('dark')
+    setThemeState(isDarkMode ? 'dark' : 'light')
   }, [])
-  
+
   const toggleTheme = (event: React.MouseEvent) => {
-    const isDark = theme === "dark"
-    const nextTheme = isDark ? "light" : "dark"
+    const isDark = theme === 'dark'
+    const nextTheme = isDark ? 'light' : 'dark'
 
     // @ts-expect-error experimental API
     const isAppearanceTransition = document.startViewTransition
@@ -29,7 +29,7 @@ export function ModeToggle() {
     const y = event.clientY
     const endRadius = Math.hypot(
       Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y)
+      Math.max(y, innerHeight - y),
     )
 
     document.documentElement.classList.add('theme-transition')
@@ -48,14 +48,14 @@ export function ModeToggle() {
       // 动画：从 0 扩散到覆盖整个屏幕
       root.animate(
         {
-          '--mask-radius': `${endRadius}px`
+          '--mask-radius': `${endRadius}px`,
         },
         {
           duration: 500,
           easing: 'ease-out',
           fill: 'both',
-          pseudoElement: '::view-transition-new(root)'
-        }
+          pseudoElement: '::view-transition-new(root)',
+        },
       )
     })
 
@@ -66,26 +66,24 @@ export function ModeToggle() {
       root.style.removeProperty('--y')
       root.style.removeProperty('--mask-radius')
     })
-
-
   }
 
-  const applyTheme = (newTheme: "light" | "dark") => {
-    const isDark = newTheme === "dark"
-    document.documentElement.classList[isDark ? "add" : "remove"]("dark")
-    localStorage.setItem("theme", newTheme)
+  const applyTheme = (newTheme: 'light' | 'dark') => {
+    const isDark = newTheme === 'dark'
+    document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
+    localStorage.setItem('theme', newTheme)
   }
 
   return (
     <Button
-      variant="ghost"
-      size="icon-sm"
+      variant='ghost'
+      size='icon-sm'
       onClick={toggleTheme}
-      className="cursor-pointer"
+      className='cursor-pointer'
     >
-      <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-      <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      <span className="sr-only">Toggle theme</span>
+      <Sun className='h-4 w-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90' />
+      <Moon className='absolute h-4 w-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0' />
+      <span className='sr-only'>Toggle theme</span>
     </Button>
   )
 }

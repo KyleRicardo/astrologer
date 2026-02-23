@@ -1,28 +1,38 @@
 ---
-import { getSlugById } from '@/utils/getPosts';
+import { getSlugById } from '@/utils/getPosts'
 
 interface Props {
-  id: string;
-  title: string;
-  date: Date;
-  excerpt?: string;
+  id: string
+  title: string
+  date: Date
 }
 
-const { id, title, date, excerpt } = Astro.props;
+const { id, title, date } = Astro.props
 
-const formatter = new Intl.DateTimeFormat("zh-CN", {
-  month: "2-digit",
-  day: "2-digit"
-});
+const formatter = new Intl.DateTimeFormat('zh-CN', {
+  month: '2-digit',
+  day: '2-digit',
+})
 
-const formattedDate = formatter.format(date);
+const formattedDate = formatter.format(date)
 
-const postSlug = getSlugById(id);
+const postSlug = getSlugById(id)
 ---
+
 <li>
-  <a href={`/posts/${postSlug}`} class="group flex h-10 items-center rounded-lg hover:bg-muted">
-    <time datetime={date.toISOString()} class="w-[50px] font-semibold text-sm text-right">{formattedDate}</time>
-    <span class="relative h-full w-10 before:w-1 before:h-1 before:absolute before:left-1/2 before:top-1/2 before:-translate-x-1/2 before:-translate-y-1/2 before:block before:rounded-md before:bg-zinc-500 before:transition-[height] before:duration-300 before:ease-in-out group-hover:before:h-4 after:absolute after:w-0.5 after:h-4 after:left-[calc(50%-0.0625rem)] after:-translate-y-1/2 after:border-l-2 after:border-dashed after:border-primary/10 after:pointer-events-none"></span>
-    <span class="flex-1 font-semibold whitespace-nowrap overflow-hidden overflow-ellipsis text-base group-hover:pl-2 transition-[padding] duration-300 ease-in-out">{title}</span>
+  <a
+    href={`/posts/${postSlug}`}
+    class="group hover:bg-muted flex h-10 items-center rounded-lg"
+  >
+    <time
+      datetime={date.toISOString()}
+      class="w-[50px] text-right text-sm font-semibold"
+    >{formattedDate}</time>
+    <span
+      class="after:border-primary/10 relative h-full w-10 before:absolute before:top-1/2 before:left-1/2 before:block before:h-1 before:w-1 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-md before:bg-zinc-500 before:transition-[height] before:duration-300 before:ease-in-out group-hover:before:h-4 after:pointer-events-none after:absolute after:left-[calc(50%-0.0625rem)] after:h-4 after:w-0.5 after:-translate-y-1/2 after:border-l-2 after:border-dashed"
+    ></span>
+    <span
+      class="flex-1 overflow-hidden text-base font-semibold overflow-ellipsis whitespace-nowrap transition-[padding] duration-300 ease-in-out group-hover:pl-2"
+    >{title}</span>
   </a>
 </li>

@@ -1,49 +1,49 @@
 export interface SiteConfig {
-  title_zh: string;
-  title_en: string;
-  domain: string;
+  title_zh: string
+  title_en: string
+  domain: string
   // 访问的URL
-  site: string;
-  subtitle: string;
-  description: string;
-  keywords: string[];
-  author: string;
-  avatar: string;
-  tagline: string;
-  techStack: string[];
+  site: string
+  subtitle: string
+  description: string
+  keywords: string[]
+  author: string
+  avatar: string
+  tagline: string
+  techStack: string[]
   promo: {
-    active: boolean;
-    label?: string;
-    title: string;
-    link: string;
+    active: boolean
+    label?: string
+    title: string
+    link: string
   }
   // Cover 网站缩略图
-  cover: string;
+  cover: string
   // 网站创建时间
-  createTime: string;
+  createTime: string
   // 是否开启作品展柜
-  enableProjectsShowcase: boolean;
+  enableProjectsShowcase: boolean
   // 是否开启关于页面
-  enableAboutMe: boolean;
+  enableAboutMe: boolean
   // 主页是否显示推广信息
-  enablePromotionOnHomepage: boolean;
+  enablePromotionOnHomepage: boolean
   // 主页是否显示最近项目
-  enableRecentProjectsOnHomepage: boolean;
+  enableRecentProjectsOnHomepage: boolean
   // 主页最近文章个数
-  recentPostsCount: number;
+  recentPostsCount: number
   // 主页最近项目个数
-  recentProjectsCount: number;
+  recentProjectsCount: number
   // 项目页面是否显示推广信息
-  enablePromotionOnProjectsPage: boolean;
+  enablePromotionOnProjectsPage: boolean
   // 社交链接
-  socials: SocialLink[];
+  socials: SocialLink[]
 }
 
 export interface SocialLink {
-  name: string;
-  url: string;
-  icon: string;
-  showOnHeader?: boolean;
+  name: string
+  url: string
+  icon: string
+  showOnHeader?: boolean
 }
 
 export const siteConfig: SiteConfig = {

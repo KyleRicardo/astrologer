@@ -1,57 +1,70 @@
 ---
-import Layout from '@/layouts/Layout.astro';
-import { getLangFromUrl, useTranslations } from '@/i18n/utils';
-import { getCollection } from 'astro:content';
-import ArticleCard from '@/components/ArticleCard.astro';
-import { Button } from '@/components/ui/button';
-import ProjectCard from '@/components/ProjectCard.astro';
-import { siteConfig } from '@/site.config';
-import Hero from '@/components/Hero.astro';
+import Layout from '@/layouts/Layout.astro'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { getCollection } from 'astro:content'
+import ArticleCard from '@/components/ArticleCard.astro'
+import { Button } from '@/components/ui/button'
+import ProjectCard from '@/components/ProjectCard.astro'
+import { siteConfig } from '@/site.config'
+import Hero from '@/components/Hero.astro'
 
 const posts = await getCollection('blog', ({ data }) => {
-  return import.meta.env.PROD ? data.draft !== true : true;
-});
-const sortedPosts = posts.slice(0, siteConfig.recentPostsCount).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
+  return import.meta.env.PROD ? data.draft !== true : true
+})
+const sortedPosts = posts.slice(0, siteConfig.recentPostsCount).sort((a, b) =>
+  b.data.date.valueOf() - a.data.date.valueOf()
+)
 
-const projects = await getCollection('project');
-const sortedProjects = projects.slice(0, siteConfig.recentProjectsCount).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
+const projects = await getCollection('project')
+const sortedProjects = projects.slice(0, siteConfig.recentProjectsCount).sort((
+  a,
+  b,
+) => b.data.date.valueOf() - a.data.date.valueOf())
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout title={t('nav.home')}>
   <Hero />
-  <section aria-label="posts" class="mx-auto max-w-lg md:max-w-5xl px-4 py-16">
+  <section aria-label="posts" class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl">
     <header class="text-center">
-      <h2 class="font-bold text-3xl">{t('home.recentPosts')}</h2>
+      <h2 class="text-3xl font-bold">{t('home.recentPosts')}</h2>
     </header>
     <div class="my-12 space-y-8">
-      {sortedPosts.map((post) => (
-        <ArticleCard post={post} />
-      ))}
+      {sortedPosts.map((post) => <ArticleCard post={post} />)}
     </div>
     <footer class="flex flex-col items-center">
       <a href="/posts">
-        <Button className="text-base cursor-pointer px-8 rounded-full" variant="outline">{t('home.morePosts')}</Button>
+        <Button
+          className="cursor-pointer rounded-full px-8 text-base"
+          variant="outline"
+        >{t('home.morePosts')}</Button>
       </a>
     </footer>
   </section>
   {siteConfig.enableRecentProjectsOnHomepage && (
-    <section aria-label="projects" class="mx-auto max-w-lg md:max-w-5xl xl:max-w-7xl px-4 py-16">
+    <section
+      aria-label="projects"
+      class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl xl:max-w-7xl"
+    >
       <header class="text-center">
-        <h2 class="font-bold text-3xl">{t('home.recentProjects')}</h2>
+        <h2 class="text-3xl font-bold">{t('home.recentProjects')}</h2>
       </header>
-      <div aria-label="projects" class="grid gap-8 my-16 mx-auto md:grid-cols-2 xl:grid-cols-3">
-        {sortedProjects.map(project => (
-          <ProjectCard project={project} />
-        ))}
+      <div
+        aria-label="projects"
+        class="mx-auto my-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3"
+      >
+        {sortedProjects.map(project => <ProjectCard project={project} />)}
       </div>
       <footer class="flex flex-col items-center">
         <a href="/projects">
-          <Button className="text-base cursor-pointer px-8 rounded-full" variant="outline">{t('home.moreProjects')}</Button>
+          <Button
+            className="cursor-pointer rounded-full px-8 text-base"
+            variant="outline"
+          >{t('home.moreProjects')}</Button>
         </a>
       </footer>
     </section>

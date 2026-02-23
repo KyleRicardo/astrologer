@@ -1,11 +1,11 @@
-import { ui, defaultLang, showDefaultLang, localeByLang } from './ui';
+import { ui, defaultLang, showDefaultLang, localeByLang } from './ui'
 
-export type Lang = keyof typeof ui;
+export type Lang = keyof typeof ui
 
 export function getLangFromUrl(url: URL) {
-  const [, lang] = url.pathname.split('/');
-  if (lang in ui) return lang as Lang;
-  return defaultLang;
+  const [, lang] = url.pathname.split('/')
+  if (lang in ui) return lang as Lang
+  return defaultLang
 }
 
 export function useTranslations(lang: Lang) {
@@ -15,19 +15,20 @@ export function useTranslations(lang: Lang) {
     // 1. 获取对应 Key 的值类型
     // 2. 如果是函数，提取它的参数类型 (Parameters<T>)
     // 3. 如果是字符串，则不需要参数 ([])
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ...args: typeof ui[typeof defaultLang][K] extends (...args: any[]) => any
       ? Parameters<typeof ui[typeof defaultLang][K]>
       : []
   ) {
-    const dict = ui[lang] || ui[defaultLang];
-    const value = dict[key];
+    const dict = ui[lang] || ui[defaultLang]
+    const value = dict[key]
 
     if (typeof value === 'function') {
-      // @ts-ignore: TS 在这种复杂动态类型推断上有时会犯傻，但在外部调用时是安全的
-      return value(...args);
+      // @ts-expect-error: TS 在这种复杂动态类型推断上有时会犯傻，但在外部调用时是安全的
+      return value(...args)
     }
-    
-    return value;
+
+    return value
   }
 }
 

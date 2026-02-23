@@ -1,23 +1,26 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from 'astro-icon/components'
 ---
 
-<section class="relative pt-24 pb-32 md:pt-32 md:pb-48 overflow-hidden">
-  
+<section class="relative overflow-hidden pt-24 pb-32 md:pt-32 md:pb-48">
   <!-- 背景装饰：一个巨大的、极其模糊的暖色光晕，营造氛围 -->
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="bg-primary/10 pointer-events-none absolute top-0 left-1/2 h-[500px] w-[1000px] -translate-x-1/2 rounded-full blur-[120px]">
+  </div>
 
-  <div class="container max-w-4xl mx-auto px-6 text-center">
-    
+  <div class="container mx-auto max-w-4xl px-6 text-center">
     <!-- 1. Promo Pill: 替代你的 Banner -->
     {/* 只有有推广时才显示 */}
-    <a 
-      href="/projects/td2bd" 
-      class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/40 bg-muted/50 text-xs font-medium text-muted-foreground hover:bg-muted transition-colors mb-8"
+    <a
+      href="/projects/td2bd"
+      class="border-border/40 bg-muted/50 text-muted-foreground hover:bg-muted mb-8 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium transition-colors"
     >
       <span class="relative flex h-2 w-2">
-        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+        <span
+          class="bg-primary absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
+        ></span>
+        <span
+          class="bg-primary relative inline-flex h-2 w-2 rounded-full"
+        ></span>
       </span>
       TD2BD v2.0 is now available
       <span class="text-muted-foreground/50">→</span>
@@ -25,35 +28,48 @@ import { Icon } from 'astro-icon/components';
 
     <!-- 2. Avatar: 带一点高级的内发光 -->
     <div class="mb-8">
-      <div class="relative mx-auto w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden ring-1 ring-border/50 shadow-2xl">
-        <img src="/avatar.jpg" class="w-full h-full object-cover" />
+      <div class="ring-border/50 relative mx-auto h-24 w-24 overflow-hidden rounded-full shadow-2xl ring-1 md:h-32 md:w-32">
+        <img src="/avatar.jpg" class="h-full w-full object-cover" />
       </div>
     </div>
 
     <!-- 3. Headline: 使用 text-balance 保持平衡 -->
-    <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6 text-balance">
+    <h1 class="text-foreground mb-6 text-4xl font-bold tracking-tight text-balance md:text-6xl">
       Hi, I'm Kyle. <br class="hidden md:block" />
       <span class="text-muted-foreground">I build polished software.</span>
     </h1>
 
     <!-- 4. Subheadline: 你的 Tagline -->
-    <p class="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 text-balance leading-relaxed">
-      A Full-stack Developer based in Shanghai. 
-      Obsessed with <span class="text-foreground font-medium">SaaS Design</span>, 
-      <span class="text-foreground font-medium">React Ecosystem</span>, and 
+    <p class="text-muted-foreground mx-auto mb-10 max-w-2xl text-lg leading-relaxed text-balance md:text-xl">
+      A Full-stack Developer based in Shanghai. Obsessed with <span
+        class="text-foreground font-medium"
+      >SaaS Design</span>,
+      <span class="text-foreground font-medium">React Ecosystem</span>, and
       <span class="text-foreground font-medium">Mechanical Keyboards</span>.
     </p>
 
     <!-- 5. Tech Stack / Socials -->
-    <div class="flex items-center justify-center gap-4 text-muted-foreground">
-       <!-- 放置你的 Github, Twitter, 或技术栈图标 -->
-       <!-- 样式做成 monochrome (单色)，不要五颜六色，保持克制 -->
-       <Icon name="ri:github-fill" class="size-6 hover:text-foreground transition-colors" />
-       <Icon name="ri:twitter-fill" class="size-6 hover:text-foreground transition-colors" />
-       <div class="w-px h-4 bg-border"></div> <!-- 分割线 -->
-       <Icon name="ri:reactjs-fill" class="size-6 hover:text-[#61DAFB] transition-colors" />
-       <Icon name="ri:vuejs-fill" class="size-6 hover:text-emerald-500 transition-colors" />
+    <div class="text-muted-foreground flex items-center justify-center gap-4">
+      <!-- 放置你的 Github, Twitter, 或技术栈图标 -->
+      <!-- 样式做成 monochrome (单色)，不要五颜六色，保持克制 -->
+      <Icon
+        name="ri:github-fill"
+        class="hover:text-foreground size-6 transition-colors"
+      />
+      <Icon
+        name="ri:twitter-fill"
+        class="hover:text-foreground size-6 transition-colors"
+      />
+      <div class="bg-border h-4 w-px"></div>
+      <!-- 分割线 -->
+      <Icon
+        name="ri:reactjs-fill"
+        class="size-6 transition-colors hover:text-[#61DAFB]"
+      />
+      <Icon
+        name="ri:vuejs-fill"
+        class="size-6 transition-colors hover:text-emerald-500"
+      />
     </div>
-
   </div>
 </section>

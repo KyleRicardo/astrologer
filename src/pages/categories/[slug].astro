@@ -1,17 +1,24 @@
 ---
 import PostList from "@/components/PostList.astro";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { getLangFromUrl, useTranslations } from "@/i18n/utils";
 import Layout from "@/layouts/Layout.astro";
 import { generateCategorySlugs } from "@/utils/get-categories";
 import { getPostsByCategory } from "@/utils/getPosts";
 
 export async function getStaticPaths() {
-	const slugs = await generateCategorySlugs();
-  
-  return slugs.map(slug => ({
+  const slugs = await generateCategorySlugs();
+
+  return slugs.map((slug) => ({
     params: { slug },
-  }))
+  }));
 }
 
 const { slug } = Astro.params;
@@ -21,13 +28,15 @@ const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
 ---
 
-<Layout title={`${t('nav.categories')}: ${slug}`}>
-  <main class="flex flex-1 flex-col mx-auto w-full max-w-3xl px-4">
-    <div class="flex items-center h-16 border-b border-grid">
+<Layout title={`${t("nav.categories")}: ${slug}`}>
+  <main class="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4">
+    <div class="border-grid flex h-16 items-center border-b">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/categories">{t("nav.categories")}</BreadcrumbLink>
+            <BreadcrumbLink href="/categories">
+              {t("nav.categories")}
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -36,7 +45,7 @@ const t = useTranslations(lang);
         </BreadcrumbList>
       </Breadcrumb>
     </div>
-    
+
     <PostList posts={posts} />
-  </div>
+  </main>
 </Layout>

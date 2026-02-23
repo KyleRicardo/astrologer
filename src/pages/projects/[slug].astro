@@ -1,13 +1,13 @@
 ---
-import ProjectDetail from "@/components/ProjectDetail.astro";
-import { getProjectPaths } from "@/utils/getPosts";
-import { defaultLang } from "@/i18n/ui";
+import ProjectDetail from '@/components/ProjectDetail.astro'
+import { getProjectPaths } from '@/utils/getPosts'
+import { defaultLang } from '@/i18n/ui'
 
 export async function getStaticPaths() {
-	return getProjectPaths(defaultLang)
+  return getProjectPaths(defaultLang)
 }
 
-const project = Astro.props;
+const project = Astro.props
 ---
 
 <ProjectDetail project={project} lang={Astro.currentLocale ?? defaultLang} />

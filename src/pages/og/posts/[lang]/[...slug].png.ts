@@ -1,8 +1,8 @@
-import type { Lang } from "@/i18n/utils"
-import type { APIRoute } from "astro"
-import { getCollection, type CollectionEntry } from "astro:content"
+import type { Lang } from '@/i18n/utils'
+import type { APIRoute } from 'astro'
+import { getCollection, type CollectionEntry } from 'astro:content'
 
-import { renderOgImage } from "@/utils/og-image"
+import { renderOgImage } from '@/utils/og-image'
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog')

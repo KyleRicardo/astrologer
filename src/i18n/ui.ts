@@ -1,12 +1,12 @@
-import { siteConfig } from '@/site.config';
+import { siteConfig } from '@/site.config'
 
 export const languages = {
   zh: '中文',
   en: 'English',
-} as const;
+} as const
 
-export const defaultLang = 'zh';
-export const showDefaultLang = false;
+export const defaultLang = 'zh'
+export const showDefaultLang = false
 
 export const ui = {
   zh: {
@@ -28,7 +28,8 @@ export const ui = {
     'projects.title': '作品',
     'projects.description': '我创作的一些有趣的项目或开源作品',
     'toc.title': '目录',
-    'post.readingMinutes': ({minutes}: {minutes: number}) => `阅读约需${minutes}分钟`,
+    'post.readingMinutes': ({ minutes }: { minutes: number }) =>
+      `阅读约需${minutes}分钟`,
     'og.label.post': '文章',
     'og.label.project': '作品',
   },
@@ -49,13 +50,15 @@ export const ui = {
     'categories.title': 'Categories',
     'tags.title': 'Tags',
     'projects.title': 'Projects',
-    'projects.description': 'Interesting works or open source projects I created',
+    'projects.description':
+      'Interesting works or open source projects I created',
     'toc.title': 'Table of Contents',
-    'post.readingMinutes': ({minutes}: {minutes: number}) => `${minutes} min read`,
+    'post.readingMinutes': ({ minutes }: { minutes: number }) =>
+      `${minutes} min read`,
     'og.label.post': 'Post',
     'og.label.project': 'Project',
   },
-} as const;
+} as const
 
 export const localeByLang = {
   en: 'en-US',

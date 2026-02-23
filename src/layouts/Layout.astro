@@ -1,27 +1,33 @@
 ---
-import { ClientRouter } from 'astro:transitions';
+import { ClientRouter } from 'astro:transitions'
 
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import '@/styles/global.css'
 
-import { getLangFromUrl, useTranslations } from '@/i18n/utils';
-import { siteConfig } from '@/site.config';
-import { defaultLang } from '@/i18n/ui';
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { siteConfig } from '@/site.config'
+import { defaultLang } from '@/i18n/ui'
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 interface Props {
-  title: string;
-  description?: string;
-  image?: string;
-  ogType?: 'website' | 'article';
-  showProgressBar?: boolean;
+  title: string
+  description?: string
+  image?: string
+  ogType?: 'website' | 'article'
+  showProgressBar?: boolean
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 
-const { title, description, image, ogType = 'website', showProgressBar = false } = Astro.props;
+const {
+  title,
+  description,
+  image,
+  ogType = 'website',
+  showProgressBar = false,
+} = Astro.props
 
 const site = Astro.site?.toString() ?? ''
 
@@ -30,52 +36,29 @@ const locale = Astro.currentLocale ?? defaultLang
 const ogImage = image
   ? new URL(image, site).href
   : new URL('/og-default.png', site).href
-
 ---
 
-<!-- <script is:inline src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script> -->
-
-<script is:inline>
-  function setDarkMode(document) {
-    const getThemePreference = () => {
-      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-        return localStorage.getItem('theme');
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    };
-    const isDark = getThemePreference() === 'dark';
-    document.documentElement.classList[isDark ? 'add' : 'remove']('dark');
-  
-    if (typeof localStorage !== 'undefined') {
-      const observer = new MutationObserver(() => {
-        const isDark = document.documentElement.classList.contains('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-      });
-      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    }
-  }
-
-  setDarkMode(document);
-
-  document.addEventListener('astro:before-swap', (event) => {
-    // Pass the incoming document to set the theme on it
-    setDarkMode(event.newDocument);
-  });
-</script>
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css"> -->
-     <!-- Get the latest one from: https://katex.org/docs/browser -->
-    <link href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" rel="stylesheet">
-		<meta name="generator" content={Astro.generator} />
+    <!-- Get the latest one from: https://katex.org/docs/browser -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+      rel="stylesheet"
+    >
+    <meta name="generator" content={Astro.generator} />
     <ClientRouter />
-    <link rel="alternate" type="application/rss+xml" title={t('website.title') || "Kyle's Blog"} href={new URL("rss.xml", Astro.site)} />
-		<title>{`${title} | ${t('website.title')}`}</title>
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={t('website.title') || "Kyle's Blog"}
+      href={new URL('rss.xml', Astro.site)}
+    />
+    <title>{`${title} | ${t('website.title')}`}</title>
     {description && <meta name="description" content={description} />}
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
@@ -90,23 +73,61 @@ const ogImage = image
     {description && <meta name="twitter:description" content={description} />}
     <meta name="twitter:image" content={ogImage} />
     <meta name="twitter:image:alt" content={title} />
-	</head>
-	<body class="min-h-dvh bg-background antialiased">
+  </head>
+  <body class="min-h-dvh bg-background antialiased">
     <div class="relative flex min-h-dvh flex-col bg-background">
       <Header showProgressBar={showProgressBar} />
       <slot />
       <Footer />
     </div>
-	</body>
+  </body>
 </html>
 
 <style>
-	html,
-	body {
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Roboto", "PingFang SC", "Helvetica Neue", "Helvetica", "Arial", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-		margin: 0;
-		width: 100%;
-		height: 100%;
-    scrollbar-gutter: stable;
-	}
+html,
+body {
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Inter", "Roboto", "PingFang SC",
+    "Helvetica Neue", "Helvetica", "Arial", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  scrollbar-gutter: stable;
+}
 </style>
+
+<!-- <script is:inline src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script> -->
+
+<script is:inline>
+function setDarkMode(document) {
+  const getThemePreference = () => {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+      return localStorage.getItem('theme')
+    }
+    return window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+  }
+  const isDark = getThemePreference() === 'dark'
+  document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
+
+  if (typeof localStorage !== 'undefined') {
+    const observer = new MutationObserver(() => {
+      const isDark = document.documentElement.classList.contains('dark')
+      localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    })
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class'],
+    })
+  }
+}
+
+setDarkMode(document)
+
+document.addEventListener('astro:before-swap', (event) => {
+  // Pass the incoming document to set the theme on it
+  setDarkMode(event.newDocument)
+})
+</script>

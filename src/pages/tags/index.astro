@@ -1,30 +1,36 @@
 ---
-import BlogLayout from "@/layouts/BlogLayout.astro";
-import Layout from "@/layouts/Layout.astro";
-import { getLangFromUrl, useTranslations } from '@/i18n/utils';
-import { getTags } from "@/utils/get-tags";
+import BlogLayout from '@/layouts/BlogLayout.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { getTags } from '@/utils/get-tags'
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 
-const tags = await getTags();
+const tags = await getTags()
 ---
 
 <Layout title={t('nav.tags')}>
   <BlogLayout>
-    <div class="flex flex-col items-center flex-1 my-8 md:my-16">
+    <div class="my-8 flex flex-1 flex-col items-center md:my-16">
       <h1 class="text-3xl font-semibold">{t('tags.title')}</h1>
-      <ul class="flex flex-wrap max-w-lg justify-center gap-6 mt-8 md:mt-16">
+      <ul class="mt-8 flex max-w-lg flex-wrap justify-center gap-6 md:mt-16">
         {tags.map((tag) => (
           <li>
-            <a href={`/tags/${tag.name}`} class="group flex gap-2 items-center border-b border-grid hover:border-primary">
-              <span class="text-sm font-medium text-foreground group-hover:text-primary">{`#${tag.name}`}</span>
-              <span class="px-2 rounded-full text-xs bg-muted text-muted-foreground group-hover:bg-primary/30">{tag.count}</span>
+            <a
+              href={`/tags/${tag.name}`}
+              class="group border-grid hover:border-primary flex items-center gap-2 border-b"
+            >
+              <span
+                class="text-foreground group-hover:text-primary text-sm font-medium"
+              >{`#${tag.name}`}</span>
+              <span
+                class="bg-muted text-muted-foreground group-hover:bg-primary/30 rounded-full px-2 text-xs"
+              >{tag.count}</span>
             </a>
           </li>
         ))}
       </ul>
-
     </div>
   </BlogLayout>
 </Layout>

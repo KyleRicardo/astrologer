@@ -1,18 +1,14 @@
 import eslintPluginAstro from 'eslint-plugin-astro'
 import tseslint from 'typescript-eslint'
-import tailwind from 'eslint-plugin-tailwindcss'
 
 export default [
   // 1. 引入 TypeScript 推荐配置
   ...tseslint.configs.recommended,
 
-  // 2. 引入 Tailwind CSS 推荐配置
-  ...tailwind.configs['flat/recommended'],
-
-  // 3. 引入 Astro 推荐配置
+  // 2. 引入 Astro 推荐配置
   ...eslintPluginAstro.configs.recommended,
 
-  // 4. 针对 .astro 文件的特殊覆盖
+  // 3. 针对 .astro 文件的特殊覆盖
   {
     files: ['**/*.astro'],
     rules: {
@@ -24,8 +20,8 @@ export default [
     },
   },
 
-  // 5. 全局忽略
+  // 4. 全局忽略
   {
-    ignores: ['dist/**', '.astro/**', 'node_modules/**'],
+    ignores: ['dist/**', '.astro/**', 'node_modules/**', '*.min.js'],
   },
 ]

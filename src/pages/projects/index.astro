@@ -1,23 +1,26 @@
 ---
-import ProjectCard from "@/components/ProjectCard.astro";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-import Layout from "@/layouts/Layout.astro";
-import ProjectLayout from "@/layouts/ProjectLayout.astro";
-import { getCollection } from "astro:content";
+import ProjectCard from '@/components/ProjectCard.astro'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
+import ProjectLayout from '@/layouts/ProjectLayout.astro'
+import { getCollection } from 'astro:content'
 
-const projects = await getCollection('project');
+const projects = await getCollection('project')
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
-const sortedProjects = projects.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());;
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const sortedProjects = projects.sort((a, b) =>
+  b.data.date.valueOf() - a.data.date.valueOf()
+)
 ---
 
 <Layout title={t('nav.projects')}>
   <ProjectLayout>
-    <section aria-label="projects" class="grid gap-8 px-4 container mx-auto md:grid-cols-2 xl:grid-cols-3">
-      {sortedProjects.map(project => (
-        <ProjectCard project={project} />
-      ))}
+    <section
+      aria-label="projects"
+      class="container mx-auto grid gap-8 px-4 md:grid-cols-2 xl:grid-cols-3"
+    >
+      {sortedProjects.map(project => <ProjectCard project={project} />)}
     </section>
   </ProjectLayout>
 </Layout>

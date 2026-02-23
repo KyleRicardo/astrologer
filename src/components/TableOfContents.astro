@@ -1,44 +1,44 @@
 ---
-import type { TocHeading } from "@/utils/toc";
-import { buildTocTree } from "@/utils/toc";
+import type { TocHeading } from '@/utils/toc'
+import { buildTocTree } from '@/utils/toc'
 
 interface Props {
-  headings: Array<{ depth: number; slug: string; text: string }>;
+  headings: Array<{ depth: number; slug: string; text: string }>
 }
 
-const { headings } = Astro.props;
-const tocTree = buildTocTree(headings);
+const { headings } = Astro.props
+const tocTree = buildTocTree(headings)
 
 // Don't render if no headings
 if (tocTree.length === 0) {
-  return null;
+  return null
 }
 ---
 
 <nav
   id="toc"
   aria-label="Table of Contents"
-  class="toc hidden lg:block w-64 shrink-0 ml-auto"
+  class="toc ml-auto hidden w-64 shrink-0 lg:block"
 >
   <div class="toc-inner sticky top-30">
-    <div class="text-sm font-semibold text-foreground mb-3">目录</div>
+    <div class="text-foreground mb-3 text-sm font-semibold">目录</div>
     <ul class="toc-list space-y-1">
       {tocTree.map((h2) => (
         <li>
           <a
             href={`#${h2.slug}`}
-            class="toc-link block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+            class="toc-link text-muted-foreground hover:text-foreground block py-1 text-sm transition-colors duration-200"
             data-slug={h2.slug}
           >
             {h2.text}
           </a>
           {h2.children.length > 0 && (
-            <ul class="pl-3 space-y-1">
+            <ul class="space-y-1 pl-3">
               {h2.children.map((h3) => (
                 <li>
                   <a
                     href={`#${h3.slug}`}
-                    class="toc-link block py-1 text-sm text-muted-foreground hover:text-foreground transition-colors duration-200"
+                    class="toc-link text-muted-foreground hover:text-foreground block py-1 text-sm transition-colors duration-200"
                     data-slug={h3.slug}
                   >
                     {h3.text}
@@ -54,111 +54,111 @@ if (tocTree.length === 0) {
 </nav>
 
 <style>
-  .toc-link.active {
-    color: var(--primary);
-    font-weight: 500;
-  }
+.toc-link.active {
+  color: var(--primary);
+  font-weight: 500;
+}
 </style>
 
 <script>
-  function initToc() {
-    const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
-    if (tocLinks.length === 0) return;
+function initToc() {
+  const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link')
+  if (tocLinks.length === 0) return
 
-    const headingSlugs = Array.from(tocLinks).map(link => link.dataset.slug!);
-    const headingElements = headingSlugs
-      .map(slug => document.getElementById(slug))
-      .filter((el): el is HTMLElement => el !== null);
+  const headingSlugs = Array.from(tocLinks).map(link => link.dataset.slug!)
+  const headingElements = headingSlugs
+    .map(slug => document.getElementById(slug))
+    .filter((el): el is HTMLElement => el !== null)
 
-    if (headingElements.length === 0) return;
+  if (headingElements.length === 0) return
 
-    // Header offset for scroll calculations
-    const HEADER_OFFSET = 80;
+  // Header offset for scroll calculations
+  const HEADER_OFFSET = 80
 
-    let activeSlug: string | null = null;
+  let activeSlug: string | null = null
 
-    function updateActiveLink(slug: string) {
-      tocLinks.forEach(link => {
-        if (link.dataset.slug === slug) {
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      });
-    }
-
-    // Find the current heading based on scroll position
-    function getCurrentHeading(): string | null {
-      const scrollTop = window.scrollY + HEADER_OFFSET + 20; // Add some buffer
-
-      // Find the last heading that has been scrolled past
-      let currentSlug: string | null = null;
-      for (const el of headingElements) {
-        if (el.offsetTop <= scrollTop) {
-          currentSlug = el.id;
-        } else {
-          break;
-        }
-      }
-
-      // If no heading has been scrolled past, use the first one
-      if (currentSlug === null && headingElements.length > 0) {
-        currentSlug = headingElements[0].id;
-      }
-
-      return currentSlug;
-    }
-
-    // Update active heading on scroll
-    function handleScroll() {
-      const currentSlug = getCurrentHeading();
-      if (currentSlug && currentSlug !== activeSlug) {
-        activeSlug = currentSlug;
-        updateActiveLink(currentSlug);
-      }
-    }
-
-    // Initial highlight
-    const initialSlug = getCurrentHeading();
-    if (initialSlug) {
-      activeSlug = initialSlug;
-      updateActiveLink(initialSlug);
-    }
-
-    // Listen for scroll events
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Smooth scroll on click with offset
+  function updateActiveLink(slug: string) {
     tocLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const slug = link.dataset.slug;
-        if (!slug) return;
-        
-        const target = document.getElementById(slug);
-        if (target) {
-          // Calculate position accounting for fixed header
-          const targetPosition = target.offsetTop - HEADER_OFFSET;
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-          // Update URL hash without jumping
-          history.pushState(null, '', `#${slug}`);
-          // Immediately update active state
-          activeSlug = slug;
-          updateActiveLink(slug);
-        }
-      });
-    });
-
-    // Cleanup
-    const cleanup = () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-
-    document.addEventListener('astro:before-swap', cleanup, { once: true });
+      if (link.dataset.slug === slug) {
+        link.classList.add('active')
+      } else {
+        link.classList.remove('active')
+      }
+    })
   }
 
-  document.addEventListener('astro:page-load', initToc);
+  // Find the current heading based on scroll position
+  function getCurrentHeading(): string | null {
+    const scrollTop = window.scrollY + HEADER_OFFSET + 20 // Add some buffer
+
+    // Find the last heading that has been scrolled past
+    let currentSlug: string | null = null
+    for (const el of headingElements) {
+      if (el.offsetTop <= scrollTop) {
+        currentSlug = el.id
+      } else {
+        break
+      }
+    }
+
+    // If no heading has been scrolled past, use the first one
+    if (currentSlug === null && headingElements.length > 0) {
+      currentSlug = headingElements[0].id
+    }
+
+    return currentSlug
+  }
+
+  // Update active heading on scroll
+  function handleScroll() {
+    const currentSlug = getCurrentHeading()
+    if (currentSlug && currentSlug !== activeSlug) {
+      activeSlug = currentSlug
+      updateActiveLink(currentSlug)
+    }
+  }
+
+  // Initial highlight
+  const initialSlug = getCurrentHeading()
+  if (initialSlug) {
+    activeSlug = initialSlug
+    updateActiveLink(initialSlug)
+  }
+
+  // Listen for scroll events
+  window.addEventListener('scroll', handleScroll, { passive: true })
+
+  // Smooth scroll on click with offset
+  tocLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault()
+      const slug = link.dataset.slug
+      if (!slug) return
+
+      const target = document.getElementById(slug)
+      if (target) {
+        // Calculate position accounting for fixed header
+        const targetPosition = target.offsetTop - HEADER_OFFSET
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth',
+        })
+        // Update URL hash without jumping
+        history.pushState(null, '', `#${slug}`)
+        // Immediately update active state
+        activeSlug = slug
+        updateActiveLink(slug)
+      }
+    })
+  })
+
+  // Cleanup
+  const cleanup = () => {
+    window.removeEventListener('scroll', handleScroll)
+  }
+
+  document.addEventListener('astro:before-swap', cleanup, { once: true })
+}
+
+document.addEventListener('astro:page-load', initToc)
 </script>

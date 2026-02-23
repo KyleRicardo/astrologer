@@ -1,5 +1,5 @@
-import type { APIRoute } from "astro"
-import { renderDefaultCover } from "@/utils/og-image"
+import type { APIRoute } from 'astro'
+import { renderDefaultCover } from '@/utils/og-image'
 
 export const GET: APIRoute = async () => {
   const png = await renderDefaultCover()

@@ -1,33 +1,40 @@
 ---
-import PostList from "@/components/PostList.astro";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
-import { getLangFromUrl, useTranslations } from "@/i18n/utils";
-import Layout from "@/layouts/Layout.astro";
-import { getTags } from "@/utils/get-tags";
-import { getPostsByTag } from "@/utils/getPosts";
-import type { CollectionEntry } from "astro:content";
+import PostList from '@/components/PostList.astro'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
+import { getTags } from '@/utils/get-tags'
+import { getPostsByTag } from '@/utils/getPosts'
+import type { CollectionEntry } from 'astro:content'
 export async function getStaticPaths() {
-	const tags = await getTags()
-	return tags.map(tag => ({
-    params: { tag: decodeURI(tag.name) }
-  }));
+  const tags = await getTags()
+  return tags.map(tag => ({
+    params: { tag: decodeURI(tag.name) },
+  }))
 }
-type Props = CollectionEntry<'blog'>;
+type Props = CollectionEntry<'blog'>
 
-const params = Astro.params;
-const posts = await getPostsByTag(params.tag);
+const params = Astro.params
+const posts = await getPostsByTag(params.tag)
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 ---
 
 <Layout title={`${t('nav.tags')}: ${params.tag}`}>
-  <main class="flex flex-1 flex-col mx-auto w-full max-w-3xl px-4">
-    <div class="flex items-center h-16 border-b border-grid">
+  <main class="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4">
+    <div class="border-grid flex h-16 items-center border-b">
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink href="/tags">{t("nav.tags")}</BreadcrumbLink>
+            <BreadcrumbLink href="/tags">{t('nav.tags')}</BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -36,7 +43,7 @@ const t = useTranslations(lang);
         </BreadcrumbList>
       </Breadcrumb>
     </div>
-    
+
     <PostList posts={posts} />
   </main>
 </Layout>

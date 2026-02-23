@@ -1,19 +1,19 @@
 ---
-import BlogLayout from "@/layouts/BlogLayout.astro";
-import Layout from "@/layouts/Layout.astro";
-import { getLangFromUrl, useTranslations } from '@/i18n/utils';
-import { getArchives } from "@/utils/getPosts";
-import PostList from "@/components/PostList.astro";
+import BlogLayout from '@/layouts/BlogLayout.astro'
+import Layout from '@/layouts/Layout.astro'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { getArchives } from '@/utils/getPosts'
+import PostList from '@/components/PostList.astro'
 
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
 
-const postsGroupedByYear = await getArchives();
+const postsGroupedByYear = await getArchives()
 ---
 
 <Layout title={t('nav.archives')}>
   <BlogLayout>
-    <div class="max-w-3xl w-full mx-auto">
+    <div class="mx-auto w-full max-w-3xl">
       <PostList posts={postsGroupedByYear} />
     </div>
   </BlogLayout>

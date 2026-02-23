@@ -6,8 +6,7 @@ import { pipeline } from 'node:stream/promises'
 import { Resvg } from '@resvg/resvg-js'
 import satori, { type Font } from 'satori'
 import { siteConfig } from '@/site.config'
-import { ui } from '@/i18n/ui'
-import { getLocaleFromLang, useTranslations, type Lang } from '@/i18n/utils'            
+import { useTranslations, type Lang } from '@/i18n/utils'
 
 interface OgOptions {
   title: string
@@ -73,7 +72,7 @@ async function ensureFonts() {
       if (!res.ok || !res.body) {
         throw new Error(`Failed to download font: ${source.url}`)
       }
-      await pipeline(res.body as any, createWriteStream(path))
+      await pipeline(res.body, createWriteStream(path))
     }
     fonts.push({
       name: source.name,
@@ -102,18 +101,11 @@ function getAvatarDataUrl() {
 }
 
 export async function renderOgImage(options: OgOptions) {
-  const { title, description, lang, type, date } = options
+  const { title, description, lang, type } = options
   const fonts = await getFonts()
 
   const t = useTranslations(lang)
   const label = t(`og.label.${type}`)
-
-
-  const dateString = date
-    ? date.toLocaleDateString(lang === 'zh' ? 'zh-CN' : 'en-US', {
-      dateStyle: 'long',
-    })
-    : ''
 
   const svg = await satori(
     {
@@ -266,7 +258,7 @@ export async function renderOgImage(options: OgOptions) {
     fitTo: {
       mode: 'width',
       value: 1200,
-    }
+    },
   })
 
   return resvg.render().asPng()
@@ -302,7 +294,8 @@ export async function renderDefaultCover() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 textAutospace: 'normal',
-                background: 'linear-gradient(180deg, #161611 0%, #171813 18.7%, #181D1A 34.9%, #1A2524 48.8%, #1D2F31 60.56%, #213C41 70.37%, #254952 78.4%, #295764 84.83%, #2D6676 89.84%, #317488 93.6%, #358199 96.3%, #398EA9 98.1%, #3C98B6 99.2%, #3EA0C0 99.76%, #3FA5C7 99.97%, #40A7C9 100%)',
+                background:
+                  'linear-gradient(180deg, #161611 0%, #171813 18.7%, #181D1A 34.9%, #1A2524 48.8%, #1D2F31 60.56%, #213C41 70.37%, #254952 78.4%, #295764 84.83%, #2D6676 89.84%, #317488 93.6%, #358199 96.3%, #398EA9 98.1%, #3C98B6 99.2%, #3EA0C0 99.76%, #3FA5C7 99.97%, #40A7C9 100%)',
               },
               children: [
                 {
@@ -359,7 +352,7 @@ export async function renderDefaultCover() {
     fitTo: {
       mode: 'width',
       value: 1024,
-    }
+    },
   })
 
   return resvg.render().asPng()
@@ -462,7 +455,7 @@ export async function renderDefaultOg() {
     fitTo: {
       mode: 'width',
       value: 1200,
-    }
+    },
   })
 
   return resvg.render().asPng()
