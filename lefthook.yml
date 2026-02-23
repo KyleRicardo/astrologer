@@ -1,0 +1,16 @@
+pre-commit:
+  parallel: true
+  commands:
+    format:
+      glob: "*.{ts,tsx,js,jsx,astro,html,css,json,md,mdx}"
+      run: pnpm dlx dprint fmt {staged_files}
+      stage_fixed: true
+
+    lint:
+      glob: "*.{ts,tsx,js,jsx,json,md,mdx,astro}"
+      run: pnpm dlx eslint --fix {staged_files}
+      stage_fixed: true
+
+    typecheck:
+      glob: "*.{ts,tsx,astro}"
+      run: pnpm dlx tsc --noEmit
