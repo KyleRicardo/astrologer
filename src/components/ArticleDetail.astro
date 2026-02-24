@@ -70,17 +70,17 @@ const coverTransitionName = `post-cover-${lang}-${postSlug}`
             {categoryInfo.name}
           </a>
         )}
-        <span class="mx-2">•</span>
-        <div>
+        <span class="mx-2 animate-fade-in delay-120">•</span>
+        <div class="animate-fade-in delay-120">
           {readingMinuteText}
         </div>
       </div>
-      <h1 class="text-center text-2xl font-semibold text-balance md:text-3xl md:font-bold lg:text-left lg:text-4xl">
+      <h1 class="text-center text-2xl font-semibold text-balance md:text-3xl md:font-bold lg:text-left lg:text-4xl md:tracking-tight">
         <span transition:name={titleTransitionName}>
           {title}
         </span>
       </h1>
-      <div class="text-muted-foreground flex flex-wrap justify-center gap-4 text-sm font-medium md:font-semibold lg:justify-start">
+      <div class="animate-fade-in-up delay-240 text-muted-foreground flex flex-wrap justify-center gap-4 text-sm font-medium md:font-semibold lg:justify-start">
         {tags
           && tags.map((tag) => (
             <a

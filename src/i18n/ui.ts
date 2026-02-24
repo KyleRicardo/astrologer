@@ -1,5 +1,3 @@
-import { siteConfig } from '@/site.config'
-
 export const languages = {
   zh: '中文',
   en: 'English',
@@ -10,7 +8,6 @@ export const showDefaultLang = false
 
 export const ui = {
   zh: {
-    'website.title': siteConfig.title_zh,
     'nav.home': '首页',
     'nav.blog': '博客',
     'nav.about': '关于',
@@ -38,7 +35,6 @@ export const ui = {
     '404.backHome': '返回首页',
   },
   en: {
-    'website.title': siteConfig.title_en,
     'nav.home': 'Home',
     'nav.blog': 'Blog',
     'nav.about': 'About',

@@ -12,7 +12,7 @@ const showPromo = promo.active
 
 <section
   aria-label="hero"
-  class="relative container mx-auto flex max-w-5xl flex-col items-center justify-center px-4 py-16 sm:px-16"
+  class="fade-in-up relative container mx-auto flex max-w-5xl flex-col items-center justify-center px-4 py-16 sm:px-16"
 >
   <!-- 背景装饰：一个巨大的、极其模糊的暖色光晕，营造氛围 -->
   <div class="bg-primary/10 pointer-events-none absolute inset-0 rounded-full blur-[120px]">
@@ -25,7 +25,6 @@ const showPromo = promo.active
       target="_blank"
       rel="noopener noreferrer"
       class="group border-border/40 bg-muted/50 text-muted-foreground hover:bg-muted mb-8 inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium transition-colors"
-      data-reveal
     >
       {/* 那个呼吸灯效果 */}
       <span class="relative flex h-2 w-2">
@@ -53,7 +52,7 @@ const showPromo = promo.active
   <!-- Avatar & Headlines -->
   <div class="mx-auto mt-8 flex w-full max-w-4xl flex-col items-center gap-8 md:mt-12 md:flex-row lg:gap-16">
     {/* Avatar */}
-    <div class="flex shrink-0 items-center justify-center" data-reveal>
+    <div class="flex shrink-0 items-center justify-center">
       <div class="border-background ring-border relative size-64 overflow-hidden rounded-full border-4 shadow-xl ring-2">
         <img
           src="/avatar.jpg"
@@ -65,7 +64,7 @@ const showPromo = promo.active
 
     {/* Info */}
     <div class="flex flex-1 flex-col items-center space-y-6 text-center md:items-start md:text-left">
-      <div data-reveal>
+      <div>
         <h1 class="mb-3.5 text-4xl font-bold tracking-tight md:text-5xl">
           {hero.headline}
         </h1>
@@ -76,10 +75,7 @@ const showPromo = promo.active
 
       {/* Tech Stack */}
       {hero.techStack && hero.techStack.length > 0 && (
-        <div
-          class="flex flex-wrap items-center justify-center gap-2 pt-2 md:justify-start"
-          data-reveal
-        >
+        <div class="flex flex-wrap items-center justify-center gap-2 pt-2 md:justify-start">
           {hero.techStack.map((tech) => (
             <span
               class="bg-secondary text-secondary-foreground rounded-md px-3 py-1 text-sm font-medium"
@@ -92,7 +88,7 @@ const showPromo = promo.active
 
       {/* Socials */}
       {siteConfig.socials && siteConfig.socials.length > 0 && (
-        <div class="flex items-center gap-4" data-reveal>
+        <div class="flex items-center gap-4">
           {siteConfig.socials.map((social) => (
             <a
               href={social.url}

@@ -5,11 +5,12 @@ import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import '@/styles/global.css'
 
+import '@fontsource-variable/noto-sans-sc'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
 
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
-import { siteConfig } from '@/site.config'
+import { getSiteConfig, siteConfig } from '@/site.config'
 import { defaultLang } from '@/i18n/ui'
 
 const lang = getLangFromUrl(Astro.url)
@@ -36,6 +37,8 @@ const site = Astro.site?.toString() ?? ''
 
 const locale = Astro.currentLocale ?? defaultLang
 
+const siteConfig = getSiteConfig(lang)
+
 const ogImage = image
   ? new URL(image, site).href
   : new URL('/og-default.png', site).href
@@ -58,15 +61,15 @@ const ogImage = image
     <link
       rel="alternate"
       type="application/rss+xml"
-      title={t('website.title') || "Kyle's Blog"}
+      title={siteConfig.title}
       href={new URL('rss.xml', Astro.site)}
     />
-    <title>{`${title} | ${t('website.title')}`}</title>
+    <title>{`${title} | ${siteConfig.title}`}</title>
     {description && <meta name="description" content={description} />}
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonicalURL.href} />
-    <meta property="og:site_name" content={siteConfig.title_en} />
+    <meta property="og:site_name" content={siteConfig.title} />
     <meta property="og:type" content={ogType} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content={locale} />

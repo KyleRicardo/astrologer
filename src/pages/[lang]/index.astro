@@ -30,15 +30,13 @@ const translatePath = useTranslatedPath(lang)
 <Layout title={t('nav.home')}>
   <Hero />
   <section aria-label="posts" class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl">
-    <header class="text-center" data-reveal>
+    <header class="text-center">
       <h2 class="text-3xl font-bold">{t('home.recentPosts')}</h2>
     </header>
-    <div class="my-12 space-y-8" data-reveal-stagger>
-      {recentPosts.map((post) => (
-        <div data-reveal><ArticleCard post={post} /></div>
-      ))}
+    <div class="my-12 space-y-8">
+      {recentPosts.map((post) => <div><ArticleCard post={post} /></div>)}
     </div>
-    <footer class="flex flex-col items-center" data-reveal>
+    <footer class="flex flex-col items-center">
       <a href={translatePath('/posts')}>
         <Button
           className="cursor-pointer rounded-full px-8 text-base"
@@ -52,19 +50,18 @@ const translatePath = useTranslatedPath(lang)
       aria-label="projects"
       class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl xl:max-w-7xl"
     >
-      <header class="text-center" data-reveal>
+      <header class="text-center">
         <h2 class="text-3xl font-bold">{t('home.recentProjects')}</h2>
       </header>
       <div
         aria-label="projects"
         class="mx-auto my-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3"
-        data-reveal-stagger
       >
         {recentProjects.map(project => (
-          <div data-reveal><ProjectCard project={project} /></div>
+          <div><ProjectCard project={project} /></div>
         ))}
       </div>
-      <footer class="flex flex-col items-center" data-reveal>
+      <footer class="flex flex-col items-center">
         <a href={translatePath('/projects')}>
           <Button
             className="cursor-pointer rounded-full px-8 text-base"
