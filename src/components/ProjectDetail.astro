@@ -48,7 +48,7 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
 >
   <main class="mx-auto my-16 flex w-full max-w-3xl flex-1 flex-col px-4">
     <header class="flex flex-col items-center gap-4 tracking-wide md:gap-6">
-      <div aria-label="cover" class="mb-6 w-full">
+      <div aria-label="cover" class="mb-4 w-full md:mb-6">
         <Image
           src={coverImage}
           alt={title}
@@ -58,15 +58,19 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
           transition:name={coverTransitionName}
         />
       </div>
-      <h1 class="text-center text-3xl font-semibold text-balance md:text-4xl md:font-bold lg:text-5xl">
+      <h1 class="text-center text-3xl font-semibold text-balance md:text-4xl md:font-bold lg:text-5xl md:tracking-tight">
         <span transition:name={titleTransitionName}>{title}</span>
       </h1>
-      <div class="text-muted-foreground flex justify-center gap-4 text-sm font-semibold text-nowrap">
+      <div class="text-muted-foreground flex justify-center text-xs md:text-sm font-semibold text-nowrap">
         <time datetime={date.toISOString()}>{formattedDate}</time>
-        <span>·</span>
-        <div class="flex flex-wrap justify-center gap-4 font-medium md:font-semibold">
-          {tags && tags.map((tag) => <span>{tag}</span>)}
-        </div>
+        {tags && (
+          <>
+            <span class="mx-2">•</span>
+            <div class="flex flex-wrap justify-center gap-4 font-medium md:font-semibold">
+              {tags.map((tag) => <span>{tag}</span>)}
+            </div>
+          </>
+        )}
       </div>
       <div>
         <ul class="flex justify-center gap-4 text-sm md:text-base">
@@ -74,6 +78,7 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
             {github && (
               <IconTextLink
                 name="GitHub Repo"
+                shortName="Repo"
                 href={github}
                 icon="ri:github-fill"
                 external
@@ -84,6 +89,7 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
             {homepage && (
               <IconTextLink
                 name="Homepage"
+                shortName="Home"
                 href={homepage}
                 icon="ri:home-4-line"
                 external
@@ -94,6 +100,7 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
             {liveDemo && (
               <IconTextLink
                 name="Live Demo"
+                shortName="Demo"
                 href={liveDemo}
                 icon="ri:global-line"
                 external
