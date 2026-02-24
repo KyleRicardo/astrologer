@@ -12,10 +12,10 @@ const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 ---
 
-<div class="my-4 flex-1 md:my-8">
+<div class="my-4 flex-1 md:my-8" data-reveal-stagger>
   {posts.map((group) => (
     <section class="flex-1">
-      <div class="flex items-center">
+      <div class="flex items-center" data-reveal>
         <h2 class="w-[50px] text-right text-xl font-semibold">{group.year}</h2>
         <span
           class="relative h-10 w-10 before:absolute before:top-1/2 before:left-1/2 before:block before:h-2 before:w-2 before:-translate-x-1/2 before:-translate-y-1/2 before:rounded-lg before:bg-zinc-300"

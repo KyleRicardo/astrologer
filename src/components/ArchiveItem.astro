@@ -27,7 +27,7 @@ const formattedDate = formatter.format(date)
 const postSlug = getSlugById(id)
 ---
 
-<li>
+<li data-reveal>
   <a
     href={translatePath(`/posts/${postSlug}`)}
     class="group hover:bg-muted flex h-10 items-center rounded-lg"

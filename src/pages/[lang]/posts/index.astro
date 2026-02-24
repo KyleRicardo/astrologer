@@ -20,8 +20,8 @@ const posts = await getPostsByLang(lang)
 
 <Layout title={t('nav.blog')}>
   <BlogLayout>
-    <section aria-label="posts" class="my-8 space-y-8">
-      {posts.map((post) => <ArticleCard post={post} />)}
+    <section aria-label="posts" class="my-8 space-y-8" data-reveal-stagger>
+      {posts.map((post) => <div data-reveal><ArticleCard post={post} /></div>)}
     </section>
   </BlogLayout>
 </Layout>
