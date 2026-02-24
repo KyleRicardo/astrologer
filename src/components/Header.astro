@@ -137,7 +137,10 @@ const { showProgressBar = false } = Astro.props
           </li>
         ))}
         <li>
-          <a href="/rss.xml" rel="noopener noreferrer" target="_blank"
+          <a
+            href={translatePath('/rss.xml')}
+            rel="noopener noreferrer"
+            target="_blank"
           >RSS Feed</a>
         </li>
       </ul>
@@ -195,7 +198,7 @@ const { showProgressBar = false } = Astro.props
           <li>
             <NavIcon
               name="RSS Feed"
-              href="/rss.xml"
+              href={translatePath('/rss.xml')}
               icon="ri:rss-fill"
               external={true}
             />
