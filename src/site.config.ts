@@ -100,7 +100,7 @@ export const siteConfig: SiteConfig = {
       ],
       hero: {
         headline: '今夕何夕',
-        tagline: '一名全栈开发者与设计工程师',
+        tagline: '全栈开发者 & 设计工程师',
         techStack: [
           'Java',
           'Go',

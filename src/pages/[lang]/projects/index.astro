@@ -3,7 +3,7 @@ import ProjectCard from '@/components/ProjectCard.astro'
 import { useTranslations, type Lang } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import ProjectLayout from '@/layouts/ProjectLayout.astro'
-import { getProjectsByLang } from '@/utils/getPosts'
+import { getProjectsByLang } from '@/utils/get-contents'
 import { languages, defaultLang } from '@/i18n/ui'
 
 export async function getStaticPaths() {

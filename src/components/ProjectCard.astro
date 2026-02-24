@@ -3,7 +3,11 @@ import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
 import NavIcon from './NavIcon.astro'
 import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
-import { DEFAULT_COVER_PATH, getSlugById, sanitizeSlug } from '@/utils/getPosts'
+import {
+  DEFAULT_COVER_PATH,
+  getSlugById,
+  sanitizeSlug,
+} from '@/utils/get-contents'
 
 interface Props {
   project: CollectionEntry<'project'>

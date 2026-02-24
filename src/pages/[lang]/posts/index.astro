@@ -3,7 +3,7 @@ import BlogLayout from '@/layouts/BlogLayout.astro'
 import Layout from '@/layouts/Layout.astro'
 import ArticleCard from '@/components/ArticleCard.astro'
 import { type Lang, useTranslations } from '@/i18n/utils'
-import { getPostsByLang } from '@/utils/getPosts'
+import { getPostsByLang } from '@/utils/get-contents'
 import { languages, defaultLang } from '@/i18n/ui'
 
 export async function getStaticPaths() {

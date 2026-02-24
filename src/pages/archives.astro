@@ -2,7 +2,7 @@
 import BlogLayout from '@/layouts/BlogLayout.astro'
 import Layout from '@/layouts/Layout.astro'
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
-import { getArchives } from '@/utils/getPosts'
+import { getArchives } from '@/utils/get-contents'
 import PostList from '@/components/PostList.astro'
 
 const lang = getLangFromUrl(Astro.url)

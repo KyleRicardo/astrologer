@@ -3,7 +3,11 @@ import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
 import { getCategoryInfo } from '@/utils/get-categories'
 import { render, type CollectionEntry } from 'astro:content'
 import { Image } from 'astro:assets'
-import { DEFAULT_COVER_PATH, getSlugById, sanitizeSlug } from '@/utils/getPosts'
+import {
+  DEFAULT_COVER_PATH,
+  getSlugById,
+  sanitizeSlug,
+} from '@/utils/get-contents'
 
 interface Props {
   post: CollectionEntry<'blog'>

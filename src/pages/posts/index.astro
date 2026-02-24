@@ -3,7 +3,7 @@ import BlogLayout from '@/layouts/BlogLayout.astro'
 import Layout from '@/layouts/Layout.astro'
 import ArticleCard from '@/components/ArticleCard.astro'
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
-import { getPostsByLang } from '@/utils/getPosts'
+import { getPostsByLang } from '@/utils/get-contents'
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)

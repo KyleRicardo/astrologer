@@ -4,7 +4,7 @@ import { getLangFromUrl, useTranslations } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import ProjectLayout from '@/layouts/ProjectLayout.astro'
 
-import { getProjectsByLang } from '@/utils/getPosts'
+import { getProjectsByLang } from '@/utils/get-contents'
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
