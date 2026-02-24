@@ -158,11 +158,12 @@ export async function renderOgImage(options: OgOptions) {
             type: 'div',
             props: {
               style: {
+                display: 'block',
                 fontSize: 64,
                 fontWeight: 700,
                 color: '#dedfd7',
-                maxWidth: 800,
-                textWrap: 'balance',
+                maxWidth: 880,
+                maxHeight: 200,
                 letterSpacing: '-0.04em',
                 lineClamp: 2,
                 overflow: 'hidden',

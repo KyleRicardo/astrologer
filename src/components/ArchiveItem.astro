@@ -1,5 +1,10 @@
 ---
 import { getSlugById } from '@/utils/getPosts'
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  getLocaleFromLang,
+} from '@/i18n/utils'
 
 interface Props {
   id: string
@@ -9,7 +14,10 @@ interface Props {
 
 const { id, title, date } = Astro.props
 
-const formatter = new Intl.DateTimeFormat('zh-CN', {
+const lang = getLangFromUrl(Astro.url)
+const translatePath = useTranslatedPath(lang)
+
+const formatter = new Intl.DateTimeFormat(getLocaleFromLang(lang), {
   month: '2-digit',
   day: '2-digit',
 })
@@ -21,7 +29,7 @@ const postSlug = getSlugById(id)
 
 <li>
   <a
-    href={`/posts/${postSlug}`}
+    href={translatePath(`/posts/${postSlug}`)}
     class="group hover:bg-muted flex h-10 items-center rounded-lg"
   >
     <time

@@ -1,0 +1,145 @@
+---
+import { Icon } from 'astro-icon/components'
+import { getLangFromUrl } from '@/i18n/utils'
+import { languages, defaultLang, showDefaultLang } from '@/i18n/ui'
+
+const currentLang = getLangFromUrl(Astro.url)
+const currentPath = Astro.url.pathname
+
+// Build language switch URLs
+// Strip the current lang prefix to get the "bare" path, then re-prefix for target lang
+function getTargetPath(targetLang: string): string {
+  let barePath = currentPath
+
+  // Strip existing lang prefix if present
+  for (const lang of Object.keys(languages)) {
+    if (lang === defaultLang && !showDefaultLang) continue
+    const prefix = `/${lang}`
+    if (barePath === prefix || barePath.startsWith(`${prefix}/`)) {
+      barePath = barePath.slice(prefix.length) || '/'
+      break
+    }
+  }
+
+  // Apply target lang prefix
+  if (targetLang === defaultLang && !showDefaultLang) {
+    return barePath
+  }
+  return `/${targetLang}${barePath}`
+}
+
+const langEntries = Object.entries(languages) as [string, string][]
+---
+
+<div class="lang-switcher relative">
+  <button
+    id="lang-switcher-trigger"
+    type="button"
+    class="focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground inline-flex h-8 w-8 items-center justify-center gap-2 rounded-md px-0 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+    aria-haspopup="menu"
+    aria-expanded="false"
+    aria-label="Switch language"
+  >
+    <Icon name="ri:translate-2" />
+  </button>
+  <div
+    id="lang-switcher-menu"
+    role="menu"
+    class="bg-popover text-popover-foreground absolute top-full right-0 z-50 mt-1 min-w-32 origin-top-right rounded-md border p-1 shadow-md transition-all duration-150 data-[state=closed]:pointer-events-none data-[state=closed]:scale-95 data-[state=closed]:opacity-0 data-[state=open]:scale-100 data-[state=open]:opacity-100"
+    data-state="closed"
+  >
+    {langEntries.map(([lang, label]) => {
+      const isActive = lang === currentLang
+      const href = getTargetPath(lang)
+      return (
+        <a
+          role="menuitem"
+          href={href}
+          class:list={[
+            'relative flex w-full cursor-pointer items-center rounded-sm py-1.5 pr-2 pl-7 text-sm outline-none transition-colors',
+            'hover:bg-accent hover:text-accent-foreground',
+            'focus-visible:bg-accent focus-visible:text-accent-foreground',
+          ]}
+          aria-current={isActive ? 'true' : undefined}
+          data-lang={lang}
+        >
+          {isActive && (
+            <span
+              class="absolute left-2.5 flex h-3.5 w-3.5 items-center justify-center"
+            >
+              <span class="bg-foreground h-1.5 w-1.5 rounded-full" />
+            </span>
+          )}
+          {label}
+        </a>
+      )
+    })}
+  </div>
+</div>
+
+<script>
+function initLangSwitcher() {
+  const trigger = document.getElementById('lang-switcher-trigger')
+  const menu = document.getElementById('lang-switcher-menu')
+  if (!trigger || !menu) return
+
+  function isOpen(): boolean {
+    return menu!.getAttribute('data-state') === 'open'
+  }
+
+  function open() {
+    menu!.setAttribute('data-state', 'open')
+    trigger!.setAttribute('aria-expanded', 'true')
+  }
+
+  function close() {
+    menu!.setAttribute('data-state', 'closed')
+    trigger!.setAttribute('aria-expanded', 'false')
+  }
+
+  function toggle() {
+    if (isOpen()) {
+      close()
+    } else {
+      open()
+    }
+  }
+
+  // Toggle on trigger click
+  function handleTriggerClick(e: Event) {
+    e.stopPropagation()
+    toggle()
+  }
+
+  // Close on Escape
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.key === 'Escape' && isOpen()) {
+      close()
+      trigger!.focus()
+    }
+  }
+
+  // Close on outside click
+  function handleDocumentClick(e: Event) {
+    const target = e.target as Node
+    if (!trigger!.contains(target) && !menu!.contains(target)) {
+      close()
+    }
+  }
+
+  trigger.addEventListener('click', handleTriggerClick)
+  document.addEventListener('keydown', handleKeyDown)
+  document.addEventListener('click', handleDocumentClick)
+
+  // Cleanup for View Transitions
+  const cleanUp = () => {
+    trigger.removeEventListener('click', handleTriggerClick)
+    document.removeEventListener('keydown', handleKeyDown)
+    document.removeEventListener('click', handleDocumentClick)
+  }
+
+  document.addEventListener('astro:before-swap', cleanUp, { once: true })
+}
+
+document.addEventListener('astro:page-load', initLangSwitcher)
+</script>

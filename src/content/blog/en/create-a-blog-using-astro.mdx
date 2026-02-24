@@ -1,0 +1,150 @@
+---
+title: "Restarting After Many Years: Building a Blog with Astro"
+description: "Astro is the best web framework for building content-driven websites like blogs, marketing sites, and e-commerce websites. Astro is known for pioneering a new frontend architecture that reduces JavaScript overhead and complexity compared to other frameworks. If you need a website that loads fast and has great SEO, Astro is your choice."
+date: 2025-03-02 18:18:18
+category: Tech
+tags:
+  - Astro
+  - Frontend
+  - Technology
+---
+
+Astro is the best web framework for building content-driven websites like blogs, marketing sites, and e-commerce websites. Astro is known for pioneering a new frontend architecture that reduces JavaScript overhead and complexity compared to other frameworks. If you need a website that loads fast and has great SEO, Astro is your choice.
+
+![Astro Official Mascot](https://astro.build/assets/press/full-logo-light.svg)
+
+## Why Choose Astro?
+
+Among many static site generators, **Astro** stands out with the following features:
+
+1. **Islands Architecture** 🏝️ - Load interactive components on demand
+2. **Zero JS by Default** 🚀 - Automatically strip unused JavaScript
+3. **Framework Agnostic** ⚛️ - Mix and match React/Vue/Svelte
+4. **Content-driven** 📚 - Built-in MD/MDX support
+
+> 💡 According to the [Web Almanac 2023](https://almanac.httparchive.org/) report, websites built with Astro average over 90/100 in performance scores.
+
+## Quick Start Guide
+
+### Environment Setup
+```bash
+# Create project
+npm create astro@latest my-blog
+cd my-blog
+
+# Add Markdown support
+npm install @astrojs/mdx
+```
+
+### Directory Structure
+```
+src/
+├─ pages/
+│  └─ index.astro
+├─ layouts/
+│  └─ BaseLayout.astro
+├─ content/
+│  └─ posts/
+│     └─ first-post.md
+└─ styles/
+   └─ global.css
+```
+
+### Basic Configuration `astro.config.mjs`
+```javascript
+import { defineConfig } from 'astro/config'
+import mdx from '@astrojs/mdx'
+
+export default defineConfig({
+  integrations: [mdx()],
+  markdown: {
+    syntaxHighlight: 'prism',
+    shikiConfig: {
+      theme: 'github-dark'
+    }
+  }
+})
+```
+
+## Advanced Tips
+
+### Component Islands Architecture
+```astro
+---
+// src/components/Counter.astro
+import CounterReact from '../components/Counter.jsx'
+---
+
+<div class="counter-container">
+  <CounterReact client:load />
+</div>
+
+<style>
+  .counter-container {
+    padding: 1rem;
+    border: 1px solid #eee;
+  }
+</style>
+```
+
+### Feature Comparison Table
+
+| Feature          | Astro  | Hexo   | Gatsby |
+| ---------------- | ------ | ------ | ------ |
+| Build Speed      | ⚡️ Fast | 🐢 Med  | 🚂 Slow |
+| Default JS Size  | 0KB    | 30KB+  | 100KB+ |
+| Learning Curve   | Smooth | Simple | Steep  |
+| Plugin Ecosystem | Growing| Mature | Rich   |
+
+## Hexo Migration Guide
+
+1. **Content Migration**  
+   Copy the Markdown files from the `source/_posts` directory to `src/content/posts`.
+
+2. **Template Transformation**  
+   Convert `.ejs`/`.swig` templates into `.astro` components:
+   ```astro
+   <!-- Original Hexo template snippet -->
+   <%- partial('_partial/article', { post: page.posts }) %>
+
+   <!-- Converted Astro template -->
+   <Article {post} />
+   ```
+
+3. **Generator Configuration**  
+   Use the `@astrojs/rss` package to replace `hexo-generator-feed`.
+
+## More Possibilities
+
+### View Transitions
+```astro
+---
+// Add to the page head
+import { ViewTransitions } from 'astro:transitions'
+---
+
+<head>
+  <ViewTransitions />
+</head>
+```
+
+---
+
+**Next Steps**:  
+✅ Run `npm run dev` to start the local server  
+✅ Visit `localhost:4321` to see the results  
+✅ Deploy to [Netlify](https://www.netlify.com/) or [Vercel](https://vercel.com/)
+
+> 🚀 The complete example code is hosted in the [GitHub Repository](https://github.com/example/astro-blog-demo)
+
+*Test data in this article is based on Astro v3.0; some features may require higher versions.*
+
+### Callout Test
+
+> [!note] This is a _non-collapsible_ callout
+> Some content is displayed directly!
+
+> [!WARNING]- This is a **collapsible** callout
+> Some content shown after opening!
+
+![Divider](https://img.shields.io/badge/-%E5%86%85%E5%AE%B9%E7%BB%93%E6%9D%9F-%23005999?style=for-the-badge)

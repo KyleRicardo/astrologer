@@ -8,7 +8,7 @@ import CategoryList from '@/components/CategoryList.astro'
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 
-const categories = await getCategories()
+const categories = await getCategories(lang)
 ---
 
 <Layout title={t('nav.categories')}>

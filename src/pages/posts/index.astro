@@ -1,29 +1,20 @@
 ---
-import { getCollection } from 'astro:content'
 import BlogLayout from '@/layouts/BlogLayout.astro'
 import Layout from '@/layouts/Layout.astro'
 import ArticleCard from '@/components/ArticleCard.astro'
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from '@/i18n/utils'
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { getPostsByLang } from '@/utils/getPosts'
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 
-const posts = await getCollection('blog', ({ data }) => {
-  return import.meta.env.PROD ? data.draft !== true : true
-})
-const sortedPosts = posts.sort((a, b) =>
-  b.data.date.valueOf() - a.data.date.valueOf()
-)
+const posts = await getPostsByLang(lang)
 ---
 
 <Layout title={t('nav.blog')}>
   <BlogLayout>
     <section aria-label="posts" class="my-8 space-y-8">
-      {sortedPosts.map((post) => <ArticleCard post={post} />)}
+      {posts.map((post) => <ArticleCard post={post} />)}
     </section>
   </BlogLayout>
 </Layout>

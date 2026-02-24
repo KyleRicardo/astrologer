@@ -60,11 +60,11 @@
   --foreground: oklch(0.28 0.03 107.57);     /* 深暖灰墨水色 */
 
   /* 卡片：纯白或极淡的暖色，使其从背景中微微浮起 */
-  --card: oklch(1 0 0); 
+  --card: oklch(0.9766 0.0046 107.57); 
   --card-foreground: oklch(0.28 0.03 107.57);
 
   /* 悬浮层 */
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.9766 0.0046 107.57);
   --popover-foreground: oklch(0.28 0.03 107.57);
 
   /* 品牌主色 - #40a7c9 */

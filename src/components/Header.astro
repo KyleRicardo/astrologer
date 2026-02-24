@@ -1,5 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components'
 import {
   getLangFromUrl,
   useTranslations,
@@ -7,11 +6,13 @@ import {
 } from '@/i18n/utils'
 import NavIcon from './NavIcon.astro'
 import { ModeToggle } from './ModeToggle'
-import { siteConfig } from '@/site.config'
+import LangSwitcher from './LangSwitcher.astro'
+import { getSiteConfig } from '@/site.config'
 
 const lang = getLangFromUrl(Astro.url)
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
+const siteConfig = getSiteConfig(lang)
 
 interface Props {
   showProgressBar?: boolean
@@ -142,10 +143,10 @@ const { showProgressBar = false } = Astro.props
       </ul>
     </div>
     <div class="mr-4 flex">
-      <a class="mr-4 flex items-center gap-2 lg:mr-6" href="/">
+      <a class="mr-4 flex items-center gap-2 lg:mr-6" href={translatePath('/')}>
         <span
           class="ml-8 inline-block font-bold md:ml-0"
-        >{siteConfig.title_zh}</span>
+        >{siteConfig.title}</span>
       </a>
       <nav class="hidden items-center gap-4 text-sm md:flex lg:gap-6">
         <a
@@ -201,14 +202,8 @@ const { showProgressBar = false } = Astro.props
           </li>
         </ul>
       </div>
-      <div aria-label="display options" class="ml-1">
-        <button
-          id="translate"
-          class="focus-visible:ring-ring hover:bg-accent hover:text-accent-foreground inline-flex h-8 w-8 items-center justify-center gap-2 rounded-md px-0 text-sm font-medium whitespace-nowrap transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-        >
-          <Icon name="ri:translate-2" />
-          <span class="sr-only">Translate</span>
-        </button>
+      <div aria-label="display options" class="ml-1 flex items-center">
+        <LangSwitcher />
         <ModeToggle client:load />
       </div>
     </div>
@@ -338,9 +333,6 @@ document.addEventListener('astro:page-load', () => {
   window.addEventListener('resize', handleResize)
   document.getElementById('mobile-menu')?.setAttribute('data-state', 'closed')
   menuOpen = false
-  document.getElementById('translate')?.addEventListener('click', () => {
-    console.log('translate')
-  })
 
   initProgressBar()
 })

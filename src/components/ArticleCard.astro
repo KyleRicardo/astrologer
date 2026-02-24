@@ -29,7 +29,7 @@ const formattedDate = date.toLocaleDateString(lang, { dateStyle: 'medium' })
 
 const coverImage = post.data.cover ?? DEFAULT_COVER_PATH
 
-const categoryInfo = getCategoryInfo(category)
+const categoryInfo = getCategoryInfo(category, lang)
 
 const displayExcerpt = description || remarkPluginFrontmatter.excerpt || '' // Fallback chain
 ---

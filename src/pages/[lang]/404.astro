@@ -1,13 +1,16 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import { Icon } from 'astro-icon/components'
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from '@/i18n/utils'
+import { useTranslations, useTranslatedPath, type Lang } from '@/i18n/utils'
+import { languages, defaultLang } from '@/i18n/ui'
 
-const lang = getLangFromUrl(Astro.url)
+export async function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((l) => l !== defaultLang)
+    .map((l) => ({ params: { lang: l } }))
+}
+
+const { lang } = Astro.params as { lang: Lang }
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 ---

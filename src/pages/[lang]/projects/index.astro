@@ -1,12 +1,18 @@
 ---
 import ProjectCard from '@/components/ProjectCard.astro'
-import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { useTranslations, type Lang } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import ProjectLayout from '@/layouts/ProjectLayout.astro'
-
 import { getProjectsByLang } from '@/utils/getPosts'
+import { languages, defaultLang } from '@/i18n/ui'
 
-const lang = getLangFromUrl(Astro.url)
+export async function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((l) => l !== defaultLang)
+    .map((l) => ({ params: { lang: l } }))
+}
+
+const { lang } = Astro.params as { lang: Lang }
 const t = useTranslations(lang)
 const sortedProjects = await getProjectsByLang(lang)
 ---
@@ -17,7 +23,7 @@ const sortedProjects = await getProjectsByLang(lang)
       aria-label="projects"
       class="container mx-auto grid gap-8 px-4 md:grid-cols-2 xl:grid-cols-3"
     >
-      {sortedProjects.map(project => <ProjectCard project={project} />)}
+      {sortedProjects.map((project) => <ProjectCard project={project} />)}
     </section>
   </ProjectLayout>
 </Layout>

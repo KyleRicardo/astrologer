@@ -5,10 +5,12 @@ interface Tag {
   count: number
 }
 
-export async function getTags(): Promise<Tag[]> {
+export async function getTags(lang: string): Promise<Tag[]> {
   // Get all blog posts using Astro.glob
-  const posts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true
+  const posts = await getCollection('blog', ({ id, data }) => {
+    const isProd = import.meta.env.PROD ? data.draft !== true : true
+    const isLang = id.startsWith(`${lang}/`)
+    return isProd && isLang
   })
   // Create a map to store tag counts
   const tagCount = new Map<string, number>()

@@ -1,13 +1,16 @@
 ---
-import type { TocHeading } from '@/utils/toc'
+import { useTranslations, type Lang } from '@/i18n/utils'
 import { buildTocTree } from '@/utils/toc'
 
 interface Props {
   headings: Array<{ depth: number; slug: string; text: string }>
+  lang: Lang
 }
 
-const { headings } = Astro.props
+const { headings, lang } = Astro.props
 const tocTree = buildTocTree(headings)
+
+const t = useTranslations(lang)
 
 // Don't render if no headings
 if (tocTree.length === 0) {
@@ -21,7 +24,9 @@ if (tocTree.length === 0) {
   class="toc ml-auto hidden w-64 shrink-0 lg:block"
 >
   <div class="toc-inner sticky top-30">
-    <div class="text-foreground mb-3 text-sm font-semibold">目录</div>
+    <div class="text-foreground mb-3 text-sm font-semibold">
+      {t('toc.title')}
+    </div>
     <ul class="toc-list space-y-1">
       {tocTree.map((h2) => (
         <li>

@@ -1,0 +1,94 @@
+---
+title: "Java 8 到 25：核心特性进化的十年"
+date: 2024-05-20
+category: "Java"
+tags: ["Java", "Virtual Threads", "Programming"]
+description: "从 Java 8 的函数式革命到 Java 21 虚拟线程带来的高并发范式转移，本文简要回顾 Java 十年间的关键特性进化，特别是轻量级线程对现代服务端开发的影响。"
+---
+
+从 2014 年 Java 8 发布至今，Java 已经走过了极其深刻的十年。这场进化不仅是版本的数字堆砌，更是从原本笨重的面向对象语言，逐步吸收**函数式编程**和**现代并发模型**精髓的过程。
+
+### 1. Java 8：函数式编程的起点
+
+Java 8 是里程碑式的版本，它引入了核心的 **Lambda 表达式** 和 **Stream API**。
+
+```java
+// 使用 Stream API 处理集合
+List<String> names = users.stream()
+    .filter(u -> u.getAge() > 18)
+    .map(User::getName)
+    .collect(Collectors.toList());
+```
+
+> **影响**：彻底改变了处理集合数据的方式，让代码从“命令式”转向“声明式”。
+
+---
+
+### 2. Java 11 到 17：稳步增强与现代化
+
+这段时期引入了大量语法糖，让 Java 更加“清爽”：
+
+*   **HTTP Client API (Java 11)**：支持同步和异步，内置了对 HTTP/2 的良好支持。
+*   **Records (Java 17)**：用于不可变数据的简洁声明，大幅减少样板代码。
+*   **Text Blocks (Java 15)**：处理多行字符串（如 JSON 或 SQL）的福音。
+
+```java
+// Java 17 中的 Record 示例
+public record User(String name, int age) {}
+
+// 多行文本块
+String json = """
+    {
+        "name": "Kyle",
+        "status": "Learning Java"
+    }
+    """;
+```
+
+---
+
+### 3. Java 21：虚拟线程（核心力量）
+
+这是近年来 Java 社区最激动人心的增强（Project Loom）。**虚拟线程 (Virtual Threads)** 的正式发布，标志着 Java 并发模型的重大变革。
+
+#### 为什么需要虚拟线程？
+
+传统的 Java 线程（平台线程）与操作系统内核线程是 **1:1** 绑定的。在高并发场景下，创建几万个线程会导致操作系统内存耗尽或频繁上下文切换。
+
+#### 虚拟线程的工作方式：
+
+虚拟线程是极其轻量级的，它由 **JVM** 调度而非系统。
+
+*   **资源极低**：你可以轻松创建百万级别的虚拟线程，开销微乎其微。
+*   **阻塞不占资源**：当虚拟线程在 I/O 阻塞时，并不会阻塞底层的系统线程。
+
+```java
+// 创建并运行虚拟线程
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    IntStream.range(0, 10_000).forEach(i -> {
+        executor.submit(() -> {
+            Thread.sleep(Duration.ofSeconds(1));
+            return i;
+        });
+    });
+} // 自动等待所有任务完成
+```
+
+**意义**：如果你习惯了 `Thread-per-request` 模型，那么虚拟线程让你在获得高性能的同时，无需编写复杂的响应式（Reactive）代码。
+
+---
+
+### 4. 迈向 Java 25
+
+作为下一个重要的 LTS（长期支持）版本，Java 25 将持续深化现代特性。
+
+- **结构化并发 (Structured Concurrency)**：将相关的异步任务组作为一个工作单元处理。
+- **作用域值 (Scoped Values)**：在线程内高效、安全地共享不可变数据。
+
+### 总结
+
+Java 正变得**更快**（优化后的 G1/ZGC）、**更轻**（虚拟线程）且**更现代**。它依然是企业级应用中无可替代的根基，并不断焕发着新的生命力。
+
+---
+
+*这是一篇演示文章，用于测试 Astro 实战项目的 i18n 功能。*

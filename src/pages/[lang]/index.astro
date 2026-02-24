@@ -1,10 +1,7 @@
 ---
 import Layout from '@/layouts/Layout.astro'
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from '@/i18n/utils'
+import { useTranslations, useTranslatedPath, type Lang } from '@/i18n/utils'
+import { languages, defaultLang } from '@/i18n/ui'
 import ArticleCard from '@/components/ArticleCard.astro'
 import { Button } from '@/components/ui/button'
 import ProjectCard from '@/components/ProjectCard.astro'
@@ -12,7 +9,13 @@ import { siteConfig } from '@/site.config'
 import Hero from '@/components/Hero.astro'
 import { getPostsByLang, getProjectsByLang } from '@/utils/getPosts'
 
-const lang = getLangFromUrl(Astro.url)
+export async function getStaticPaths() {
+  return Object.keys(languages)
+    .filter((l) => l !== defaultLang)
+    .map((l) => ({ params: { lang: l } }))
+}
+
+const { lang } = Astro.params as { lang: Lang }
 
 const posts = await getPostsByLang(lang)
 const recentPosts = posts.slice(0, siteConfig.recentPostsCount)
@@ -22,8 +25,6 @@ const recentProjects = projects.slice(0, siteConfig.recentProjectsCount)
 
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout title={t('nav.home')}>

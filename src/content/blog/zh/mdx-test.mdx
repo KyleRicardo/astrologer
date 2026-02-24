@@ -1,38 +1,40 @@
 ---
 cover: 'https://dev-to-uploads.s3.amazonaws.com/uploads/articles/m2qi67x32n9du4zgc0ho.jpg'
-title: 'Using MDX'
-date: 'Jun 01 2024'
-category: Markup Language
+title: '使用 MDX'
+date: '2024-06-01'
+category: 'Markup Language'
 tags:
+  - Markdown
   - MDX
+description: '了解如何在 Astro 中使用 MDX 这一强大的 Markdown 增强方案，实现文本内容与交互组件的无缝结合。'
 ---
 
-This is paragraph #1.
+这是第一段。
 
-This is paragraph #2.
+这是第二段。
 
-This theme comes with the [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/) integration installed and configured in your `astro.config.mjs` config file. If you prefer not to use MDX, you can disable support by removing the integration from your config file.
+本主题已集成并配置了 [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/) 插件，你可以在 `astro.config.mjs` 配置文件中查看。如果你不打算使用 MDX，可以通过移除配置中的集成插件来禁用它。
 
-## Why MDX?
+## 为什么选择 MDX？
 
-MDX is a special flavor of Markdown that supports embedded JavaScript & JSX syntax. This unlocks the ability to [mix JavaScript and UI Components into your Markdown content](https://docs.astro.build/en/guides/markdown-content/#mdx-features) for things like interactive charts or alerts.
+MDX 是一种特殊的 Markdown 变体，它支持嵌入 JavaScript 和 JSX 语法。这开启了在 [Markdown 内容中组合 JavaScript 和 UI 组件](https://docs.astro.build/en/guides/markdown-content/#mdx-features) 的能力，适用于创建交互式图表或警告框等。
 
-If you have existing content authored in MDX, this integration will hopefully make migrating to Astro a breeze.
+如果你已有使用 MDX 编写的内容，该集成将使你能够轻松地迁移到 Astro。
 
 > [!IMPORTANT]
-> I made this plugin for my personal use - I don't have time to properly polish it yet. I'd suggest you don't use it at this moment, but if you do, be aware of the breakage or refactors might happen anytime.
+> 我创建这个插件是为了个人使用 —— 目前还没有时间对其进行深度打磨。我建议你暂时谨慎使用，如果使用了，请留意随时可能发生的破坏性更改或重构。
 
-## Example
+## 示例
 
-Here is how you import and use a UI component inside of MDX.  
-When you open this page in the browser, you should see the clickable button below.
+下面展示了如何在 MDX 中导入和使用 UI 组件。
+当你在浏览器中打开此页面时，你应该能看到下方可点击的按钮。
 
 ```shell
-pnpm create astro@latest astro-app  --template with-tailwindcss --install --add react --git
+pnpm create astro@latest astro-app --template with-tailwindcss --install --add react --git
 ```
 
-## More Links
+## 更多链接
 
-- [MDX Syntax Documentation](https://mdxjs.com/docs/what-is-mdx)
-- [Astro Usage Documentation](https://docs.astro.build/en/guides/markdown-content/#markdown-and-mdx-pages)
-- **Note:** [Client Directives](https://docs.astro.build/en/reference/directives-reference/#client-directives) are still required to create interactive components. Otherwise, all components in your MDX will render as static HTML (no JavaScript) by default.
+- [MDX 语法文档](https://mdxjs.com/docs/what-is-mdx)
+- [Astro 使用文档](https://docs.astro.build/en/guides/markdown-content/#markdown-and-mdx-pages)
+- **注意：** 创建交互式组件仍需使用 [客户端指令 (Client Directives)](https://docs.astro.build/en/reference/directives-reference/#client-directives)。否则，默认情况下 MDX 中的所有组件都将渲染为静态 HTML（不含 JavaScript）。

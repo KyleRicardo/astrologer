@@ -1,8 +1,12 @@
 ---
-import { siteConfig } from '@/site.config'
+import { getLangFromUrl } from '@/i18n/utils'
+import { getSiteConfig } from '@/site.config'
 import { Icon } from 'astro-icon/components'
 
-const { promo } = siteConfig
+const lang = getLangFromUrl(Astro.url)
+const siteConfig = getSiteConfig(lang)
+const { hero } = siteConfig
+const { promo } = hero
 const showPromo = promo.active
 ---
 
@@ -51,7 +55,7 @@ const showPromo = promo.active
     <div class="flex shrink-0 items-center justify-center">
       <div class="border-background ring-border relative size-64 overflow-hidden rounded-full border-4 shadow-xl ring-2">
         <img
-          src={siteConfig.avatar}
+          src="/avatar.jpg"
           alt={siteConfig.author}
           class="h-full w-full object-cover"
         />
@@ -62,17 +66,17 @@ const showPromo = promo.active
     <div class="flex flex-1 flex-col items-center space-y-6 text-center md:items-start md:text-left">
       <div>
         <h1 class="mb-3.5 text-4xl font-bold tracking-tight md:text-5xl">
-          {siteConfig.author}
+          {hero.headline}
         </h1>
         <p class="text-muted-foreground text-xl font-medium md:text-2xl">
-          {siteConfig.tagline}
+          {hero.tagline}
         </p>
       </div>
 
       {/* Tech Stack */}
-      {siteConfig.techStack && siteConfig.techStack.length > 0 && (
+      {hero.techStack && hero.techStack.length > 0 && (
         <div class="flex flex-wrap items-center justify-center gap-2 pt-2 md:justify-start">
-          {siteConfig.techStack.map((tech) => (
+          {hero.techStack.map((tech) => (
             <span
               class="bg-secondary text-secondary-foreground rounded-md px-3 py-1 text-sm font-medium"
             >

@@ -1,6 +1,6 @@
 ---
-import ArticleDetail from '@/components/ArticleDetail.astro'
-import { getPostPaths } from '@/utils/getPosts'
+import ProjectDetail from '@/components/ProjectDetail.astro'
+import { getProjectPaths } from '@/utils/getPosts'
 import { languages, defaultLang } from '@/i18n/ui'
 import type { Lang } from '@/i18n/utils'
 
@@ -10,8 +10,8 @@ export async function getStaticPaths() {
   ) as Lang[]
   const paths = await Promise.all(
     langs.map(async (lang) => {
-      const postPaths = await getPostPaths(lang)
-      return postPaths.map((path) => ({
+      const projectPaths = await getProjectPaths(lang)
+      return projectPaths.map((path) => ({
         params: { ...path.params, lang },
         props: path.props,
       }))
@@ -21,7 +21,7 @@ export async function getStaticPaths() {
 }
 
 const { lang } = Astro.params as { lang: Lang }
-const post = Astro.props
+const project = Astro.props
 ---
 
-<ArticleDetail post={post} lang={lang} />
+<ProjectDetail project={project} lang={lang} />

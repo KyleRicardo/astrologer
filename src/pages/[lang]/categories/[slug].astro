@@ -8,27 +8,29 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from '@/i18n/utils'
+import { type Lang, useTranslations, useTranslatedPath } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import { generateCategorySlugs } from '@/utils/get-categories'
 import { getPostsByCategory } from '@/utils/getPosts'
-import { defaultLang } from '@/i18n/ui'
+import { languages, defaultLang } from '@/i18n/ui'
 
 export async function getStaticPaths() {
-  const slugs = await generateCategorySlugs(defaultLang)
-
-  return slugs.map((slug) => ({
-    params: { slug },
-  }))
+  const langs = Object.keys(languages).filter((l) =>
+    l !== defaultLang
+  ) as Lang[]
+  const paths = await Promise.all(
+    langs.map(async (l) => {
+      const slugs = await generateCategorySlugs(l)
+      return slugs.map((slug) => ({
+        params: { lang: l, slug },
+      }))
+    }),
+  )
+  return paths.flat()
 }
 
-const { slug } = Astro.params
-const lang = getLangFromUrl(Astro.url)
-const posts = await getPostsByCategory(slug!, lang)
+const { lang, slug } = Astro.params as { lang: Lang; slug: string }
+const posts = await getPostsByCategory(slug, lang)
 
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)

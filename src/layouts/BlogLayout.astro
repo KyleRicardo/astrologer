@@ -1,20 +1,33 @@
 ---
 import NavLink from '@/components/NavLink.astro'
+import {
+  getLangFromUrl,
+  useTranslations,
+  useTranslatedPath,
+} from '@/i18n/utils'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
 ---
+
 <main class="container mx-auto flex max-w-5xl flex-1 flex-col px-4">
   <nav class="mt-8 flex h-16 items-center justify-center">
     <ul class="flex gap-4 px-8 py-4">
       <li>
-        <NavLink name="文章" href="/posts" />
+        <NavLink name={t('nav.posts')} href={translatePath('/posts')} />
       </li>
       <li>
-        <NavLink name="归档" href="/archives" />
+        <NavLink name={t('nav.archives')} href={translatePath('/archives')} />
       </li>
       <li>
-        <NavLink name="分类" href="/categories" />
+        <NavLink
+          name={t('nav.categories')}
+          href={translatePath('/categories')}
+        />
       </li>
       <li>
-        <NavLink name="标签" href="/tags" />
+        <NavLink name={t('nav.tags')} href={translatePath('/tags')} />
       </li>
     </ul>
   </nav>

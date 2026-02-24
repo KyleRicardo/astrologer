@@ -9,15 +9,9 @@ import { Image } from 'astro:assets'
 import {
   DEFAULT_COVER_PATH,
   getPostOgImagePath,
-  getPostPaths,
   getSlugById,
   sanitizeSlug,
 } from '@/utils/getPosts'
-import { defaultLang } from '@/i18n/ui'
-
-export async function getStaticPaths() {
-  return getPostPaths(defaultLang)
-}
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -34,7 +28,6 @@ const { Content, remarkPluginFrontmatter, headings } = await render(post)
 const ogImage = post.data.cover ?? getPostOgImagePath(post.id)
 
 const postSlug = getSlugById(post.id)
-const cardTransitionName = `post-card-${lang}-${sanitizeSlug(postSlug)}`
 const titleTransitionName = `post-title-${lang}-${sanitizeSlug(postSlug)}`
 const timeTransitionName = `post-time-${lang}-${sanitizeSlug(postSlug)}`
 const categoryTransitionName = `post-category-${lang}-${sanitizeSlug(postSlug)}`
@@ -43,7 +36,7 @@ const formattedDate = date.toLocaleDateString(lang, { dateStyle: 'medium' })
 const readingMinutes = Math.ceil(remarkPluginFrontmatter.minutesRead as number)
 const readingMinuteText = t('post.readingMinutes', { minutes: readingMinutes })
 
-const categoryInfo = getCategoryInfo(category)
+const categoryInfo = getCategoryInfo(category, lang)
 
 const hasCustomCover = cover !== undefined
 const coverImage = cover ?? DEFAULT_COVER_PATH
@@ -111,7 +104,7 @@ const coverTransitionName = `post-cover-${lang}-${postSlug}`
         )}
         <Content />
       </article>
-      <TableOfContents headings={headings} />
+      <TableOfContents headings={headings} lang={lang} />
     </div>
   </main>
 </Layout>

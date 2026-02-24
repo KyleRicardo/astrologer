@@ -33,9 +33,12 @@ const groupPostsByYear = (posts: CollectionEntry<'blog'>[]): GroupedPosts[] => {
 // 获取分类下的文章列表
 const getPostsByCategory = async (
   category: string,
+  lang: string,
 ): Promise<GroupedPosts[]> => {
-  const posts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true
+  const posts = await getCollection('blog', ({ id, data }) => {
+    const isProd = import.meta.env.PROD ? data.draft !== true : true
+    const isLang = id.startsWith(`${lang}/`)
+    return isProd && isLang
   })
   const filteredPosts = posts
     .filter((post) => post.data.category === category)
@@ -44,9 +47,14 @@ const getPostsByCategory = async (
 }
 
 // 获取标签下的文章列表
-const getPostsByTag = async (tag: string): Promise<GroupedPosts[]> => {
-  const posts = await getCollection('blog', ({ data }) => {
-    return import.meta.env.PROD ? data.draft !== true : true
+const getPostsByTag = async (
+  tag: string,
+  lang: string,
+): Promise<GroupedPosts[]> => {
+  const posts = await getCollection('blog', ({ id, data }) => {
+    const isProd = import.meta.env.PROD ? data.draft !== true : true
+    const isLang = id.startsWith(`${lang}/`)
+    return isProd && isLang
   })
   const filteredPosts = posts.filter((i) => i.data.tags?.includes(tag)).sort((
     a,
@@ -56,13 +64,13 @@ const getPostsByTag = async (tag: string): Promise<GroupedPosts[]> => {
 }
 
 // 获取归档列表
-const getArchives = async (): Promise<GroupedPosts[]> => {
+const getArchives = async (lang: Lang): Promise<GroupedPosts[]> => {
   const posts = await getCollection('blog', ({ data }) => {
     return import.meta.env.PROD ? data.draft !== true : true
   })
-  const sortedPosts = posts.sort((a, b) =>
-    b.data.date.valueOf() - a.data.date.valueOf()
-  )
+  const sortedPosts = posts
+    .filter((post) => post.id.startsWith(`${lang}/`))
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
   return groupPostsByYear(sortedPosts)
 }
 
@@ -90,6 +98,19 @@ export async function getPostPaths(lang: Lang) {
     }))
 }
 
+export async function getPostsByLang(lang: Lang) {
+  const posts = await getCollection('blog', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true
+  })
+  return posts
+    .filter((post) => post.id.startsWith(`${lang}/`))
+    .map((post) => ({
+      ...post,
+      slug: getSlugById(post.id),
+    }))
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+}
+
 export function getProjectOgImagePath(id: string) {
   const [lang, ...rest] = id.split('/')
   const slug = rest.join('/')
@@ -113,6 +134,19 @@ export function sanitizeSlug(slug: string) {
     /^-+|-+$/g,
     '',
   )
+}
+
+export async function getProjectsByLang(lang: Lang) {
+  const projects = await getCollection('project', ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true
+  })
+  return projects
+    .filter((project) => project.id.startsWith(`${lang}/`))
+    .map((project) => ({
+      ...project,
+      slug: getSlugById(project.id),
+    }))
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
 }
 
 export {

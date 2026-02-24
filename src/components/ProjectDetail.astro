@@ -1,7 +1,7 @@
 ---
 import IconTextLink from '@/components/IconTextLink.astro'
 import { defaultLang } from '@/i18n/ui'
-import { getLangFromUrl, type Lang } from '@/i18n/utils'
+import type { Lang } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import {
   DEFAULT_COVER_PATH,
@@ -37,7 +37,6 @@ const projectSlug = getSlugById(project.id)
 const titleTransitionName = `project-title-${lang}-${sanitizeSlug(projectSlug)}`
 const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
 
-const hasCustomCover = cover !== undefined
 const coverImage = cover ?? DEFAULT_COVER_PATH
 ---
 

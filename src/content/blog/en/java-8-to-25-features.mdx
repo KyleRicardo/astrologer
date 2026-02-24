@@ -1,0 +1,94 @@
+---
+title: "Java 8 to 25: A Decade of Core Feature Evolution"
+date: 2024-05-20
+category: "Java"
+tags: ["Java", "Virtual Threads", "Programming"]
+description: "From the functional revolution in Java 8 to the high-concurrency paradigm shift brought by Virtual Threads in Java 21, this post briefly reviews a decade of key Java evolutions, focusing on the impact of lightweight threads on modern backend development."
+---
+
+Since the release of Java 8 in 2014, Java has undergone a profound decade of transformation. This evolution is not just a series of version numbers, but a process where a heavyweight object-oriented language has integrated the essence of **functional programming** and **modern concurrency models**.
+
+### 1. Java 8: The Birth of Functional Programming
+
+Java 8 was a landmark version. It introduced the core **Lambda Expressions** and the **Stream API**.
+
+```java
+// Processing collections with Stream API
+List<String> names = users.stream()
+    .filter(u -> u.getAge() > 18)
+    .map(User::getName)
+    .collect(Collectors.toList());
+```
+
+> **The Impact**: It fundamentally changed how we process collection data, moving code from "Imperative" to "Declarative".
+
+---
+
+### 2. Java 11 to 17: Steady Enhancements & Modernization
+
+This period brought plenty of syntactic sugar to make Java feel "fresher":
+
+*   **HTTP Client API (Java 11)**: Supports both synchronous and asynchronous operations with native HTTP/2 support.
+*   **Records (Java 17)**: Concise declarations for immutable data, significantly reducing boilerplate code.
+*   **Text Blocks (Java 15)**: A lifesaver for handling multi-line strings like JSON or SQL.
+
+```java
+// Example of a Record in Java 17
+public record User(String name, int age) {}
+
+// Multi-line Text Block
+String json = """
+    {
+        "name": "Kyle",
+        "status": "Learning Java"
+    }
+    """;
+```
+
+---
+
+### 3. Java 21: Virtual Threads (The Game Changer)
+
+This is the most exciting enhancement in recent years (Project Loom). The release of **Virtual Threads** marks a paradigm shift in Java's concurrency model.
+
+#### Why do we need Virtual Threads?
+
+Standard Java threads (Platform Threads) are mapped **1:1** to operating system kernel threads. In high-concurrency scenarios, creating tens of thousands of threads can exhaust OS memory or lead to frequent context switching.
+
+#### How Virtual Threads Work:
+
+Virtual threads are extremely lightweight and are scheduled by the **JVM** rather than the OS.
+
+*   **Low Resource Usage**: You can easily create millions of virtual threads with negligible overhead.
+*   **Non-blocking blocking**: When a virtual thread blocks on I/O, it doesn't block the underlying OS thread.
+
+```java
+// Creating and running virtual threads
+try (var executor = Executors.newVirtualThreadPerTaskExecutor()) {
+    IntStream.range(0, 10_000).forEach(i -> {
+        executor.submit(() -> {
+            Thread.sleep(Duration.ofSeconds(1));
+            return i;
+        });
+    });
+} // Automatically waits for all tasks to complete
+```
+
+**The Mission**: If you prefer the `Thread-per-request` model, virtual threads allow you to achieve high performance without being forced to write complex Reactive code (like WebFlux).
+
+---
+
+### 4. Moving Towards Java 25
+
+As the next major LTS version, Java 25 is expected to further refine modern features:
+
+- **Structured Concurrency**: Treating groups of related asynchronous tasks as a single unit of work.
+- **Scoped Values**: Efficiently and safely sharing immutable data within a thread.
+
+### Conclusion
+
+Java is becoming **faster** (optimized G1/ZGC), **lighter** (Virtual Threads), and more **modern**. It remains the irreplaceable foundation for enterprise applications, constantly revitalized with new power.
+
+---
+
+*This is a boilerplate article used to test the i18n features of this Astro project.*

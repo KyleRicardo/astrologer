@@ -1,24 +1,13 @@
+import { defaultLang } from './i18n/ui'
+import type { Lang } from './i18n/utils'
+
 export interface SiteConfig {
-  title_zh: string
-  title_en: string
   domain: string
   // 访问的URL
   site: string
   subtitle: string
-  description: string
-  keywords: string[]
   author: string
-  avatar: string
-  tagline: string
-  techStack: string[]
-  promo: {
-    active: boolean
-    label?: string
-    title: string
-    link: string
-  }
-  // Cover 网站缩略图
-  cover: string
+  locales: Localized<LocaleConfig>
   // 网站创建时间
   createTime: string
   // 是否开启作品展柜
@@ -39,6 +28,27 @@ export interface SiteConfig {
   socials: SocialLink[]
 }
 
+type Localized<T> = Record<Lang, T>
+
+export interface HeroConfig {
+  headline: string
+  tagline: string
+  techStack: string[]
+  promo: {
+    active: boolean
+    label?: string
+    title: string
+    link: string
+  }
+}
+
+interface LocaleConfig {
+  title: string
+  description: string
+  keywords: string[]
+  hero: HeroConfig
+}
+
 export interface SocialLink {
   name: string
   url: string
@@ -47,38 +57,66 @@ export interface SocialLink {
 }
 
 export const siteConfig: SiteConfig = {
-  title_zh: "Kyle's Blog",
-  title_en: "Kyle's Blog",
   domain: 'kylericardo.com',
   // 访问的URL
   site: 'https://kylericardo.com',
   subtitle: 'To make the world better, and life easier.',
-  description: 'Kyle Ricardo的个人博客，分享技术、生活、创作等内容。',
-  keywords: [
-    'Kyle Ricardo',
-    'Blog',
-    '博客',
-    'Indie Hacker',
-    '独立开发者',
-  ],
   author: 'Kyle Ricardo',
-  avatar: '/avatar.jpg',
-  tagline: 'A full-stack developer and design engineer',
-  techStack: [
-    'Java',
-    'Go',
-    'Rust',
-    'Node.js',
-    'React',
-  ],
-  promo: {
-    active: true,
-    label: 'New',
-    title: 'TD2BD is now available! Join waitlist',
-    link: 'https://github.com/KyleRicardo/td2bd',
+  locales: {
+    en: {
+      title: "Kyle's Home",
+      description: "Kyle Ricardo's personal blog",
+      keywords: [
+        'Kyle Ricardo',
+        'Blog',
+        'Indie Hacker',
+      ],
+      hero: {
+        headline: 'Kyle Ricardo',
+        tagline: 'Creator, builder, hacker and design engineer',
+        techStack: [
+          'Java',
+          'Go',
+          'Rust',
+          'Node.js',
+          'React',
+        ],
+        promo: {
+          active: true,
+          label: 'New',
+          title: 'TD2BD is now available! Join waitlist',
+          link: 'https://github.com/KyleRicardo/td2bd',
+        },
+      },
+    },
+    zh: {
+      title: '今夕何夕',
+      description: 'Kyle Ricardo的个人博客，分享技术、生活、创作等内容。',
+      keywords: [
+        'Kyle Ricardo',
+        '今夕何夕',
+        '博客',
+        '独立开发者',
+      ],
+      hero: {
+        headline: '今夕何夕',
+        tagline: '一名全栈开发者与设计工程师',
+        techStack: [
+          'Java',
+          'Go',
+          'Rust',
+          'Node.js',
+          'React',
+        ],
+        promo: {
+          active: true,
+          label: 'NEW',
+          title: 'TD2BD现已上线！加入候补名单',
+          link: 'https://github.com/KyleRicardo/td2bd',
+        },
+      },
+    },
   },
-  // Cover 网站缩略图
-  cover: '/assets/astro.svg',
   // 网站创建时间
   createTime: '2025-03-15',
   // 是否开启作品展柜
@@ -125,4 +163,13 @@ export const siteConfig: SiteConfig = {
       icon: 'ri:bluesky-line',
     },
   ],
+}
+
+export const getSiteConfig = (lang: Lang) => {
+  const locale = siteConfig.locales[lang] || siteConfig.locales[defaultLang]
+
+  return {
+    ...siteConfig,
+    ...locale,
+  }
 }
