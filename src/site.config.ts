@@ -57,9 +57,9 @@ export interface SocialLink {
 }
 
 export const siteConfig: SiteConfig = {
-  domain: 'kylericardo.com',
+  domain: 'astrologer-theme.vercel.app',
   // 访问的URL
-  site: 'https://kylericardo.com',
+  site: 'https://astrologer-theme.vercel.app',
   subtitle: 'To make the world better, and life easier.',
   author: 'Kyle Ricardo',
   locales: {

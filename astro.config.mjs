@@ -19,7 +19,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://kylericardo.com',
+  site: 'https://astrologer-theme.vercel.app',
   vite: {
     plugins: [tailwindcss()]
   },
