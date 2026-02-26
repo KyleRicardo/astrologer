@@ -84,8 +84,8 @@ export const siteConfig: SiteConfig = {
         promo: {
           active: true,
           label: 'New',
-          title: 'TD2BD is now available! Join waitlist',
-          link: 'https://github.com/KyleRicardo/td2bd',
+          title: 'Astrologer is now in beta! Try it out',
+          link: 'https://github.com/KyleRicardo/astrologer',
         },
       },
     },
@@ -111,8 +111,8 @@ export const siteConfig: SiteConfig = {
         promo: {
           active: true,
           label: 'NEW',
-          title: 'TD2BD现已上线！加入候补名单',
-          link: 'https://github.com/KyleRicardo/td2bd',
+          title: 'Astrologer已开始beta测试！来试试吧',
+          link: 'https://github.com/KyleRicardo/astrologer',
         },
       },
     },
