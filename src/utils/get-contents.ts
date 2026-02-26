@@ -78,7 +78,7 @@ export function getSlugById(id: string) {
   return id.split('/').slice(1).join('/')
 }
 
-export const DEFAULT_COVER_PATH = '/og/default-cover.png'
+export const DEFAULT_COVER_PATH = '/default-cover.png'
 
 function getPostOgImagePath(id: string) {
   const [lang, ...rest] = id.split('/')

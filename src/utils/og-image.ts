@@ -100,7 +100,7 @@ function getAvatarDataUrl() {
   return avatarDataUrl
 }
 
-export async function renderOgImage(options: OgOptions) {
+export async function renderOgImage(options: OgOptions): Promise<Buffer> {
   const { title, description, lang, type } = options
   const fonts = await getFonts()
 
@@ -265,7 +265,7 @@ export async function renderOgImage(options: OgOptions) {
   return resvg.render().asPng()
 }
 
-export async function renderDefaultCover() {
+export async function renderDefaultCover(): Promise<Buffer> {
   const fonts = await getFonts()
 
   const svg = await satori(
@@ -281,7 +281,7 @@ export async function renderDefaultCover() {
           boxSizing: 'border-box',
           textAutospace: 'normal',
           backgroundColor: '#161611',
-          fontFamily: 'Outline',
+          fontFamily: 'Outfit',
         },
         children: [
           {
@@ -359,7 +359,7 @@ export async function renderDefaultCover() {
   return resvg.render().asPng()
 }
 
-export async function renderDefaultOg() {
+export async function renderDefaultOg(): Promise<Buffer> {
   const fonts = await getFonts()
 
   const svg = await satori(
@@ -377,7 +377,7 @@ export async function renderDefaultOg() {
           boxSizing: 'border-box',
           textAutospace: 'normal',
           background: 'linear-gradient(180deg, #161611 0%, #292924 100%)',
-          fontFamily: 'Outline',
+          fontFamily: 'Outfit',
         },
         children: [
           {
