@@ -10,7 +10,7 @@ import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
 
 import { getLangFromUrl, useTranslations } from '@/i18n/utils'
-import { getSiteConfig, siteConfig } from '@/site.config'
+import { getSiteConfig } from '@/site.config'
 import { defaultLang } from '@/i18n/ui'
 
 const lang = getLangFromUrl(Astro.url)
@@ -96,7 +96,6 @@ body {
   width: 100%;
   height: 100%;
   font-display: swap;
-  font-feature-settings: "cv11", "cv05", "tnum";
   scrollbar-gutter: stable;
 }
 </style>

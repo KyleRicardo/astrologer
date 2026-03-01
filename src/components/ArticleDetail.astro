@@ -12,6 +12,7 @@ import {
   getSlugById,
   sanitizeSlug,
 } from '@/utils/get-contents'
+import { mdxComponents } from './mdx/mdx-components'
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -102,7 +103,7 @@ const coverTransitionName = `post-cover-${lang}-${postSlug}`
             transition:name={coverTransitionName}
           />
         )}
-        <Content />
+        <Content components={mdxComponents} />
       </article>
       <TableOfContents headings={headings} lang={lang} />
     </div>

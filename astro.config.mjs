@@ -13,7 +13,7 @@ import { remarkAutoExcerpt } from './remark-auto-excerpt.mjs';
 import remarkMath from 'remark-math';
 import rehypeCallouts from 'rehype-callouts';
 import rehypeKatex from 'rehype-katex';
-
+import rehypePrettyCode from 'rehype-pretty-code';
 
 import react from '@astrojs/react';
 
@@ -24,21 +24,25 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
   markdown: {
+    syntaxHighlight: false,
     remarkPlugins: [
       remarkMath,
       remarkReadingTime,
       remarkAutoExcerpt,
     ],
     rehypePlugins: [
+      [rehypePrettyCode, {
+        defaultLang: {
+          block: 'plaintext',
+        },
+        theme: {
+          dark: 'github-dark',
+          light: 'github-light-default',
+        }
+      }],
       rehypeCallouts,
       rehypeKatex,
     ],
-    shikiConfig: {
-      themes: {
-        light: 'github-light',
-        dark: 'github-dark',
-      },
-    },
   },
 
   integrations: [

@@ -33,8 +33,10 @@
     "reading-time": "^1.5.0",
     "rehype-callouts": "^2.1.2",
     "rehype-katex": "^7.0.1",
+    "rehype-pretty-code": "^0.14.1",
     "remark-math": "^6.0.0",
     "sharp": "^0.34.5",
+    "shiki": "^4.0.0",
     "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {

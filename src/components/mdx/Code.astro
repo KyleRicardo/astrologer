@@ -1,0 +1,31 @@
+---
+import { cn } from '@/lib/utils'
+import type { HTMLAttributes } from 'astro/types'
+import CopyButton from '../CopyButton.astro'
+
+interface Props extends HTMLAttributes<'code'> {
+  class?: string
+}
+
+const { class: className, ...props } = Astro.props
+
+const isBlockCode = 'data-language' in props
+  || (typeof className === 'string' && className.includes('language-'))
+
+const isInlineCode = !isBlockCode
+---
+
+{isInlineCode ? (
+  <code
+    class:list={[
+      'relative rounded-md bg-muted px-[0.3rem] py-[0.2rem] font-mono text-[0.8rem] wrap-break-word outline outline-accent',
+      className,
+    ]}
+    {...props}
+  ><slot /></code>
+) : (
+   <CopyButton /><code
+     class={cn('not-prose', className)}
+     {...props}
+   ><slot /></code>
+ )}

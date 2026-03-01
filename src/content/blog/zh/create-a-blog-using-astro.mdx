@@ -37,7 +37,7 @@ npm install @astrojs/mdx
 ```
 
 ### 目录结构
-```
+```tree
 src/
 ├─ pages/
 │  └─ index.astro
@@ -51,7 +51,7 @@ src/
 ```
 
 ### 基础配置 `astro.config.mjs`
-```javascript
+```js title="astro.config.mjs"
 import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 
@@ -69,7 +69,7 @@ export default defineConfig({
 ## 进阶技巧
 
 ### 组件岛屿架构
-```astro
+```astro title="Counter.astro" showLineNumbers
 ---
 // src/components/Counter.astro
 import CounterReact from '../components/Counter.jsx'
