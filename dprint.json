@@ -5,7 +5,8 @@
     "dist",
     ".astro",
     "pnpm-lock.yaml",
-    "**/CHANGELOG*.md"
+    "**/CHANGELOG*.md",
+    "CodeBlockCommand.astro"
   ],
   "plugins": [
     "https://plugins.dprint.dev/typescript-0.95.15.wasm",

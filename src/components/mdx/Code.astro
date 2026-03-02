@@ -2,17 +2,34 @@
 import { cn } from '@/lib/utils'
 import type { HTMLAttributes } from 'astro/types'
 import CopyButton from '../CopyButton.astro'
+import CodeBlockCommand from '../CodeBlockCommand.astro'
 
 interface Props extends HTMLAttributes<'code'> {
-  class?: string
+  __raw__?: string
+  __src__?: string
+  __npm__?: string
+  __yarn__?: string
+  __pnpm__?: string
+  __bun__?: string
 }
 
-const { class: className, ...props } = Astro.props
+const {
+  class: className,
+  __raw__,
+  __src__,
+  __npm__,
+  __yarn__,
+  __pnpm__,
+  __bun__,
+  ...props
+} = Astro.props
 
 const isBlockCode = 'data-language' in props
   || (typeof className === 'string' && className.includes('language-'))
 
 const isInlineCode = !isBlockCode
+
+const isNpmCommand = __npm__ && __yarn__ && __pnpm__ && __bun__
 ---
 
 {isInlineCode ? (
@@ -24,8 +41,17 @@ const isInlineCode = !isBlockCode
     {...props}
   ><slot /></code>
 ) : (
+  isNpmCommand ? (
+    <CodeBlockCommand
+      __npm__={__npm__}
+      __yarn__={__yarn__}
+      __pnpm__={__pnpm__}
+      __bun__={__bun__}
+    />
+  ) : (
    <CopyButton /><code
      class={cn('not-prose', className)}
      {...props}
    ><slot /></code>
- )}
+ )
+)}

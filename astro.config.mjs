@@ -14,6 +14,7 @@ import remarkMath from 'remark-math';
 import rehypeCallouts from 'rehype-callouts';
 import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
+import { transformers } from './src/lib/highlight-code'
 
 import react from '@astrojs/react';
 
@@ -38,7 +39,8 @@ export default defineConfig({
         theme: {
           dark: 'github-dark',
           light: 'github-light-default',
-        }
+        },
+        transformers,
       }],
       rehypeCallouts,
       rehypeKatex,

@@ -56,6 +56,28 @@ const ogImage = image
       href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
       rel="stylesheet"
     >
+    <!-- src/layouts/Layout.astro 的 <head> 中 -->
+    <script is:inline>
+    ;(function() {
+      // 封装一个更新函数，不仅改属性，还派发一个自定义事件供组件更新 A11y
+      const setPkg = (pkg) => {
+        document.documentElement.setAttribute('data-pkg', pkg)
+        window.dispatchEvent(new CustomEvent('pkg-synced', { detail: pkg }))
+      }
+
+      // 1. 初始化
+      const savedPkg = localStorage.getItem('preferred-pkg') || 'pnpm'
+      setPkg(savedPkg)
+
+      // 2. 【魔法】跨浏览器 Tab 同步！
+      // 只要其他页面修改了 localStorage 的 preferred-pkg，当前页面立刻响应
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'preferred-pkg' && e.newValue) {
+          setPkg(e.newValue)
+        }
+      })
+    })()
+    </script>
     <meta name="generator" content={Astro.generator} />
     <ClientRouter />
     <link
