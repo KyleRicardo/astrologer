@@ -7,6 +7,12 @@ const root = fileURLToPath(new URL('..', import.meta.url))
 const og = await renderDefaultOg()
 const cover = await renderDefaultCover()
 
-writeFileSync(join(root, 'public/og-default.png'), new Uint8Array(og))
-writeFileSync(join(root, 'public/default-cover.png'), new Uint8Array(cover))
+writeFileSync(
+  join(root, 'public/og-default.png'),
+  Buffer.from(await og.arrayBuffer()),
+)
+writeFileSync(
+  join(root, 'public/default-cover.png'),
+  Buffer.from(await cover.arrayBuffer()),
+)
 console.log('Generated public/og-default.png and public/default-cover.png')

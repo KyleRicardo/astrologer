@@ -23,16 +23,10 @@ export const GET: APIRoute = async ({ props }) => {
     project: CollectionEntry<'project'>
     lang: Lang
   }
-  const png = await renderOgImage({
+  return renderOgImage({
     title: project.data.title,
     description: project.data.description,
     lang,
     type: 'project',
-  })
-  return new Response(new Uint8Array(png), {
-    headers: {
-      'Content-Type': 'image/png',
-      'Cache-Control': 'public, max-age=31536000, immutable',
-    },
   })
 }
