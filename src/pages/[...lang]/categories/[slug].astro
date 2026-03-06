@@ -15,21 +15,24 @@ import { getPostsByCategory } from '@/utils/get-contents'
 import { languages, defaultLang } from '@/i18n/ui'
 
 export async function getStaticPaths() {
-  const langs = Object.keys(languages).filter((l) =>
-    l !== defaultLang
-  ) as Lang[]
+  const langs = Object.keys(languages) as Lang[]
   const paths = await Promise.all(
     langs.map(async (l) => {
       const slugs = await generateCategorySlugs(l)
       return slugs.map((slug) => ({
-        params: { lang: l, slug },
+        params: {
+          lang: l === defaultLang ? undefined : l,
+          slug,
+        },
+        props: { lang: l },
       }))
     }),
   )
   return paths.flat()
 }
 
-const { lang, slug } = Astro.params as { lang: Lang; slug: string }
+const { lang } = Astro.props as { lang: Lang }
+const slug = Astro.params.slug!
 const posts = await getPostsByCategory(slug, lang)
 
 const t = useTranslations(lang)

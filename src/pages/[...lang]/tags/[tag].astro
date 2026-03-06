@@ -8,33 +8,38 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import {
-  getLangFromUrl,
-  useTranslations,
-  useTranslatedPath,
-} from '@/i18n/utils'
+import { type Lang, useTranslations, useTranslatedPath } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import { getTags } from '@/utils/get-tags'
 import { getPostsByTag } from '@/utils/get-contents'
-import { defaultLang } from '@/i18n/ui'
-import type { CollectionEntry } from 'astro:content'
-export async function getStaticPaths() {
-  const tags = await getTags(defaultLang)
-  return tags.map((tag) => ({
-    params: { tag: decodeURI(tag.name) },
-  }))
-}
-type Props = CollectionEntry<'blog'>
+import { languages, defaultLang } from '@/i18n/ui'
 
-const params = Astro.params
-const lang = getLangFromUrl(Astro.url)
-const posts = await getPostsByTag(params.tag!, lang)
+export async function getStaticPaths() {
+  const langs = Object.keys(languages) as Lang[]
+  const paths = await Promise.all(
+    langs.map(async (l) => {
+      const tags = await getTags(l)
+      return tags.map((tag) => ({
+        params: {
+          lang: l === defaultLang ? undefined : l,
+          tag: decodeURI(tag.name),
+        },
+        props: { lang: l },
+      }))
+    }),
+  )
+  return paths.flat()
+}
+
+const { lang } = Astro.props as { lang: Lang }
+const tag = Astro.params.tag!
+const posts = await getPostsByTag(tag, lang)
 
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 ---
 
-<Layout title={`${t('nav.tags')}: ${params.tag}`}>
+<Layout title={`${t('nav.tags')}: ${tag}`}>
   <main class="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4">
     <div class="border-grid flex h-16 items-center border-b">
       <Breadcrumb>
@@ -46,7 +51,7 @@ const translatePath = useTranslatedPath(lang)
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{params.tag}</BreadcrumbPage>
+            <BreadcrumbPage>{tag}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

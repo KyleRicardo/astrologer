@@ -2,10 +2,18 @@
 import BlogLayout from '@/layouts/BlogLayout.astro'
 import Layout from '@/layouts/Layout.astro'
 import ArticleCard from '@/components/ArticleCard.astro'
-import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { type Lang, useTranslations } from '@/i18n/utils'
 import { getPostsByLang } from '@/utils/get-contents'
+import { languages, defaultLang } from '@/i18n/ui'
 
-const lang = getLangFromUrl(Astro.url)
+export function getStaticPaths() {
+  return Object.keys(languages).map((l) => ({
+    params: { lang: l === defaultLang ? undefined : l },
+    props: { lang: l as Lang },
+  }))
+}
+
+const { lang } = Astro.props as { lang: Lang }
 const t = useTranslations(lang)
 
 const posts = await getPostsByLang(lang)

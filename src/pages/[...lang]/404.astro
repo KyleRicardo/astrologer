@@ -4,13 +4,14 @@ import { Icon } from 'astro-icon/components'
 import { useTranslations, useTranslatedPath, type Lang } from '@/i18n/utils'
 import { languages, defaultLang } from '@/i18n/ui'
 
-export async function getStaticPaths() {
-  return Object.keys(languages)
-    .filter((l) => l !== defaultLang)
-    .map((l) => ({ params: { lang: l } }))
+export function getStaticPaths() {
+  return Object.keys(languages).map((l) => ({
+    params: { lang: l === defaultLang ? undefined : l },
+    props: { lang: l as Lang },
+  }))
 }
 
-const { lang } = Astro.params as { lang: Lang }
+const { lang } = Astro.props as { lang: Lang }
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
 ---

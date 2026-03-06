@@ -3,25 +3,29 @@ import ArticleDetail from '@/components/ArticleDetail.astro'
 import { getPostPaths } from '@/utils/get-contents'
 import { languages, defaultLang } from '@/i18n/ui'
 import type { Lang } from '@/i18n/utils'
+import type { CollectionEntry } from 'astro:content'
 
 export async function getStaticPaths() {
-  const langs = Object.keys(languages).filter((l) =>
-    l !== defaultLang
-  ) as Lang[]
+  const langs = Object.keys(languages) as Lang[]
   const paths = await Promise.all(
     langs.map(async (lang) => {
       const postPaths = await getPostPaths(lang)
       return postPaths.map((path) => ({
-        params: { ...path.params, lang },
-        props: path.props,
+        params: {
+          ...path.params,
+          lang: lang === defaultLang ? undefined : lang,
+        },
+        props: { post: path.props, lang },
       }))
     }),
   )
   return paths.flat()
 }
 
-const { lang } = Astro.params as { lang: Lang }
-const post = Astro.props
+const { post, lang } = Astro.props as {
+  post: CollectionEntry<'blog'>
+  lang: Lang
+}
 ---
 
 <ArticleDetail post={post} lang={lang} />

@@ -6,13 +6,14 @@ import { getArchives } from '@/utils/get-contents'
 import PostList from '@/components/PostList.astro'
 import { languages, defaultLang } from '@/i18n/ui'
 
-export async function getStaticPaths() {
-  return Object.keys(languages)
-    .filter((l) => l !== defaultLang)
-    .map((l) => ({ params: { lang: l } }))
+export function getStaticPaths() {
+  return Object.keys(languages).map((l) => ({
+    params: { lang: l === defaultLang ? undefined : l },
+    props: { lang: l as Lang },
+  }))
 }
 
-const { lang } = Astro.params as { lang: Lang }
+const { lang } = Astro.props as { lang: Lang }
 const t = useTranslations(lang)
 
 const postsGroupedByYear = await getArchives(lang)
