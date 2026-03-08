@@ -1,5 +1,4 @@
 ---
-import { cn } from '@/lib/utils'
 import { Icon } from 'astro-icon/components'
 import type { HTMLAttributes } from 'astro/types'
 
@@ -18,16 +17,11 @@ const tabs = {
   bun: __bun__,
 }
 
-// 生成唯一 ID，确保 A11y 属性 (aria-controls) 一一对应
 const uid = Math.random().toString(36).substring(2, 9)
 ---
 
 <code-block-command
   class="overflow-x-auto"
-  data-npm={__npm__}
-  data-yarn={__yarn__}
-  data-pnpm={__pnpm__}
-  data-bun={__bun__}
 ><div
     dir="ltr"
     data-slot="tabs"
@@ -100,7 +94,6 @@ const uid = Math.random().toString(36).substring(2, 9)
     >
       <polyline points="20 6 9 17 4 12" />
     </svg></button></code-block-command><style is:global>
-/* CSS 依然负责控制视觉和显隐 (同上一版，保持不变) */
 .pkg-tab-panel {
   display: none;
 }
@@ -119,85 +112,133 @@ html[data-pkg="bun"] .pkg-tab-btn[data-pkg-target="bun"] {
   color: var(--foreground);
 }
 </style><script>
-// JS 负责两件事：响应点击存数据，响应事件更 A11y 语义
 class CodeBlockCommand extends HTMLElement {
-  connectedCallback() {
-    const buttons = this.querySelectorAll('[role="tab"]')
-    const copyButton = this.querySelector('#copy-button')
-    const copyIcon = this.querySelector('.copy-icon')
-    const checkIcon = this.querySelector('.check-icon')
-    const tabs = {
-      npm: this.dataset.npm,
-      yarn: this.dataset.yarn,
-      pnpm: this.dataset.pnpm,
-      bun: this.dataset.bun,
-    }
-    // 1. 初始化 A11y 状态
-    const currentPkg = document.documentElement.getAttribute('data-pkg')
-      || 'pnpm' as 'npm' | 'yarn' | 'pnpm' | 'bun'
-    this.updateA11y(currentPkg, buttons)
+  #buttons: NodeListOf<HTMLButtonElement> | null = null
+  #tablist: HTMLElement | null = null
+  #copyButton: HTMLElement | null = null
+  #copyIcon: Element | null = null
+  #checkIcon: Element | null = null
+  #copyTimeout: ReturnType<typeof setTimeout> | undefined
+  #handleSync: ((e: Event) => void) | null = null
+  #handleKeydown: ((e: KeyboardEvent) => void) | null = null
+  #handleCopy: (() => void) | null = null
+  #buttonClickHandlers: Map<Element, () => void> = new Map()
 
-    // 2. 绑定点击事件
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => {
+  connectedCallback() {
+    this.#buttons = this.querySelectorAll<HTMLButtonElement>('[role="tab"]')
+    this.#tablist = this.querySelector('[role="tablist"]')
+    this.#copyButton = this.querySelector('[data-slot="copy-button"]')
+    this.#copyIcon = this.querySelector('.copy-icon')
+    this.#checkIcon = this.querySelector('.check-icon')
+
+    const currentPkg = document.documentElement.getAttribute('data-pkg')
+      || 'pnpm'
+    this.#updateA11y(currentPkg)
+
+    this.#buttons.forEach((btn) => {
+      const handler = () => {
         const pkg = btn.getAttribute('data-pkg-target')
         if (pkg) {
-          // 存入本地。这会触发 <head> 里的逻辑，但不会触发当前页面的 storage 事件
           localStorage.setItem('preferred-pkg', pkg)
-
-          // 派发事件让当前页面的所有 Tabs 更新
           document.documentElement.setAttribute('data-pkg', pkg)
-          window.dispatchEvent(new CustomEvent('pkg-synced', { detail: pkg }))
+          window.dispatchEvent(
+            new CustomEvent('pkg-synced', { detail: pkg }),
+          )
+          btn.focus()
         }
-      })
+      }
+      this.#buttonClickHandlers.set(btn, handler)
+      btn.addEventListener('click', handler)
     })
 
-    copyButton?.addEventListener('click', async () => {
-      if (!copyIcon || !checkIcon) return
+    this.#handleKeydown = (e: KeyboardEvent) => {
+      if (!this.#buttons) return
+      const tabs = Array.from(this.#buttons)
+      const current = tabs.indexOf(
+        document.activeElement as HTMLButtonElement,
+      )
+      if (current === -1) return
+
+      let next: number | null = null
+      switch (e.key) {
+        case 'ArrowRight':
+          next = (current + 1) % tabs.length
+          break
+        case 'ArrowLeft':
+          next = (current - 1 + tabs.length) % tabs.length
+          break
+        case 'Home':
+          next = 0
+          break
+        case 'End':
+          next = tabs.length - 1
+          break
+        default:
+          return
+      }
+      e.preventDefault()
+      tabs[next].click()
+    }
+    this.#tablist?.addEventListener('keydown', this.#handleKeydown)
+
+    this.#handleCopy = async () => {
+      if (!this.#copyIcon || !this.#checkIcon) return
 
       const currentPkg = document.documentElement.getAttribute('data-pkg')
-        || 'pnpm' as 'npm' | 'yarn' | 'pnpm' | 'bun'
-      const codeToCopy = tabs[currentPkg as keyof typeof tabs]
-
+        || 'pnpm'
+      const panel = this.querySelector(
+        `.pkg-tab-panel[data-pkg-panel="${currentPkg}"]`,
+      )
+      const codeToCopy = panel?.querySelector('code')?.textContent
       if (!codeToCopy) return
 
       try {
         await navigator.clipboard.writeText(codeToCopy)
 
-        // Show checkmark
-        copyIcon.classList.remove('scale-100', 'opacity-100')
-        copyIcon.classList.add('scale-0', 'opacity-0')
-        checkIcon.classList.remove('scale-0', 'opacity-0')
-        checkIcon.classList.add('scale-100', 'opacity-100')
+        this.#copyIcon.classList.remove('scale-100', 'opacity-100')
+        this.#copyIcon.classList.add('scale-0', 'opacity-0')
+        this.#checkIcon.classList.remove('scale-0', 'opacity-0')
+        this.#checkIcon.classList.add('scale-100', 'opacity-100')
 
-        // Reset after 2 seconds
-        setTimeout(() => {
-          copyIcon.classList.remove('scale-0', 'opacity-0')
-          copyIcon.classList.add('scale-100', 'opacity-100')
-          checkIcon.classList.remove('scale-100', 'opacity-100')
-          checkIcon.classList.add('scale-0', 'opacity-0')
-      }, 2000)
+        clearTimeout(this.#copyTimeout)
+        this.#copyTimeout = setTimeout(() => {
+          this.#copyIcon?.classList.remove('scale-0', 'opacity-0')
+          this.#copyIcon?.classList.add('scale-100', 'opacity-100')
+          this.#checkIcon?.classList.remove('scale-100', 'opacity-100')
+          this.#checkIcon?.classList.add('scale-0', 'opacity-0')
+        }, 2000)
       } catch (err) {
         console.error('Failed to copy text: ', err)
       }
-    })
-
-    // 3. 监听全局同步事件 (本页点击 或 跨浏览器 Tab 触发)
-    // 需要 bind(this) 因为是在 class 内部
-    this.handleSync = (e: Event) => {
-      const pkg = (e as CustomEvent).detail
-      this.updateA11y(pkg, buttons)
     }
-    window.addEventListener('pkg-synced', this.handleSync)
+    this.#copyButton?.addEventListener('click', this.#handleCopy)
+
+    this.#handleSync = (e: Event) => {
+      this.#updateA11y((e as CustomEvent).detail)
+    }
+    window.addEventListener('pkg-synced', this.#handleSync)
   }
 
   disconnectedCallback() {
-    // 记得清理事件监听，防止内存泄漏
-    window.removeEventListener('pkg-synced', this.handleSync)
+    this.#buttonClickHandlers.forEach((handler, btn) => {
+      btn.removeEventListener('click', handler)
+    })
+    this.#buttonClickHandlers.clear()
+
+    if (this.#handleKeydown) {
+      this.#tablist?.removeEventListener('keydown', this.#handleKeydown)
+    }
+    if (this.#handleCopy) {
+      this.#copyButton?.removeEventListener('click', this.#handleCopy)
+    }
+    if (this.#handleSync) {
+      window.removeEventListener('pkg-synced', this.#handleSync)
+    }
+    clearTimeout(this.#copyTimeout)
   }
 
-  updateA11y(pkg: string, buttons: NodeListOf<Element>) {
-    buttons.forEach(btn => {
+  #updateA11y(pkg: string) {
+    this.#buttons?.forEach((btn) => {
       const isSelected = btn.getAttribute('data-pkg-target') === pkg
       btn.setAttribute('aria-selected', isSelected ? 'true' : 'false')
       btn.setAttribute('tabindex', isSelected ? '0' : '-1')
@@ -206,5 +247,7 @@ class CodeBlockCommand extends HTMLElement {
   }
 }
 
-customElements.define('code-block-command', CodeBlockCommand)
+if (!customElements.get('code-block-command')) {
+  customElements.define('code-block-command', CodeBlockCommand)
+}
 </script>
