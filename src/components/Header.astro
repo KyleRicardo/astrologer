@@ -214,7 +214,7 @@ const { showProgressBar = false } = Astro.props
   {showProgressBar && (
     <div
       id="reading-progress"
-      class="bg-primary absolute -bottom-px left-0 z-50 h-0.5 w-full origin-left transition-transform duration-100 ease-out will-change-transform"
+      class="bg-primary absolute -bottom-px left-0 z-10 h-0.5 w-full origin-left transition-transform duration-100 ease-out will-change-transform"
       style="transform: scaleX(0)"
     >
     </div>
@@ -287,44 +287,43 @@ function handleResize() {
   previouslyWideScreen = isWideScreen
 }
 
-// Reading Progress Bar Logic
+// Reading progress bar
 function initProgressBar() {
   const progressBar = document.getElementById('reading-progress')
   if (!progressBar) return
 
+  let ticking = false
+  let docHeight = document.documentElement.scrollHeight
+    - window.innerHeight
+
   function updateProgress() {
-    if (!progressBar) return
-    const scrollTop = window.scrollY
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight
     const scrollPercent = docHeight > 0
-      ? Math.min(Math.max(scrollTop / docHeight, 0), 1)
+      ? Math.min(Math.max(window.scrollY / docHeight, 0), 1)
       : 0
     progressBar.style.transform = `scaleX(${scrollPercent})`
+    ticking = false
   }
 
-  // Initial update
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(updateProgress)
+      ticking = true
+    }
+  }
+
+  function onResize() {
+    docHeight = document.documentElement.scrollHeight
+      - window.innerHeight
+  }
+
   updateProgress()
+  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('resize', onResize, { passive: true })
 
-  // Update on scroll
-  window.addEventListener('scroll', updateProgress, { passive: true })
-
-  // Cleanup on unmount (Astro handles this mostly via page-load, but good practice)
-  // For now we just add listener, subsequent page loads might accumulate if not careful?
-  // Actually astro:page-load is triggered on every navigation.
-  // Ideally we should remove the old listener, but since we are replacing the document body or part of it, it might be fine.
-  // However, window event listeners persist.
-  // Let's store the reference to remove it later if needed, OR just checking if element exists inside the handler is enough
-  // but `updateProgress` closes over `progressBar`, so we need to be careful.
-  // A simpler way for View Transitions is to add the listener and remove it on `astro:before-swap` or similar?
-  // Or just make sure we don't duplicate logic.
-  // The easiest way with `astro:page-load` is often sufficient if we don't worry about minor leaks, OR we clean up.
-
-  // Let's try to be clean.
-  const cleanUp = () => {
-    window.removeEventListener('scroll', updateProgress)
-  }
-
-  document.addEventListener('astro:before-swap', cleanUp, { once: true })
+  document.addEventListener('astro:before-swap', () => {
+    window.removeEventListener('scroll', onScroll)
+    window.removeEventListener('resize', onResize)
+  }, { once: true })
 }
 
 // Add event listeners
