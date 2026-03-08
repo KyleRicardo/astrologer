@@ -497,6 +497,37 @@ html.lang-transition * {
 }
 
 /* ==========================================
+   Heading Anchors
+   ========================================== */
+:is(h2, h3, h4)[id] {
+  position: relative;
+  scroll-margin-top: 5rem;
+}
+
+.heading-anchor {
+  position: absolute;
+  inset-inline-start: -1.5em;
+  text-decoration: none;
+  opacity: 0;
+  color: var(--muted-foreground);
+}
+
+.heading-anchor:hover {
+  color: var(--primary);
+}
+
+:is(h2, h3, h4)[id]:hover .heading-anchor,
+.heading-anchor:focus-visible {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .heading-anchor {
+    transition: opacity 0.2s ease;
+  }
+}
+
+/* ==========================================
    Scroll Reveal
    ========================================== */
 @media (prefers-reduced-motion: no-preference) {

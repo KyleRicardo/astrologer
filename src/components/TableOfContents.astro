@@ -70,70 +70,69 @@ function initToc() {
   const tocLinks = document.querySelectorAll<HTMLAnchorElement>('.toc-link')
   if (tocLinks.length === 0) return
 
-  const headingSlugs = Array.from(tocLinks).map(link => link.dataset.slug!)
-  const headingElements = headingSlugs
-    .map(slug => document.getElementById(slug))
+  const headingElements = Array.from(tocLinks)
+    .map(link => document.getElementById(link.dataset.slug!))
     .filter((el): el is HTMLElement => el !== null)
 
   if (headingElements.length === 0) return
 
-  // Header offset for scroll calculations
-  const HEADER_OFFSET = 80
-
-  let activeSlug: string | null = null
-
-  function updateActiveLink(slug: string) {
+  function setActiveLink(slug: string) {
     tocLinks.forEach(link => {
-      if (link.dataset.slug === slug) {
-        link.classList.add('active')
+      const isActive = link.dataset.slug === slug
+      link.classList.toggle('active', isActive)
+      if (isActive) {
+        link.setAttribute('aria-current', 'true')
       } else {
-        link.classList.remove('active')
+        link.removeAttribute('aria-current')
       }
     })
   }
 
-  // Find the current heading based on scroll position
-  function getCurrentHeading(): string | null {
-    const scrollTop = window.scrollY + HEADER_OFFSET + 20 // Add some buffer
+  // Guard: skip observer updates during programmatic scroll
+  let scrollTarget: string | null = null
 
-    // Find the last heading that has been scrolled past
-    let currentSlug: string | null = null
-    for (const el of headingElements) {
-      if (el.offsetTop <= scrollTop) {
-        currentSlug = el.id
-      } else {
-        break
+  function scrollTo(target: HTMLElement, slug: string) {
+    scrollTarget = slug
+    setActiveLink(slug)
+    window.addEventListener(
+      'scrollend',
+      () => {
+        scrollTarget = null
+      },
+      { once: true },
+    )
+    const reduced = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+    target.scrollIntoView({
+      behavior: reduced ? 'instant' : 'smooth',
+      block: 'start',
+    })
+  }
+
+  // IntersectionObserver: activate whichever heading enters the
+  // top band of the viewport. When it exits, keep it active until
+  // the next heading enters.
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (scrollTarget) return
+
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          setActiveLink(entry.target.id)
+        }
       }
-    }
+    },
+    {
+      // 80px header offset, observe only top 20% of viewport
+      rootMargin: '-80px 0px -80% 0px',
+      threshold: 0,
+    },
+  )
 
-    // If no heading has been scrolled past, use the first one
-    if (currentSlug === null && headingElements.length > 0) {
-      currentSlug = headingElements[0].id
-    }
+  headingElements.forEach(el => observer.observe(el))
 
-    return currentSlug
-  }
-
-  // Update active heading on scroll
-  function handleScroll() {
-    const currentSlug = getCurrentHeading()
-    if (currentSlug && currentSlug !== activeSlug) {
-      activeSlug = currentSlug
-      updateActiveLink(currentSlug)
-    }
-  }
-
-  // Initial highlight
-  const initialSlug = getCurrentHeading()
-  if (initialSlug) {
-    activeSlug = initialSlug
-    updateActiveLink(initialSlug)
-  }
-
-  // Listen for scroll events
-  window.addEventListener('scroll', handleScroll, { passive: true })
-
-  // Smooth scroll on click with offset
+  // Click handlers
   tocLinks.forEach(link => {
     link.addEventListener('click', (e) => {
       e.preventDefault()
@@ -141,28 +140,25 @@ function initToc() {
       if (!slug) return
 
       const target = document.getElementById(slug)
-      if (target) {
-        // Calculate position accounting for fixed header
-        const targetPosition = target.offsetTop - HEADER_OFFSET
-        window.scrollTo({
-          top: targetPosition,
-          behavior: 'smooth',
-        })
-        // Update URL hash without jumping
-        history.pushState(null, '', `#${slug}`)
-        // Immediately update active state
-        activeSlug = slug
-        updateActiveLink(slug)
-      }
+      if (!target) return
+
+      history.pushState(null, '', `#${slug}`)
+      scrollTo(target, slug)
     })
   })
 
-  // Cleanup
-  const cleanup = () => {
-    window.removeEventListener('scroll', handleScroll)
+  // Hash navigation: sync active link (browser handles scroll)
+  const hash = window.location.hash.slice(1)
+  if (hash) {
+    setActiveLink(hash)
   }
 
-  document.addEventListener('astro:before-swap', cleanup, { once: true })
+  // Cleanup for View Transitions
+  document.addEventListener(
+    'astro:before-swap',
+    () => observer.disconnect(),
+    { once: true },
+  )
 }
 
 document.addEventListener('astro:page-load', initToc)

@@ -14,6 +14,8 @@ import remarkMath from 'remark-math';
 import rehypeCallouts from 'rehype-callouts';
 import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import { transformers } from './src/lib/highlight-code'
 
 import react from '@astrojs/react';
@@ -37,13 +39,30 @@ export default defineConfig({
           block: 'plaintext',
         },
         theme: {
-          dark: 'github-dark',
+          dark: 'dark-plus',
           light: 'github-light-default',
         },
         transformers,
       }],
       rehypeCallouts,
       rehypeKatex,
+      rehypeSlug,
+      [rehypeAutolinkHeadings, {
+        behavior: 'prepend',
+        properties: {
+          className: ['heading-anchor'],
+          ariaLabel: 'Link to this section',
+        },
+        content: {
+          type: 'element',
+          tagName: 'span',
+          properties: {
+            className: ['heading-anchor-icon'],
+            ariaHidden: 'true',
+          },
+          children: [{ type: 'text', value: '#' }],
+        },
+      }],
     ],
   },
 

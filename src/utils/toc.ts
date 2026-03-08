@@ -23,7 +23,7 @@ export function buildTocTree(
     const node: TocHeading = {
       depth: heading.depth,
       slug: heading.slug,
-      text: heading.text,
+      text: heading.text.replace(/^#\s*/, ''),
       children: [],
     }
 
