@@ -22,6 +22,10 @@ No test framework is configured.
 - **Linter**: ESLint with TypeScript + Astro plugins
 - **Pre-commit hooks**: lefthook runs format + lint on staged files
 - **Path alias**: `@/*` maps to `./src/*`
+- Use ES modules (import/export) syntax, not CommonJS (require)
+- Destructure imports when possible (eg. import { foo } from 'bar')
+- This is a TypeScript project. Always use TypeScript (.ts/.tsx) for new files. Use strict typing — avoid `any` where possible.
+- When editing CSS files, preserve existing class naming conventions and check for unused styles before adding new ones.
 
 ## Architecture
 
@@ -32,7 +36,7 @@ No test framework is configured.
 - Default language (`zh`) has no URL prefix; non-default (`en`) uses `/en/` prefix
 - Content files are organized by language: `src/content/blog/en/`, `src/content/blog/zh/`
 - Translations live in `src/i18n/ui.ts`, accessed via `useTranslations(lang)` from `src/i18n/utils.ts`
-- Routes are duplicated: `/posts/[slug]` (default lang) and `/[lang]/posts/[slug]` (other langs)
+- All routes use a single `[...lang]` rest parameter (e.g., `src/pages/[...lang]/posts/[slug].astro`). `getStaticPaths` returns `lang: undefined` for the default language and `lang: 'en'` for non-default, so Astro generates both `/posts/slug` and `/en/posts/slug` from one file
 - Language is extracted from content `id` via `id.split('/')[0]`
 
 ### Content Collections
