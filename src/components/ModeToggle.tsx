@@ -2,6 +2,11 @@ import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import {
+  calculateEndRadius,
+  getNextTheme,
+  supportsViewTransition,
+} from '@/utils/theme'
 
 export function ModeToggle() {
   const [theme, setThemeState] = React.useState<'light' | 'dark'>('light')
@@ -12,12 +17,12 @@ export function ModeToggle() {
   }, [])
 
   const toggleTheme = (event: React.MouseEvent) => {
-    const isDark = theme === 'dark'
-    const nextTheme = isDark ? 'light' : 'dark'
+    const nextTheme = getNextTheme(theme)
 
-    // @ts-expect-error experimental API
-    const isAppearanceTransition = document.startViewTransition
-      && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isAppearanceTransition = supportsViewTransition(
+      'startViewTransition' in document,
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+    )
 
     if (!isAppearanceTransition) {
       setThemeState(nextTheme)
@@ -27,10 +32,7 @@ export function ModeToggle() {
 
     const x = event.clientX
     const y = event.clientY
-    const endRadius = Math.hypot(
-      Math.max(x, innerWidth - x),
-      Math.max(y, innerHeight - y),
-    )
+    const endRadius = calculateEndRadius(x, y, innerWidth, innerHeight)
 
     const root = document.documentElement
     root.classList.add('theme-transition')

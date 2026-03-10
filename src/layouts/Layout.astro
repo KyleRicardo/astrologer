@@ -124,6 +124,8 @@ body {
 <!-- <script is:inline src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script> -->
 
 <script is:inline>
+// Theme preference logic is duplicated from src/utils/theme.ts because
+// is:inline scripts cannot import ES modules. Keep both in sync.
 function setDarkMode(document) {
   const getThemePreference = () => {
     if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {

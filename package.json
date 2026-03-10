@@ -11,7 +11,11 @@
     "lint:fix": "eslint --fix",
     "format": "dprint fmt",
     "generate:og": "unrun scripts/generate-default-og.ts",
-    "prepare": "lefthook run pre-commit"
+    "prepare": "lefthook run pre-commit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",
@@ -44,6 +48,7 @@
   },
   "devDependencies": {
     "@iconify-json/ri": "^1.2.7",
+    "@playwright/test": "^1.58.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
     "@takumi-rs/image-response": "^0.70.3",
@@ -62,7 +67,8 @@
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.0",
     "unist-util-visit": "^5.0.0",
-    "unrun": "^0.2.28"
+    "unrun": "^0.2.28",
+    "vitest": "^4.0.18"
   },
   "pnpm": {
     "onlyBuiltDependencies": [
