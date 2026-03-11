@@ -5,7 +5,7 @@ import {
   useTranslatedPath,
 } from '@/i18n/utils'
 import NavIcon from './NavIcon.astro'
-import { ModeToggle } from './ModeToggle'
+import ModeToggle from './ModeToggle.astro'
 import LangSwitcher from './LangSwitcher.astro'
 import { getSiteConfig } from '@/site.config'
 
@@ -207,7 +207,7 @@ const { showProgressBar = false } = Astro.props
       </div>
       <div aria-label="display options" class="ml-1 flex items-center">
         <LangSwitcher />
-        <ModeToggle client:load />
+        <ModeToggle />
       </div>
     </div>
   </div>

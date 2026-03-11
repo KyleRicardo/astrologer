@@ -1,0 +1,120 @@
+<button
+  id="mode-toggle"
+  class="inline-flex shrink-0 cursor-pointer items-center justify-center rounded-[min(var(--radius-md),10px)] border border-transparent bg-clip-padding text-sm font-medium transition-all outline-none select-none size-8 hover:bg-muted hover:text-foreground dark:hover:bg-muted/50 focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+  aria-label="Toggle theme"
+>
+  <!-- Sun icon (visible in light mode) -->
+  <svg
+    class="h-4 w-4 scale-100 rotate-0 transition-all dark:scale-0 dark:-rotate-90"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
+  </svg>
+  <!-- Moon icon (visible in dark mode) -->
+  <svg
+    class="absolute h-4 w-4 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+  <span class="sr-only">Toggle theme</span>
+</button>
+
+<script>
+import {
+  calculateEndRadius,
+  getNextTheme,
+  supportsViewTransition,
+} from '@/utils/theme'
+import type { Theme } from '@/utils/theme'
+
+function applyTheme(newTheme: Theme) {
+  const isDark = newTheme === 'dark'
+  document.documentElement.classList[isDark ? 'add' : 'remove']('dark')
+  localStorage.setItem('theme', newTheme)
+}
+
+function toggleTheme(event: MouseEvent) {
+  const current: Theme = document.documentElement.classList.contains('dark')
+    ? 'dark'
+    : 'light'
+  const nextTheme = getNextTheme(current)
+
+  const isAppearanceTransition = supportsViewTransition(
+    'startViewTransition' in document,
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  )
+
+  if (!isAppearanceTransition) {
+    applyTheme(nextTheme)
+    return
+  }
+
+  const x = event.clientX
+  const y = event.clientY
+  const endRadius = calculateEndRadius(x, y, innerWidth, innerHeight)
+
+  const root = document.documentElement
+  root.classList.add('theme-transition')
+  root.style.setProperty('--x', `${x}px`)
+  root.style.setProperty('--y', `${y}px`)
+  root.style.setProperty('--mask-radius', '0px')
+
+  const transition = document.startViewTransition(() => {
+    applyTheme(nextTheme)
+  })
+
+  transition.ready.then(() => {
+    const animation = root.animate(
+      {
+        '--mask-radius': `${endRadius}px`,
+      },
+      {
+        duration: 500,
+        easing: 'ease-out',
+        fill: 'both',
+        pseudoElement: '::view-transition-new(root)',
+      },
+    )
+
+    transition.finished.then(() => {
+      animation.cancel()
+
+      root.classList.remove('theme-transition')
+      root.style.removeProperty('--x')
+      root.style.removeProperty('--y')
+      root.style.removeProperty('--mask-radius')
+    })
+  })
+}
+
+document.addEventListener('astro:page-load', () => {
+  document
+    .getElementById('mode-toggle')
+    ?.addEventListener('click', toggleTheme)
+})
+</script>

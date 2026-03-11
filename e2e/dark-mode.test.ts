@@ -1,12 +1,4 @@
 import { expect, test } from '@playwright/test'
-import type { Page } from '@playwright/test'
-
-// Navigate and wait for Astro island hydration to settle.
-// client:load islands hydrate asynchronously after JS loads.
-async function gotoAndHydrate(page: Page, url: string) {
-  await page.goto(url)
-  await page.waitForLoadState('networkidle')
-}
 
 test.describe('Dark Mode', () => {
   test.describe('system preference', () => {
@@ -28,7 +20,7 @@ test.describe('Dark Mode', () => {
   test.describe('toggle', () => {
     test('switches from light to dark', async ({ page }) => {
       await page.emulateMedia({ colorScheme: 'light' })
-      await gotoAndHydrate(page, '/')
+      await page.goto('/')
 
       const toggle = page.getByRole('button', { name: 'Toggle theme' })
       await toggle.click()
@@ -38,7 +30,7 @@ test.describe('Dark Mode', () => {
 
     test('switches from dark to light', async ({ page }) => {
       await page.emulateMedia({ colorScheme: 'dark' })
-      await gotoAndHydrate(page, '/')
+      await page.goto('/')
 
       const toggle = page.getByRole('button', { name: 'Toggle theme' })
       await toggle.click()
@@ -50,12 +42,11 @@ test.describe('Dark Mode', () => {
   test.describe('persistence', () => {
     test('updates localStorage after toggle', async ({ page }) => {
       await page.emulateMedia({ colorScheme: 'light' })
-      await gotoAndHydrate(page, '/')
+      await page.goto('/')
 
       const toggle = page.getByRole('button', { name: 'Toggle theme' })
       await toggle.click()
 
-      // toHaveClass auto-retries, absorbing any hydration delay
       await expect(page.locator('html')).toHaveClass(/dark/)
 
       const stored = await page.evaluate(
@@ -66,7 +57,7 @@ test.describe('Dark Mode', () => {
 
     test('persists theme after page reload', async ({ page }) => {
       await page.emulateMedia({ colorScheme: 'light' })
-      await gotoAndHydrate(page, '/')
+      await page.goto('/')
 
       const toggle = page.getByRole('button', { name: 'Toggle theme' })
       await toggle.click()
@@ -84,7 +75,7 @@ test.describe('Dark Mode', () => {
 
     test('persists theme across navigation (View Transitions)', async ({ page }) => {
       await page.emulateMedia({ colorScheme: 'light' })
-      await gotoAndHydrate(page, '/')
+      await page.goto('/')
 
       const toggle = page.getByRole('button', { name: 'Toggle theme' })
       await toggle.click()
@@ -119,7 +110,7 @@ test.describe('Dark Mode', () => {
         colorScheme: 'light',
         reducedMotion: 'reduce',
       })
-      await gotoAndHydrate(page, '/')
+      await page.goto('/')
 
       const toggle = page.getByRole('button', { name: 'Toggle theme' })
       await toggle.click()
