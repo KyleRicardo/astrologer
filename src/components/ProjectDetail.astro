@@ -117,8 +117,16 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
 </Layout>
 
 <script>
-import mediumZoom from 'medium-zoom'
-mediumZoom('[astro-content] > img, [astro-content] :not(a) > img', {
-  background: 'var(--background)',
+import mediumZoom from 'medium-zoom/dist/pure'
+
+document.addEventListener('astro:page-load', () => {
+  const zoom = mediumZoom(
+    '[astro-content] > img, [astro-content] :not(a) > img',
+    { background: 'var(--background)' },
+  )
+
+  document.addEventListener('astro:before-swap', () => zoom.detach(), {
+    once: true,
+  })
 })
 </script>

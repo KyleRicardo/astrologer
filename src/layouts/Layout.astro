@@ -8,10 +8,10 @@ import '@/styles/global.css'
 import '@fontsource-variable/noto-sans-sc'
 import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
+import 'medium-zoom/dist/style.css'
 
-import { getLangFromUrl } from '@/i18n/utils'
+import { getLangFromUrl, getLocaleFromLang } from '@/i18n/utils'
 import { getSiteConfig } from '@/site.config'
-import { defaultLang } from '@/i18n/ui'
 
 const lang = getLangFromUrl(Astro.url)
 
@@ -35,7 +35,7 @@ const {
 
 const site = Astro.site?.toString() ?? ''
 
-const locale = Astro.currentLocale ?? defaultLang
+const locale = getLocaleFromLang(lang)
 
 const siteConfig = getSiteConfig(lang)
 
@@ -50,7 +50,6 @@ const ogImage = image
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/style.min.css"> -->
     <!-- Get the latest one from: https://katex.org/docs/browser -->
     <link
       href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
@@ -116,12 +115,9 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
-  font-display: swap;
   scrollbar-gutter: stable;
 }
 </style>
-
-<!-- <script is:inline src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script> -->
 
 <script is:inline>
 // Theme preference logic is duplicated from src/utils/theme.ts because

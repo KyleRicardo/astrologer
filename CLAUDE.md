@@ -16,6 +16,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 No test framework is configured.
 
+| `pnpm test` | Run Vitest unit tests |
+| `pnpm test:e2e` | Run Playwright e2e tests |
+
 ## Code Style
 
 - **Formatter**: dprint — single quotes, no semicolons (ASI), 80 char line width
@@ -41,7 +44,7 @@ No test framework is configured.
 
 ### Content Collections
 
-Defined in `src/content.config.ts` with two collections:
+Defined in `src/content.config.ts` with two collections (`z` imported from `astro/zod`):
 
 - **blog**: posts with title, date, category, tags, draft, pinned, cover
 - **project**: projects with title, description, date, icon, github/homepage URLs, tags
@@ -78,3 +81,10 @@ Configured in `astro.config.mjs`:
 - **Math**: remark-math + rehype-katex
 - **Callouts**: rehype-callouts
 - Custom MDX components in `src/components/mdx/` (Code, Pre, Figure, Steps)
+
+### Client Router (View Transitions)
+
+- Uses `ClientRouter` from `astro:transitions` in Layout.astro
+- **Lifecycle pattern**: `astro:page-load` to initialize, `astro:before-swap` with `{ once: true }` to clean up. See `src/scripts/scroll-reveal.ts` for the canonical example.
+- **CSS in component `<script>` tags gets lost on navigation** — Astro removes the `<link>` on swap and deduplication prevents re-injection. Always import CSS that must persist in `Layout.astro` frontmatter (e.g., `medium-zoom/dist/style.css`, Fontsource fonts).
+- JS libraries that attach to DOM elements (e.g., medium-zoom) must `.detach()` on `astro:before-swap` and re-initialize on `astro:page-load` to avoid stale instances.
