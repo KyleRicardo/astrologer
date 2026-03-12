@@ -18,8 +18,6 @@ import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import { transformers } from './src/lib/highlight-code'
 
-import react from '@astrojs/react';
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://astrologer-theme.vercel.app',
@@ -70,6 +68,5 @@ export default defineConfig({
     icon(),
     mdx(),
     sitemap(),
-    react(),
   ]
 });

@@ -1,13 +1,6 @@
 ---
 import PostList from '@/components/PostList.astro'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb'
+import Breadcrumb from '@/components/ui/Breadcrumb.astro'
 import { type Lang, useTranslations, useTranslatedPath } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import { getTags } from '@/utils/get-tags'
@@ -42,19 +35,12 @@ const translatePath = useTranslatedPath(lang)
 <Layout title={`${t('nav.tags')}: ${tag}`}>
   <main class="mx-auto flex w-full max-w-3xl flex-1 flex-col px-4">
     <div class="border-grid flex h-16 items-center border-b">
-      <Breadcrumb>
-        <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink href={translatePath('/tags')}>
-              {t('nav.tags')}
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>{tag}</BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+      <Breadcrumb
+        items={[
+          { label: t('nav.tags'), href: translatePath('/tags') },
+          { label: tag },
+        ]}
+      />
     </div>
 
     <PostList posts={posts} />

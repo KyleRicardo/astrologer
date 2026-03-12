@@ -13,8 +13,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | `pnpm lint:fix`    | Auto-fix lint issues                          |
 | `pnpm format`      | Format with dprint                            |
 | `pnpm generate:og` | Generate default OG/cover images to `public/` |
-
-No test framework is configured.
+| `pnpm check`       | Type-check Astro + TS files via `astro check` |
 
 | `pnpm test` | Run Vitest unit tests |
 | `pnpm test:e2e` | Run Playwright e2e tests |
@@ -27,7 +26,8 @@ No test framework is configured.
 - **Path alias**: `@/*` maps to `./src/*`
 - Use ES modules (import/export) syntax, not CommonJS (require)
 - Destructure imports when possible (eg. import { foo } from 'bar')
-- This is a TypeScript project. Always use TypeScript (.ts/.tsx) for new files. Use strict typing — avoid `any` where possible.
+- This is a TypeScript project. Always use TypeScript (.ts) for new files. Use strict typing — avoid `any` where possible. The only `.tsx` file is `src/utils/og-image.tsx` (JSX for OG image generation via takumi, not React components).
+- **No React / no shadcn/ui.** All UI components are pure Astro (`.astro`). Do not add React dependencies or `@astrojs/react`. The `react` package exists solely as a build-time JSX factory for `og-image.tsx`.
 - When editing CSS files, preserve existing class naming conventions and check for unused styles before adding new ones.
 
 ## Architecture
@@ -57,7 +57,7 @@ Content utilities in `src/utils/get-contents.ts` provide filtering by language, 
 
 ### OG Image Generation
 
-`src/utils/og-image.tsx` uses `@takumi-rs/image-response` (takumi) to render JSX directly to PNG. Fonts (Outfit, Source Han Sans SC) are downloaded as TTF from CDN and cached in `node_modules/.cache/fonts`. Avatar is preloaded as a `persistentImage`. Three functions:
+`src/utils/og-image.tsx` uses `@takumi-rs/image-response` (takumi) to render JSX directly to PNG. The JSX here is compiled via `react/jsx-runtime` (configured in `tsconfig.json`) but is not a React component — it produces element trees for takumi's image renderer. Fonts (Outfit, Source Han Sans SC) are downloaded as TTF from CDN and cached in `node_modules/.cache/fonts`. Avatar is preloaded as a `persistentImage`. Three functions:
 
 - `renderOgImage()` — dynamic per-post/project images (1200x630)
 - `renderDefaultOg()` — site-wide OG image (1200x630)
@@ -70,8 +70,8 @@ Dynamic routes at `/og/posts/[lang]/[...slug].png` and `/og/projects/[lang]/[...
 - Tailwind CSS v4 with inline `@theme` configuration in `src/styles/global.css`
 - `@tailwindcss/typography` for prose content
 - Dark mode via `.dark` class on `<html>`, persisted to localStorage
-- shadcn/ui component patterns (configured in `components.json`, base color: zinc)
 - Utility: `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge)
+- Reusable UI components in `src/components/ui/` (pure Astro, no framework dependencies)
 
 ### MDX Pipeline
 

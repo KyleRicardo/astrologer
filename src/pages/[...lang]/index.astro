@@ -3,7 +3,7 @@ import Layout from '@/layouts/Layout.astro'
 import { useTranslations, useTranslatedPath, type Lang } from '@/i18n/utils'
 import { languages, defaultLang } from '@/i18n/ui'
 import ArticleCard from '@/components/ArticleCard.astro'
-import { Button } from '@/components/ui/button'
+import Button from '@/components/ui/Button.astro'
 import ProjectCard from '@/components/ProjectCard.astro'
 import { siteConfig } from '@/site.config'
 import Hero from '@/components/Hero.astro'
@@ -38,12 +38,11 @@ const translatePath = useTranslatedPath(lang)
       {recentPosts.map((post) => <div><ArticleCard post={post} /></div>)}
     </div>
     <footer class="flex flex-col items-center">
-      <a href={translatePath('/posts')}>
-        <Button
-          className="cursor-pointer rounded-full px-8 text-base"
-          variant="outline"
-        >{t('home.morePosts')}</Button>
-      </a>
+      <Button
+        href={translatePath('/posts')}
+        variant="outline"
+        class="rounded-full px-8 text-base"
+      >{t('home.morePosts')}</Button>
     </footer>
   </section>
   {siteConfig.enableRecentProjectsOnHomepage && (
@@ -63,12 +62,11 @@ const translatePath = useTranslatedPath(lang)
         ))}
       </div>
       <footer class="flex flex-col items-center">
-        <a href={translatePath('/projects')}>
-          <Button
-            className="cursor-pointer rounded-full px-8 text-base"
-            variant="outline"
-          >{t('home.moreProjects')}</Button>
-        </a>
+        <Button
+          href={translatePath('/projects')}
+          variant="outline"
+          class="rounded-full px-8 text-base"
+        >{t('home.moreProjects')}</Button>
       </footer>
     </section>
   )}
