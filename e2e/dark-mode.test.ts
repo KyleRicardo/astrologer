@@ -82,9 +82,9 @@ test.describe('Dark Mode', () => {
 
       await expect(page.locator('html')).toHaveClass(/dark/)
 
-      // Target the desktop <nav> link specifically — the homepage
-      // also has a "more posts" link to /posts outside the nav
-      await page.locator('nav a[href="/posts"]').click()
+      // Target the desktop <nav> link — exclude #mobile-menu which
+      // also contains a matching link inside its own <nav>
+      await page.locator('nav:not(#mobile-menu) a[href="/posts"]').click()
       await page.waitForURL('**/posts')
 
       await expect(page.locator('html')).toHaveClass(/dark/)
