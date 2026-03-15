@@ -5,8 +5,6 @@ export interface SiteConfig {
   domain: string
   // 访问的URL
   site: string
-  subtitle: string
-  author: string
   locales: Localized<LocaleConfig>
   // 网站创建时间
   createTime: string
@@ -45,6 +43,8 @@ export interface HeroConfig {
 interface LocaleConfig {
   title: string
   description: string
+  author: string
+  subtitle: string
   keywords: string[]
   hero: HeroConfig
 }
@@ -60,11 +60,11 @@ export const siteConfig: SiteConfig = {
   domain: 'astrologer-theme.vercel.app',
   // 访问的URL
   site: 'https://astrologer-theme.vercel.app',
-  subtitle: 'To make the world better, and life easier.',
-  author: 'Kyle Ricardo',
   locales: {
     en: {
       title: "Kyle's Home",
+      author: 'Kyle Ricardo',
+      subtitle: 'To make the world better, and life easier.',
       description: "Kyle Ricardo's personal blog",
       keywords: [
         'Kyle Ricardo',
@@ -91,6 +91,8 @@ export const siteConfig: SiteConfig = {
     },
     zh: {
       title: '今夕何夕',
+      author: '今夕何夕',
+      subtitle: '让世界更美好，让生活更从容。',
       description: 'Kyle Ricardo的个人博客，分享技术、生活、创作等内容。',
       keywords: [
         'Kyle Ricardo',

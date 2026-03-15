@@ -1,0 +1,95 @@
+---
+interface Props {
+  src: string
+  alt?: string
+  width?: number | string
+  height?: number | string
+}
+
+const { src, alt = '', width, height, ...rest } = Astro.props
+
+const hasSize = width && height
+---
+
+{hasSize ? (
+  <span class="img-wrapper" style={`aspect-ratio: ${width} / ${height}`}>
+    <img
+      src={src}
+      alt={alt}
+      width={width}
+      height={height}
+      loading="lazy"
+      decoding="async"
+      class="img-reveal"
+      onload="this.classList.add('loaded')
+this.parentElement.classList.add('loaded')"
+      {...rest}
+    />
+  </span>
+) : (
+   <img
+     src={src}
+     alt={alt}
+     loading="lazy"
+     decoding="async"
+     {...rest}
+   />
+ )}
+
+<style>
+.img-wrapper {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--muted) 25%,
+    var(--surface) 50%,
+    var(--muted) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+.img-wrapper.loaded {
+  background: none;
+  animation: none;
+}
+
+.img-reveal {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.img-reveal.loaded {
+  opacity: 1;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .img-wrapper {
+    animation: none;
+    background: var(--muted);
+  }
+
+  .img-reveal {
+    transition: none;
+    opacity: 1;
+  }
+}
+</style>

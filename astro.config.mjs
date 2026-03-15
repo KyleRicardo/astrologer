@@ -16,12 +16,19 @@ import rehypeKatex from 'rehype-katex';
 import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import { rehypeImageSize } from './rehype-image-size'
 import { transformers } from './src/lib/highlight-code'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://astrologer-theme.vercel.app',
+  image: {
+    remotePatterns: [{ protocol: 'https' }],
+  },
   vite: {
+    optimizeDeps: {
+      include: ['astro/toolbar'],
+    },
     plugins: [tailwindcss()]
   },
   markdown: {
@@ -61,6 +68,7 @@ export default defineConfig({
           children: [{ type: 'text', value: '#' }],
         },
       }],
+      rehypeImageSize,
     ],
   },
 

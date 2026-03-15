@@ -29,45 +29,50 @@ const translatePath = useTranslatedPath(lang)
 ---
 
 <Layout title={t('nav.home')}>
-  <Hero />
-  <section aria-label="posts" class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl">
-    <header class="text-center">
-      <h2 class="text-3xl font-bold">{t('home.recentPosts')}</h2>
-    </header>
-    <div class="my-12 space-y-8">
-      {recentPosts.map((post) => <div><ArticleCard post={post} /></div>)}
-    </div>
-    <footer class="flex flex-col items-center">
-      <Button
-        href={translatePath('/posts')}
-        variant="outline"
-        class="rounded-full px-8 text-base"
-      >{t('home.morePosts')}</Button>
-    </footer>
-  </section>
-  {siteConfig.enableRecentProjectsOnHomepage && (
+  <main>
+    <Hero />
     <section
-      aria-label="projects"
-      class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl xl:max-w-7xl"
+      aria-label="posts"
+      class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl"
     >
       <header class="text-center">
-        <h2 class="text-3xl font-bold">{t('home.recentProjects')}</h2>
+        <h2 class="text-3xl font-bold">{t('home.recentPosts')}</h2>
       </header>
-      <div
-        aria-label="projects"
-        class="mx-auto my-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3"
-      >
-        {recentProjects.map(project => (
-          <div><ProjectCard project={project} /></div>
-        ))}
+      <div class="my-12 space-y-8">
+        {recentPosts.map((post) => <div><ArticleCard post={post} /></div>)}
       </div>
       <footer class="flex flex-col items-center">
         <Button
-          href={translatePath('/projects')}
+          href={translatePath('/posts')}
           variant="outline"
           class="rounded-full px-8 text-base"
-        >{t('home.moreProjects')}</Button>
+        >{t('home.morePosts')}</Button>
       </footer>
     </section>
-  )}
+    {siteConfig.enableRecentProjectsOnHomepage && (
+      <section
+        aria-label="projects"
+        class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl xl:max-w-7xl"
+      >
+        <header class="text-center">
+          <h2 class="text-3xl font-bold">{t('home.recentProjects')}</h2>
+        </header>
+        <div
+          aria-label="projects"
+          class="mx-auto my-16 grid gap-8 md:grid-cols-2 xl:grid-cols-3"
+        >
+          {recentProjects.map(project => (
+            <div><ProjectCard project={project} /></div>
+          ))}
+        </div>
+        <footer class="flex flex-col items-center">
+          <Button
+            href={translatePath('/projects')}
+            variant="outline"
+            class="rounded-full px-8 text-base"
+          >{t('home.moreProjects')}</Button>
+        </footer>
+      </section>
+    )}
+  </main>
 </Layout>

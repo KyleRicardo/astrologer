@@ -3,11 +3,7 @@ import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
 import { getCategoryInfo } from '@/utils/get-categories'
 import { render, type CollectionEntry } from 'astro:content'
 import { Image } from 'astro:assets'
-import {
-  DEFAULT_COVER_PATH,
-  getSlugById,
-  sanitizeSlug,
-} from '@/utils/get-contents'
+import { defaultCover, getSlugById, sanitizeSlug } from '@/utils/get-contents'
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -31,7 +27,7 @@ const coverTransitionName = `post-cover-${lang}-${sanitizeSlug(postSlug)}`
 
 const formattedDate = date.toLocaleDateString(lang, { dateStyle: 'medium' })
 
-const coverImage = post.data.cover ?? DEFAULT_COVER_PATH
+const { cover } = post.data
 
 const categoryInfo = getCategoryInfo(category, lang)
 
@@ -44,14 +40,25 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || '' // F
 >
   <!-- Cover Image -->
   <div class="relative w-full shrink-0 overflow-hidden md:w-1/3">
-    <Image
-      src={coverImage}
-      alt={title}
-      width={360}
-      height={225}
-      class="h-full w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:rounded-t-none md:rounded-l-xl"
-      transition:name={coverTransitionName}
-    />
+    {cover ? (
+      <Image
+        src={cover}
+        alt={title}
+        width={360}
+        height={225}
+        class="h-full w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:rounded-t-none md:rounded-l-xl"
+        transition:name={coverTransitionName}
+      />
+    ) : (
+       <Image
+         src={defaultCover}
+         alt={title}
+         width={360}
+         height={225}
+         class="h-full w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:rounded-t-none md:rounded-l-xl"
+         transition:name={coverTransitionName}
+       />
+     )}
   </div>
 
   <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset group-hover:ring-black/10 dark:ring-white/10 dark:group-hover:ring-white/15">

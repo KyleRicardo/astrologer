@@ -3,11 +3,7 @@ import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
 import NavIcon from './NavIcon.astro'
 import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
-import {
-  DEFAULT_COVER_PATH,
-  getSlugById,
-  sanitizeSlug,
-} from '@/utils/get-contents'
+import { defaultCover, getSlugById, sanitizeSlug } from '@/utils/get-contents'
 
 interface Props {
   project: CollectionEntry<'project'>
@@ -25,8 +21,6 @@ const projectSlug = getSlugById(project.id)
 const cardTransitionName = `project-card-${lang}-${sanitizeSlug(projectSlug)}`
 const titleTransitionName = `project-title-${lang}-${sanitizeSlug(projectSlug)}`
 const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
-
-const coverImage = cover ?? DEFAULT_COVER_PATH
 ---
 
 <div
@@ -35,14 +29,25 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
 >
   <div class="relative z-10 flex h-full flex-col">
     <div class="overflow-hidden">
-      <Image
-        src={coverImage}
-        alt={title}
-        width={360}
-        height={225}
-        class="aspect-16/10 w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
-        transition:name={coverTransitionName}
-      />
+      {cover ? (
+        <Image
+          src={cover}
+          alt={title}
+          width={360}
+          height={225}
+          class="aspect-16/10 w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
+          transition:name={coverTransitionName}
+        />
+      ) : (
+         <Image
+           src={defaultCover}
+           alt={title}
+           width={360}
+           height={225}
+           class="aspect-16/10 w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
+           transition:name={coverTransitionName}
+         />
+       )}
     </div>
 
     <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset group-hover:ring-black/10 dark:ring-white/10 dark:group-hover:ring-white/15">

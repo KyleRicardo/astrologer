@@ -1,6 +1,8 @@
 import type { Lang } from '@/i18n/utils'
 import { getCollection, type CollectionEntry } from 'astro:content'
 
+export { default as defaultCover } from '@/assets/default-cover.png'
+
 interface GroupedPosts {
   year: number
   posts: CollectionEntry<'blog'>[]
@@ -77,8 +79,6 @@ const getArchives = async (lang: Lang): Promise<GroupedPosts[]> => {
 export function getSlugById(id: string) {
   return id.split('/').slice(1).join('/')
 }
-
-export const DEFAULT_COVER_PATH = '/default-cover.png'
 
 function getPostOgImagePath(id: string) {
   const [lang, ...rest] = id.split('/')

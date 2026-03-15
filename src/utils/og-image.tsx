@@ -5,7 +5,7 @@ import process from 'node:process'
 import { pipeline } from 'node:stream/promises'
 import { ImageResponse } from '@takumi-rs/image-response'
 import type { Font, ImageSource } from '@takumi-rs/core'
-import { siteConfig } from '@/site.config'
+import { siteConfig, getSiteConfig } from '@/site.config'
 import { useTranslations, type Lang } from '@/i18n/utils'
 
 interface OgOptions {
@@ -107,6 +107,7 @@ export async function renderOgImage(
 
   const t = useTranslations(lang)
   const label = t(`og.label.${type}`)
+  const { author } = getSiteConfig(lang)
 
   return new ImageResponse(
     <div
@@ -173,7 +174,7 @@ export async function renderOgImage(
         />
         <div tw='flex flex-col gap-1'>
           <div tw='font-semibold' style={{ fontSize: 32, color: '#dedfd7' }}>
-            {siteConfig.author}
+            {author}
           </div>
           <div style={{ fontSize: 24, color: '#909089' }}>
             {siteConfig.domain}
@@ -195,8 +196,9 @@ export async function renderOgImage(
   )
 }
 
-export async function renderDefaultCover(): Promise<ImageResponse> {
+export async function renderDefaultCover(lang: Lang): Promise<ImageResponse> {
   const fonts = await fontsPromise
+  const { author } = getSiteConfig(lang)
 
   return new ImageResponse(
     <div
@@ -229,7 +231,7 @@ export async function renderDefaultCover(): Promise<ImageResponse> {
               color: '#e6e4d9',
             }}
           >
-            {siteConfig.author}
+            {author}
           </div>
         </div>
       </div>
@@ -244,8 +246,9 @@ export async function renderDefaultCover(): Promise<ImageResponse> {
   )
 }
 
-export async function renderDefaultOg(): Promise<ImageResponse> {
+export async function renderDefaultOg(lang: Lang): Promise<ImageResponse> {
   const fonts = await fontsPromise
+  const { author, subtitle } = getSiteConfig(lang)
 
   return new ImageResponse(
     <div
@@ -272,7 +275,7 @@ export async function renderDefaultOg(): Promise<ImageResponse> {
             color: '#e6e4d9',
           }}
         >
-          {siteConfig.author}
+          {author}
         </div>
         <div
           style={{
@@ -281,7 +284,7 @@ export async function renderDefaultOg(): Promise<ImageResponse> {
             color: '#878580',
           }}
         >
-          {siteConfig.subtitle}
+          {subtitle}
         </div>
         <div
           style={{

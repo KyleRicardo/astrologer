@@ -7,7 +7,6 @@ import { render } from 'astro:content'
 import TableOfContents from '@/components/TableOfContents.astro'
 import { Image } from 'astro:assets'
 import {
-  DEFAULT_COVER_PATH,
   getPostOgImagePath,
   getSlugById,
   sanitizeSlug,
@@ -26,7 +25,7 @@ const t = useTranslations(lang)
 const { title, description, date, category, tags, cover } = post.data
 const { Content, remarkPluginFrontmatter, headings } = await render(post)
 
-const ogImage = post.data.cover ?? getPostOgImagePath(post.id)
+const ogImage = cover ?? getPostOgImagePath(post.id)
 
 const postSlug = getSlugById(post.id)
 const titleTransitionName = `post-title-${lang}-${sanitizeSlug(postSlug)}`
@@ -40,7 +39,6 @@ const readingMinuteText = t('post.readingMinutes', { minutes: readingMinutes })
 const categoryInfo = getCategoryInfo(category, lang)
 
 const hasCustomCover = cover !== undefined
-const coverImage = cover ?? DEFAULT_COVER_PATH
 const coverTransitionName = `post-cover-${lang}-${postSlug}`
 ---
 
@@ -95,7 +93,7 @@ const coverTransitionName = `post-cover-${lang}-${postSlug}`
       <article class="prose mx-auto w-full max-w-3xl min-w-0 flex-1 lg:mx-0">
         {hasCustomCover && (
           <Image
-            src={coverImage}
+            src={cover}
             alt={title}
             width={720}
             height={480}

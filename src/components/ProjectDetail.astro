@@ -4,7 +4,7 @@ import { defaultLang } from '@/i18n/ui'
 import type { Lang } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import {
-  DEFAULT_COVER_PATH,
+  defaultCover,
   getProjectOgImagePath,
   getProjectPaths,
   getSlugById,
@@ -36,8 +36,6 @@ const projectSlug = getSlugById(project.id)
 
 const titleTransitionName = `project-title-${lang}-${sanitizeSlug(projectSlug)}`
 const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
-
-const coverImage = cover ?? DEFAULT_COVER_PATH
 ---
 
 <Layout
@@ -49,14 +47,25 @@ const coverImage = cover ?? DEFAULT_COVER_PATH
   <main class="mx-auto my-16 flex w-full max-w-3xl flex-1 flex-col px-4">
     <header class="flex flex-col items-center gap-4 tracking-wide md:gap-6">
       <div aria-label="cover" class="mb-4 w-full md:mb-6">
-        <Image
-          src={coverImage}
-          alt={title}
-          width={720}
-          height={480}
-          class="w-full rounded-xl"
-          transition:name={coverTransitionName}
-        />
+        {cover ? (
+          <Image
+            src={cover}
+            alt={title}
+            width={720}
+            height={480}
+            class="w-full rounded-xl"
+            transition:name={coverTransitionName}
+          />
+        ) : (
+           <Image
+             src={defaultCover}
+             alt={title}
+             width={720}
+             height={480}
+             class="w-full rounded-xl"
+             transition:name={coverTransitionName}
+           />
+         )}
       </div>
       <h1 class="text-center text-3xl font-semibold text-balance md:text-4xl md:font-bold lg:text-5xl md:tracking-tight">
         <span transition:name={titleTransitionName}>{title}</span>
