@@ -88,3 +88,29 @@ Configured in `astro.config.mjs`:
 - **Lifecycle pattern**: `astro:page-load` to initialize, `astro:before-swap` with `{ once: true }` to clean up. See `src/scripts/scroll-reveal.ts` for the canonical example.
 - **CSS in component `<script>` tags gets lost on navigation** — Astro removes the `<link>` on swap and deduplication prevents re-injection. Always import CSS that must persist in `Layout.astro` frontmatter (e.g., `medium-zoom/dist/style.css`, Fontsource fonts).
 - JS libraries that attach to DOM elements (e.g., medium-zoom) must `.detach()` on `astro:before-swap` and re-initialize on `astro:page-load` to avoid stale instances.
+
+## Design Context
+
+### Users
+
+Developers and engineering peers visiting for technical posts and project showcases. They arrive with intent — reading a post, evaluating a project, or assessing craft. The experience should feel credible, thoughtful, and well-made — like a well-typeset book, not a marketing site.
+
+### Brand Personality
+
+**Warm, precise, unhurried.** The interface communicates quiet confidence through careful typography, considered spacing, and warm color temperature. It doesn't shout — it invites close reading.
+
+### Aesthetic Direction
+
+- **Primary reference**: shadcn/ui — the structural design language, component patterns, spacing rhythm, and systematic token approach
+- **Color warmth**: Anthropic — the oklch warm-neutral palette ("Xuan paper style", 宣纸风格) with hue 107.57 across all neutrals, never cold gray
+- **Interaction quality**: Linear — clean transitions, command palette pattern, mobile menu precision
+- **Anti-references**: No playful/cute aesthetics — no Notion-style illustrations, gradient blobs, candy colors, rounded bubbly shapes, or whimsical elements. The tone is serious craftsmanship, not friendly approachability.
+- **Theme**: Both light and dark mode, with equal design attention to each. Dark mode targets Anthropic's warm near-black (#141413).
+
+### Design Principles
+
+1. **Warm minimalism over cold utility** — Every neutral carries the 107.57 hue. Zero-chroma grays are banned. Even code blocks and selections get warmth.
+2. **Browser-native first** — Use `<dialog>`, `inert`, `scrollend`, `prefers-reduced-motion` before reaching for JS solutions. The platform is the framework.
+3. **Systematic tokens, not ad-hoc values** — All colors, radii, and spacing flow from the `@theme inline` token system. New values must integrate with existing scales.
+4. **Respect motion preferences everywhere** — Every animation, transition, and scroll effect must degrade gracefully with `prefers-reduced-motion: reduce`.
+5. **Pure Astro, zero runtime** — No React components, no CSS-in-JS, no client-side framework overhead. Server-rendered Astro components with targeted `<script>` tags for interactivity.
