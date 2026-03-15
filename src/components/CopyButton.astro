@@ -101,7 +101,8 @@ class CopyButton extends HTMLElement {
         if (codeToCopy) {
           await navigator.clipboard.writeText(codeToCopy)
 
-          // Show checkmark
+          // Show checkmark + announce to AT
+          button.setAttribute('aria-label', 'Copied')
           copyIcon.classList.remove('scale-100', 'opacity-100')
           copyIcon.classList.add('scale-0', 'opacity-0')
           checkIcon.classList.remove('scale-0', 'opacity-0')
@@ -109,6 +110,7 @@ class CopyButton extends HTMLElement {
 
           // Reset after 2 seconds
           setTimeout(() => {
+            button.setAttribute('aria-label', 'Copy code')
             copyIcon.classList.remove('scale-0', 'opacity-0')
             copyIcon.classList.add('scale-100', 'opacity-100')
             checkIcon.classList.remove('scale-100', 'opacity-100')

@@ -13,6 +13,7 @@ import 'medium-zoom/dist/style.css'
 
 import { getLangFromUrl, getLocaleFromLang } from '@/i18n/utils'
 import { getSiteConfig } from '@/site.config'
+import { useTranslations } from '@/i18n/utils'
 
 const lang = getLangFromUrl(Astro.url)
 
@@ -39,6 +40,7 @@ const site = Astro.site?.toString() ?? ''
 const locale = getLocaleFromLang(lang)
 
 const siteConfig = getSiteConfig(lang)
+const t = useTranslations(lang)
 
 const ogImage = image
   ? new URL(image, site).href
@@ -51,11 +53,19 @@ const ogImage = image
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <!-- Get the latest one from: https://katex.org/docs/browser -->
+    <!-- KaTeX: non-render-blocking async load (only math pages need it) -->
     <link
       href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
       rel="stylesheet"
+      media="print"
+      onload="this.media = 'all'"
     >
+    <noscript>
+      <link
+        href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
+        rel="stylesheet"
+      >
+    </noscript>
     <script is:inline>
     function setPkgPreference(doc) {
       const savedPkg = localStorage.getItem('preferred-pkg') || 'pnpm'
@@ -102,8 +112,15 @@ const ogImage = image
     <meta name="twitter:image:alt" content={title} />
   </head>
   <body class="min-h-dvh bg-background antialiased">
+    <a
+      href="#main-content"
+      class="bg-primary text-primary-foreground sr-only fixed top-4 left-4 z-[100] rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only"
+    >
+      {t('a11y.skipToContent')}
+    </a>
     <div class="relative flex min-h-dvh flex-col bg-background">
       <Header showProgressBar={showProgressBar} />
+      <div id="main-content"></div>
       <slot />
       <Footer />
     </div>

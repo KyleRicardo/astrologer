@@ -30,8 +30,6 @@
   --color-primary: var(--primary);
   --color-popover-foreground: var(--popover-foreground);
   --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -42,8 +40,6 @@
   --color-code-foreground: var(--code-foreground);
   --color-code-highlight: var(--code-highlight);
   --color-code-number: var(--code-number);
-  --color-selection: var(--selection);
-  --color-selection-foreground: var(--selection-foreground);
 
   @keyframes fadeIn {
     from {
@@ -76,10 +72,6 @@
   --background: oklch(0.9766 0.0046 107.57); /* #f8f9f5 */
   --foreground: oklch(0.28 0.03 107.57);     /* 深暖灰墨水色 */
 
-  /* 卡片：比背景略白，微微浮起 */
-  --card: oklch(0.99 0.003 107.57);
-  --card-foreground: oklch(0.28 0.03 107.57);
-
   /* 悬浮层：最高层级，接近纯白 */
   --popover: oklch(0.995 0.002 107.57);
   --popover-foreground: oklch(0.28 0.03 107.57);
@@ -102,7 +94,6 @@
 
   /* 破坏/错误色：Flexoki Red */
   --destructive: oklch(0.6 0.15 25);
-  --destructive-foreground: oklch(1 0 0);
 
   /* 边框与输入框：温暖的浅灰色，去除了冷感 */
   --border: oklch(0.90 0.01 107.57);
@@ -115,18 +106,12 @@
   --code-foreground: var(--surface-foreground);
   --code-highlight: oklch(0.96 0.006 107.57);
   --code-number: oklch(0.56 0.01 107.57);
-  --selection: oklch(0.145 0.006 107.57);
-  --selection-foreground: oklch(1 0 0);
 }
 
 .dark {
   /* 基础背景：深沉的暖灰色，对标 Anthropic #141413 */
   --background: oklch(0.175 0.006 107.57);
   --foreground: oklch(0.90 0.01 107.57); /* 暖白文字 */
-
-  /* 卡片：比背景稍亮，形成层级 */
-  --card: oklch(0.235 0.008 107.57);
-  --card-foreground: oklch(0.90 0.01 107.57);
 
   --popover: oklch(0.255 0.008 107.57);
   --popover-foreground: oklch(0.90 0.01 107.57);
@@ -149,7 +134,6 @@
 
   /* 破坏色：降低亮度以适应暗黑模式 */
   --destructive: oklch(0.5 0.15 25);
-  --destructive-foreground: oklch(1 0 0);
 
   /* 边框：低对比度深灰 */
   --border: oklch(0.30 0.01 107.57);
@@ -162,8 +146,6 @@
   --code-foreground: var(--surface-foreground);
   --code-highlight: oklch(0.27 0.006 107.57);
   --code-number: oklch(0.72 0.008 107.57);
-  --selection: oklch(0.922 0.006 107.57);
-  --selection-foreground: oklch(0.205 0.006 107.57);
 }
 
 @layer base {
@@ -418,10 +400,6 @@ html.theme-transition * {
   view-transition-name: none !important;
 }
 
-html.lang-transition * {
-  view-transition-name: none !important;
-}
-
 .theme-transition::view-transition-old(root),
 .theme-transition::view-transition-new(root) {
   animation: none;
@@ -434,18 +412,6 @@ html.lang-transition * {
 
 .theme-transition::view-transition-new(root) {
   z-index: 1;
-}
-
-.dark {
-  .astro-code,
-  .astro-code span {
-    color: var(--shiki-dark) !important;
-    background-color: var(--shiki-dark-bg) !important;
-    /* Optional, if you also want font styles */
-    font-style: var(--shiki-dark-font-style) !important;
-    font-weight: var(--shiki-dark-font-weight) !important;
-    text-decoration: var(--shiki-dark-text-decoration) !important;
-  }
 }
 
 /* ==========================================

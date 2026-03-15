@@ -34,6 +34,7 @@ const t = useTranslations(lang)
           outline-none placeholder:text-muted-foreground
         "
         placeholder={t('search.placeholder')}
+        aria-label={t('search.trigger')}
         autocomplete="off"
         spellcheck="false"
       />
@@ -101,6 +102,8 @@ const t = useTranslations(lang)
       >
         {t('search.noResults')}
       </div>
+    </div>
+    <div id="search-status" class="sr-only" aria-live="polite" role="status">
     </div>
   </div>
 </dialog>
@@ -215,6 +218,7 @@ function initSearch() {
   const resultsContainer = document.getElementById('search-results')!
   const emptyState = document.getElementById('search-empty')!
   const noResultsState = document.getElementById('search-no-results')!
+  const statusEl = document.getElementById('search-status')!
   const tabs = dialog.querySelectorAll<HTMLButtonElement>('.search-tab')
 
   let activeFilter: FilterType = 'all'
@@ -278,6 +282,7 @@ function initSearch() {
     if (hits.length === 0) {
       emptyState.classList.add('hidden')
       noResultsState.classList.remove('hidden')
+      statusEl.textContent = noResultsState.textContent?.trim() ?? ''
       activeIndex = -1
       results = []
       return
@@ -295,6 +300,10 @@ function initSearch() {
       a.innerHTML = renderHit(hit)
       resultsContainer.appendChild(a)
     }
+
+    statusEl.textContent = `${hits.length} ${
+      hits.length === 1 ? 'result' : 'results'
+    }`
 
     results = Array.from(
       resultsContainer.querySelectorAll('.search-result'),

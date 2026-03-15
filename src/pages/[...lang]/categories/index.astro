@@ -23,7 +23,7 @@ const categories = await getCategories(lang)
   <BlogLayout>
     <div class="w-full">
       <div class="my-8 flex flex-1 flex-col items-center md:my-16">
-        <h2 class="text-3xl font-semibold">{t('categories.title')}</h2>
+        <h1 class="text-3xl font-semibold">{t('categories.title')}</h1>
         <CategoryList categories={categories} />
       </div>
     </div>

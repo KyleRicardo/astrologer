@@ -21,6 +21,7 @@ const posts = await getPostsByLang(lang)
 
 <Layout title={t('nav.blog')}>
   <BlogLayout>
+    <h1 class="sr-only">{t('nav.posts')}</h1>
     <section aria-label="posts" class="my-8 space-y-8">
       {posts.map((post) => <div><ArticleCard post={post} /></div>)}
     </section>

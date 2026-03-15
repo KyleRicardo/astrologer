@@ -42,6 +42,10 @@ export const ui = {
     'search.filterProjects': '作品',
     'search.emptyState': '输入关键词搜索',
     'search.noResults': '没有找到相关结果',
+    'a11y.skipToContent': '跳转到内容',
+    'a11y.copied': '已复制',
+    'a11y.socialLinks': '社交链接',
+    'a11y.blogNav': '博客导航',
   },
   en: {
     'nav.home': 'Home',
@@ -79,6 +83,10 @@ export const ui = {
     'search.filterProjects': 'Projects',
     'search.emptyState': 'Type to search',
     'search.noResults': 'No results found',
+    'a11y.skipToContent': 'Skip to content',
+    'a11y.copied': 'Copied',
+    'a11y.socialLinks': 'Social links',
+    'a11y.blogNav': 'Blog navigation',
   },
 } as const
 

@@ -7,7 +7,6 @@ import { renderOgImage } from '@/utils/og-image'
 export async function getStaticPaths() {
   const posts = await getCollection('blog')
   return posts.map((post) => {
-    console.log(post.id)
     const [lang, ...rest] = post.id.split('/')
     return {
       params: { lang, slug: rest.join('/') },

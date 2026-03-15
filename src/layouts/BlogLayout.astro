@@ -12,7 +12,10 @@ const translatePath = useTranslatedPath(lang)
 ---
 
 <main class="container mx-auto flex max-w-5xl flex-1 flex-col px-4">
-  <nav class="mt-8 flex h-16 items-center justify-center">
+  <nav
+    class="mt-8 flex h-16 items-center justify-center"
+    aria-label={t('a11y.blogNav')}
+  >
     <ul class="flex gap-4 px-8 py-4">
       <li>
         <NavLink name={t('nav.posts')} href={translatePath('/posts')} />

@@ -47,9 +47,9 @@ const { showProgressBar = false } = Astro.props
     >
       <div class="flex flex-col gap-8 px-8 pt-6">
         <div>
-          <h2 class="text-muted-foreground text-sm">
+          <span class="text-muted-foreground text-sm">
             {t('nav.group.navigation')}
-          </h2>
+          </span>
           <ul class="flex flex-col gap-3 mt-5">
             <li>
               <a
@@ -76,9 +76,9 @@ const { showProgressBar = false } = Astro.props
           </ul>
         </div>
         <div>
-          <h2 class="text-muted-foreground mb-[20px] text-sm">
+          <span class="text-muted-foreground mb-[20px] text-sm">
             {t('nav.group.connect')}
-          </h2>
+          </span>
           <ul class="flex flex-col gap-3">
             {siteConfig.socials.map(social => (
               <li>
@@ -115,7 +115,10 @@ const { showProgressBar = false } = Astro.props
           {siteConfig.title}
         </span>
       </a>
-      <nav class="hidden items-center gap-4 text-sm md:flex lg:gap-6">
+      <nav
+        class="hidden items-center gap-4 text-sm md:flex lg:gap-6"
+        aria-label={t('nav.group.navigation')}
+      >
         <a
           class="hover:text-foreground/80 text-foreground/80 transition-colors"
           href={translatePath('/posts')}
@@ -138,6 +141,7 @@ const { showProgressBar = false } = Astro.props
       <div class="hidden w-full flex-1 md:flex md:w-auto md:flex-none">
         <button
           data-search-trigger
+          aria-label={t('search.trigger')}
           class="focus-visible:ring-ring border-input hover:bg-accent hover:text-accent-foreground bg-muted/50 text-muted-foreground relative inline-flex h-8 w-full items-center justify-start gap-2 rounded-[0.5rem] border px-4 py-2 text-sm font-normal whitespace-nowrap shadow-none transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 sm:pr-12 md:w-40 lg:w-56 xl:w-64 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
         >
           <span class="hidden lg:inline-flex">Search...</span>
@@ -148,7 +152,10 @@ const { showProgressBar = false } = Astro.props
           </kbd>
         </button>
       </div>
-      <div aria-label="" class="ml-2 hidden md:inline-block">
+      <nav
+        aria-label={t('a11y.socialLinks')}
+        class="ml-2 hidden md:inline-block"
+      >
         <ul class="flex items-center gap-1">
           {siteConfig.socials.filter(social => social.showOnHeader).map(
             social => (
@@ -171,12 +178,12 @@ const { showProgressBar = false } = Astro.props
             />
           </li>
         </ul>
-      </div>
-      <div aria-label="display options" class="ml-1 flex items-center">
+      </nav>
+      <div class="ml-1 flex items-center">
         <button
           data-search-trigger
           class="
-            inline-flex size-8 items-center justify-center
+            inline-flex size-10 items-center justify-center
             rounded-md transition-colors
             hover:bg-accent hover:text-accent-foreground
             md:hidden
