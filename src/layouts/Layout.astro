@@ -3,6 +3,7 @@ import { ClientRouter } from 'astro:transitions'
 
 import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
+import SearchDialog from '@/components/SearchDialog.astro'
 import '@/styles/global.css'
 
 import '@fontsource-variable/noto-sans-sc'
@@ -45,7 +46,7 @@ const ogImage = image
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={locale}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -106,6 +107,7 @@ const ogImage = image
       <slot />
       <Footer />
     </div>
+    <SearchDialog />
   </body>
 </html>
 

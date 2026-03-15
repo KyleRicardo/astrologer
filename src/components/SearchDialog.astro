@@ -1,0 +1,426 @@
+---
+import { getLangFromUrl, useTranslations } from '@/i18n/utils'
+import { Icon } from 'astro-icon/components'
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+---
+
+<dialog
+  id="search-dialog"
+  class="
+    bg-transparent p-0 w-[calc(100%-2rem)] max-w-lg
+    mx-auto mt-[15vh] backdrop:bg-black/50
+  "
+>
+  <div
+    class="
+      bg-popover text-popover-foreground rounded-xl
+      border shadow-lg flex flex-col
+      max-h-[min(60vh,400px)] overflow-hidden
+    "
+  >
+    <!-- Search input -->
+    <div class="flex items-center gap-2 border-b px-3">
+      <Icon
+        name="ri:search-line"
+        class="size-4 shrink-0 text-muted-foreground"
+      />
+      <input
+        id="search-input"
+        type="text"
+        class="
+          flex-1 bg-transparent py-3 text-sm
+          outline-none placeholder:text-muted-foreground
+        "
+        placeholder={t('search.placeholder')}
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <kbd
+        class="
+          text-muted-foreground bg-muted rounded border
+          px-1.5 py-0.5 text-[10px] font-mono font-medium
+          hidden sm:inline-block
+        "
+      >Esc</kbd>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="flex gap-1 border-b px-3 py-1.5" role="tablist">
+      <button
+        role="tab"
+        aria-selected="true"
+        data-filter="all"
+        class="
+          search-tab rounded-md px-2.5 py-1 text-xs
+          font-medium transition-colors
+        "
+      >
+        {t('search.filterAll')}
+      </button>
+      <button
+        role="tab"
+        aria-selected="false"
+        data-filter="post"
+        class="
+          search-tab rounded-md px-2.5 py-1 text-xs
+          font-medium transition-colors
+        "
+      >
+        {t('search.filterPosts')}
+      </button>
+      <button
+        role="tab"
+        aria-selected="false"
+        data-filter="project"
+        class="
+          search-tab rounded-md px-2.5 py-1 text-xs
+          font-medium transition-colors
+        "
+      >
+        {t('search.filterProjects')}
+      </button>
+    </div>
+
+    <!-- Results area -->
+    <div
+      id="search-results"
+      role="listbox"
+      class="overflow-y-auto overscroll-contain p-2"
+    >
+      <div
+        id="search-empty"
+        class="py-6 text-center text-sm text-muted-foreground"
+      >
+        {t('search.emptyState')}
+      </div>
+      <div
+        id="search-no-results"
+        class="hidden py-6 text-center text-sm text-muted-foreground"
+      >
+        {t('search.noResults')}
+      </div>
+    </div>
+  </div>
+</dialog>
+
+<style>
+.search-tab[aria-selected="true"] {
+  background-color: var(--color-muted);
+  color: var(--color-foreground);
+}
+
+.search-tab[aria-selected="false"] {
+  color: var(--color-muted-foreground);
+}
+
+.search-tab:hover {
+  background-color: var(--color-accent);
+}
+
+.search-result[aria-selected="true"] {
+  background-color: var(--color-accent);
+}
+
+dialog::backdrop {
+  background: oklch(0 0 0 / 50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  dialog[open] {
+    animation: search-fade-in 150ms ease-out;
+  }
+}
+
+@keyframes search-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+</style>
+
+<script>
+import type { SearchHit, FilterType } from '@/lib/search'
+
+// Inline SVG strings for dynamic result rendering.
+// Can't use <Icon> (server component) in client innerHTML.
+const DOC_ICON =
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 shrink-0 text-muted-foreground"><path d="M3 8L9.00319 2H19.9978C20.5513 2 21 2.45531 21 2.9918V21.0082C21 21.556 20.5551 22 20.0066 22H3.9934C3.44476 22 3 21.5501 3 20.9932V8ZM10 3.5V9H4.5L10 3.5Z"/></svg>`
+const HASH_ICON =
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 shrink-0 text-muted-foreground"><path d="M7.78428 14L8.2047 10H4V8H8.41491L8.94043 3H10.9514L10.4259 8H14.4149L14.9404 3H16.9514L16.4259 8H20V10H16.2157L15.7953 14H20V16H15.5851L15.0596 21H13.0486L13.5741 16H9.58509L9.05957 21H7.04857L7.57409 16H4V14H7.78428ZM9.7953 14H13.7843L14.2047 10H10.2157L9.7953 14Z"/></svg>`
+const CHEVRON_ICON =
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-3 shrink-0 text-muted-foreground"><path d="M13.1717 12.0007L8.22168 7.05072L9.63589 5.63651L16.0001 12.0007L9.63589 18.3649L8.22168 16.9507L13.1717 12.0007Z"/></svg>`
+
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+}
+
+function renderHit(hit: SearchHit): string {
+  if (hit.kind === 'heading') {
+    return `
+        ${HASH_ICON}
+        <div class="flex-1 min-w-0">
+          <div class="truncate text-xs text-muted-foreground">
+            ${escapeHtml(hit.pageTitle)}
+          </div>
+          <div class="truncate font-medium">
+            ${escapeHtml(hit.heading)}
+          </div>
+        </div>
+        ${CHEVRON_ICON}
+      `
+  }
+  const subtitle = hit.description || hit.excerpt
+  return `
+      ${DOC_ICON}
+      <div class="flex-1 min-w-0">
+        <div class="truncate font-medium">
+          ${escapeHtml(hit.pageTitle)}
+        </div>
+        ${
+    subtitle
+      ? `<div class="truncate text-xs text-muted-foreground">
+                ${escapeHtml(subtitle)}
+              </div>`
+      : ''
+  }
+      </div>
+      ${CHEVRON_ICON}
+    `
+}
+
+function initSearch() {
+  const _dialog = document.getElementById(
+    'search-dialog',
+  ) as HTMLDialogElement | null
+  if (!_dialog) return
+  const dialog = _dialog
+
+  const _input = document.getElementById(
+    'search-input',
+  ) as HTMLInputElement | null
+  if (!_input) return
+  const input = _input
+
+  const resultsContainer = document.getElementById('search-results')!
+  const emptyState = document.getElementById('search-empty')!
+  const noResultsState = document.getElementById('search-no-results')!
+  const tabs = dialog.querySelectorAll<HTMLButtonElement>('.search-tab')
+
+  let activeFilter: FilterType = 'all'
+  let activeIndex = -1
+  let results: HTMLAnchorElement[] = []
+  let debounceTimer: ReturnType<typeof setTimeout>
+
+  function getLang(): string {
+    const htmlLang = document.documentElement.lang
+    return htmlLang.startsWith('zh') ? 'zh' : 'en'
+  }
+
+  // --- Open / Close ---
+
+  function openDialog() {
+    dialog.showModal()
+    input.value = ''
+    resetResults()
+    input.focus()
+  }
+
+  function closeDialog() {
+    dialog.close()
+  }
+
+  function resetResults() {
+    resultsContainer
+      .querySelectorAll('.search-result')
+      .forEach((el) => el.remove())
+    emptyState.classList.remove('hidden')
+    noResultsState.classList.add('hidden')
+    activeIndex = -1
+    results = []
+  }
+
+  // --- Keyboard shortcut ---
+
+  function handleGlobalKeyDown(e: KeyboardEvent) {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault()
+      if (dialog.open) closeDialog()
+      else openDialog()
+    }
+  }
+
+  // --- Search ---
+
+  async function doSearch(term: string) {
+    if (!term.trim()) {
+      resetResults()
+      return
+    }
+
+    const { performSearch } = await import('@/lib/search')
+    const hits = await performSearch(getLang(), term, activeFilter)
+
+    resultsContainer
+      .querySelectorAll('.search-result')
+      .forEach((el) => el.remove())
+
+    if (hits.length === 0) {
+      emptyState.classList.add('hidden')
+      noResultsState.classList.remove('hidden')
+      activeIndex = -1
+      results = []
+      return
+    }
+
+    emptyState.classList.add('hidden')
+    noResultsState.classList.add('hidden')
+
+    for (const hit of hits) {
+      const a = document.createElement('a')
+      a.href = hit.url
+      a.role = 'option'
+      a.className = 'search-result flex items-center gap-3 rounded-lg '
+        + 'px-3 py-2.5 text-sm transition-colors cursor-pointer'
+      a.innerHTML = renderHit(hit)
+      resultsContainer.appendChild(a)
+    }
+
+    results = Array.from(
+      resultsContainer.querySelectorAll('.search-result'),
+    )
+    activeIndex = 0
+    updateActiveHighlight()
+  }
+
+  // --- Arrow key navigation ---
+
+  function handleDialogKeyDown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (results.length === 0) return
+      activeIndex = (activeIndex + 1) % results.length
+      updateActiveHighlight()
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (results.length === 0) return
+      activeIndex = (activeIndex - 1 + results.length) % results.length
+      updateActiveHighlight()
+    } else if (e.key === 'Enter' && activeIndex >= 0) {
+      e.preventDefault()
+      results[activeIndex]?.click()
+    }
+  }
+
+  function updateActiveHighlight() {
+    for (let i = 0; i < results.length; i++) {
+      results[i].setAttribute(
+        'aria-selected',
+        String(i === activeIndex),
+      )
+    }
+    if (activeIndex >= 0 && results[activeIndex]) {
+      results[activeIndex].scrollIntoView({ block: 'nearest' })
+    }
+  }
+
+  // --- Filter tabs ---
+
+  function handleTabClick(e: Event) {
+    const btn = (e.target as HTMLElement).closest(
+      '.search-tab',
+    ) as HTMLButtonElement | null
+    if (!btn) return
+
+    activeFilter = btn.dataset.filter as FilterType
+    tabs.forEach((tab) => {
+      tab.setAttribute('aria-selected', String(tab === btn))
+    })
+    doSearch(input.value)
+  }
+
+  // --- Debounced input ---
+
+  function handleInput() {
+    clearTimeout(debounceTimer)
+    debounceTimer = setTimeout(() => doSearch(input.value), 200)
+  }
+
+  // --- Backdrop click ---
+
+  function handleDialogClick(e: MouseEvent) {
+    const panel = dialog.firstElementChild as HTMLElement
+    if (!panel) return
+    const rect = panel.getBoundingClientRect()
+    if (
+      e.clientX < rect.left
+      || e.clientX > rect.right
+      || e.clientY < rect.top
+      || e.clientY > rect.bottom
+    ) {
+      closeDialog()
+    }
+  }
+
+  // --- Close on result navigation ---
+
+  function handleResultClick() {
+    closeDialog()
+  }
+
+  // --- Header trigger buttons ---
+
+  const triggers = document.querySelectorAll('[data-search-trigger]')
+  function handleTriggerClick() {
+    openDialog()
+  }
+
+  // --- Bind events ---
+
+  document.addEventListener('keydown', handleGlobalKeyDown)
+  dialog.addEventListener('keydown', handleDialogKeyDown)
+  dialog.addEventListener('click', handleDialogClick)
+  input.addEventListener('input', handleInput)
+  resultsContainer.addEventListener('click', handleResultClick)
+
+  const tabContainer = dialog.querySelector('[role="tablist"]')
+  tabContainer?.addEventListener('click', handleTabClick)
+
+  triggers.forEach((btn) => btn.addEventListener('click', handleTriggerClick))
+
+  // --- Cleanup for View Transitions ---
+
+  document.addEventListener(
+    'astro:before-swap',
+    () => {
+      document.removeEventListener('keydown', handleGlobalKeyDown)
+      dialog.removeEventListener('keydown', handleDialogKeyDown)
+      dialog.removeEventListener('click', handleDialogClick)
+      input.removeEventListener('input', handleInput)
+      resultsContainer.removeEventListener(
+        'click',
+        handleResultClick,
+      )
+      tabContainer?.removeEventListener('click', handleTabClick)
+      triggers.forEach((btn) =>
+        btn.removeEventListener('click', handleTriggerClick)
+      )
+      if (dialog.open) dialog.close()
+      clearTimeout(debounceTimer)
+    },
+    { once: true },
+  )
+}
+
+document.addEventListener('astro:page-load', initSearch)
+</script>

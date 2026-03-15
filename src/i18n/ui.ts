@@ -35,6 +35,13 @@ export const ui = {
     '404.title': '页面未找到',
     '404.description': '抱歉，您访问的页面不存在。',
     '404.backHome': '返回首页',
+    'search.placeholder': '搜索文章和作品...',
+    'search.trigger': '搜索',
+    'search.filterAll': '全部',
+    'search.filterPosts': '文章',
+    'search.filterProjects': '作品',
+    'search.emptyState': '输入关键词搜索',
+    'search.noResults': '没有找到相关结果',
   },
   en: {
     'nav.home': 'Home',
@@ -65,6 +72,13 @@ export const ui = {
     '404.title': 'Page Not Found',
     '404.description': "Sorry, the page you're looking for doesn't exist.",
     '404.backHome': 'Back to Home',
+    'search.placeholder': 'Search posts and projects...',
+    'search.trigger': 'Search',
+    'search.filterAll': 'All',
+    'search.filterPosts': 'Posts',
+    'search.filterProjects': 'Projects',
+    'search.emptyState': 'Type to search',
+    'search.noResults': 'No results found',
   },
 } as const
 
