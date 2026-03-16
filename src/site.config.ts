@@ -12,6 +12,8 @@ export interface SiteConfig {
   enableProjectsShowcase: boolean
   // 是否开启关于页面
   enableAboutMe: boolean
+  // 是否开启友链页面
+  enableFriendLinks: boolean
   // 主页是否显示推广信息
   enablePromotionOnHomepage: boolean
   // 主页是否显示最近项目
@@ -125,6 +127,8 @@ export const siteConfig: SiteConfig = {
   enableProjectsShowcase: true,
   // 是否开启关于页面
   enableAboutMe: true,
+  // 是否开启友链页面
+  enableFriendLinks: true,
   // 主页是否显示推广信息
   enablePromotionOnHomepage: true,
   // 主页是否显示最近项目

@@ -16,6 +16,7 @@ export const ui = {
     'nav.categories': '分类',
     'nav.tags': '标签',
     'nav.projects': '作品',
+    'nav.links': '友链',
     'nav.group.navigation': '导航',
     'nav.group.connect': '联系',
     'home.recentPosts': '最近文章',
@@ -27,6 +28,8 @@ export const ui = {
     'tags.title': '全部标签',
     'projects.title': '作品',
     'projects.description': '我创作的一些有趣的项目或开源作品',
+    'links.title': '友链',
+    'links.description': '我的有趣又有爱的朋友们',
     'toc.title': '目录',
     'post.readingMinutes': ({ minutes }: { minutes: number }) =>
       `阅读约需${minutes}分钟`,
@@ -56,6 +59,7 @@ export const ui = {
     'nav.categories': 'Categories',
     'nav.tags': 'Tags',
     'nav.projects': 'Projects',
+    'nav.links': 'Links',
     'nav.group.navigation': 'Navigation',
     'nav.group.connect': 'Connect',
     'home.recentPosts': 'Recent Posts',
@@ -68,6 +72,8 @@ export const ui = {
     'projects.title': 'Projects',
     'projects.description':
       'Interesting works or open source projects I created',
+    'links.title': 'Links',
+    'links.description': 'My interesting and lovely friends',
     'toc.title': 'Table of Contents',
     'post.readingMinutes': ({ minutes }: { minutes: number }) =>
       `${minutes} min read`,

@@ -1,0 +1,37 @@
+---
+import type { Friend } from '@/data/friends'
+import { localize } from '@/data/friends'
+import type { Lang } from '@/i18n/utils'
+
+interface Props {
+  friend: Friend
+  lang: Lang
+}
+
+const { friend, lang } = Astro.props
+const name = localize(friend.name, lang)
+const bio = localize(friend.bio, lang)
+---
+
+<a
+  href={friend.href}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="group flex items-center gap-3 overflow-hidden rounded-xl border border-border p-4 transition-colors duration-200 hover:bg-muted/50"
+>
+  <img
+    src={friend.avatar}
+    alt={name}
+    width="48"
+    height="48"
+    loading="lazy"
+    decoding="async"
+    class="size-12 shrink-0 rounded-full object-cover ring-1 ring-black/5 dark:ring-white/10"
+  />
+  <div class="min-w-0 flex-1">
+    <div class="text-sm font-semibold text-foreground">{name}</div>
+    {bio && (
+      <div class="text-muted-foreground mt-0.5 truncate text-xs">{bio}</div>
+    )}
+  </div>
+</a>

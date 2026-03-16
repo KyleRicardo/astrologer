@@ -1,0 +1,38 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import FriendCard from '@/components/FriendCard.astro'
+import { friends } from '@/data/friends'
+import { languages, defaultLang } from '@/i18n/ui'
+import { useTranslations } from '@/i18n/utils'
+import type { Lang } from '@/i18n/utils'
+
+export function getStaticPaths() {
+  return Object.keys(languages).map((l) => ({
+    params: { lang: l === defaultLang ? undefined : l },
+    props: { lang: l as Lang },
+  }))
+}
+
+const { lang } = Astro.props as { lang: Lang }
+const t = useTranslations(lang)
+---
+
+<Layout title={t('links.title')}>
+  <main class="container mx-auto flex max-w-lg min-w-xs flex-1 flex-col px-4 pb-8 md:max-w-4xl md:pb-16">
+    <header class="my-8 text-center md:my-16">
+      <h1 class="mb-4 text-4xl font-bold">{t('links.title')}</h1>
+      <p class="text-muted-foreground font-medium">
+        {t('links.description')}
+      </p>
+    </header>
+    <section
+      aria-label={t('links.title')}
+      class="grid gap-4 md:grid-cols-2"
+      data-reveal
+    >
+      {friends.map((friend) => (
+        <FriendCard friend={friend} lang={lang} />
+      ))}
+    </section>
+  </main>
+</Layout>

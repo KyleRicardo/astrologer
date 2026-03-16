@@ -65,6 +65,14 @@ const { showProgressBar = false } = Astro.props
                 >{t('nav.projects')}</a>
               </li>
             )}
+            {siteConfig.enableFriendLinks && (
+              <li>
+                <a
+                  href={translatePath('/links')}
+                  class="text-foreground text-2xl font-medium"
+                >{t('nav.links')}</a>
+              </li>
+            )}
             {siteConfig.enableAboutMe && (
               <li>
                 <a
@@ -128,6 +136,12 @@ const { showProgressBar = false } = Astro.props
             class="hover:text-foreground/80 text-foreground/80 transition-colors"
             href={translatePath('/projects')}
           >{t('nav.projects')}</a>
+        )}
+        {siteConfig.enableFriendLinks && (
+          <a
+            class="hover:text-foreground/80 text-foreground/80 transition-colors"
+            href={translatePath('/links')}
+          >{t('nav.links')}</a>
         )}
         {siteConfig.enableAboutMe && (
           <a

@@ -22,7 +22,7 @@ const sortedProjects = await getProjectsByLang(lang)
   <ProjectLayout>
     <section
       aria-label="projects"
-      class="container mx-auto grid gap-8 px-4 md:grid-cols-2 xl:grid-cols-3"
+      class="grid gap-8 md:grid-cols-2 xl:grid-cols-3"
     >
       {sortedProjects.map((project) => (
         <div><ProjectCard project={project} /></div>
