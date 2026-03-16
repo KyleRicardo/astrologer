@@ -1,0 +1,91 @@
+---
+import NotFoundContent from '@/components/NotFoundContent.astro'
+import Layout from '@/layouts/Layout.astro'
+
+import { defaultLang, languages, localeByLang, ui } from '@/i18n/ui'
+import { useTranslations, type Lang } from '@/i18n/utils'
+import { getSiteConfig } from '@/site.config'
+import { get404LangFromPathname } from '@/utils/not-found'
+
+interface Localized404Copy {
+  locale: string
+  title: string
+  description: string
+  backHome: string
+  homeHref: string
+  fullTitle: string
+}
+
+const lang = get404LangFromPathname(Astro.url.pathname)
+const t = useTranslations(lang)
+
+const localized404 = Object.fromEntries(
+  Object.keys(languages).map((key) => {
+    const nextLang = key as Lang
+    const siteConfig = getSiteConfig(nextLang)
+
+    return [
+      nextLang,
+      {
+        locale: localeByLang[nextLang],
+        title: ui[nextLang]['404.title'],
+        description: ui[nextLang]['404.description'],
+        backHome: ui[nextLang]['404.backHome'],
+        homeHref: nextLang === defaultLang ? '/' : `/${nextLang}/`,
+        fullTitle: `${ui[nextLang]['404.title']} | ${siteConfig.title}`,
+      },
+    ]
+  }),
+) as Record<Lang, Localized404Copy>
+---
+
+<Layout
+  title={t('404.title')}
+  description={t('404.description')}
+  lang={lang}
+  hideChrome={true}
+>
+  <NotFoundContent lang={lang} />
+  <script is:inline define:vars={{ defaultLang, languages, localized404 }}>
+  const maybeLang = window.location.pathname.split('/')[1]
+  const nextLang = maybeLang in languages ? maybeLang : defaultLang
+  const copy = localized404[nextLang]
+
+  if (copy) {
+    document.documentElement.lang = copy.locale
+    document.title = copy.fullTitle
+
+    const description = document.querySelector('[data-404-description]')
+    if (description) {
+      description.textContent = copy.description
+    }
+
+    const homeLink = document.querySelector('[data-404-home-link]')
+    if (homeLink) {
+      homeLink.setAttribute('href', copy.homeHref)
+    }
+
+    const homeLabel = document.querySelector('[data-404-home-label]')
+    if (homeLabel) {
+      homeLabel.textContent = copy.backHome
+    }
+
+    const metaUpdates = [
+      ['meta[name="description"]', copy.description],
+      ['meta[property="og:title"]', copy.title],
+      ['meta[property="og:description"]', copy.description],
+      ['meta[property="og:locale"]', copy.locale],
+      ['meta[name="twitter:title"]', copy.title],
+      ['meta[name="twitter:description"]', copy.description],
+      ['meta[name="twitter:image:alt"]', copy.title],
+    ]
+
+    for (const [selector, value] of metaUpdates) {
+      const element = document.querySelector(selector)
+      if (element) {
+        element.setAttribute('content', value)
+      }
+    }
+  }
+  </script>
+</Layout>

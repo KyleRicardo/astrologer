@@ -1,0 +1,26 @@
+---
+import { Icon } from 'astro-icon/components'
+
+import { useTranslations, useTranslatedPath, type Lang } from '@/i18n/utils'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props as Props
+const t = useTranslations(lang)
+const translatePath = useTranslatedPath(lang)
+---
+
+<main class="flex flex-1 flex-col items-center justify-center gap-8 px-4 tracking-wide">
+  <h1 class="text-muted-foreground text-8xl font-bold">404</h1>
+  <p class="text-center" data-404-description>{t('404.description')}</p>
+  <a
+    href={translatePath('/')}
+    data-404-home-link
+    class="hover:text-muted-foreground flex items-center gap-2"
+  >
+    <Icon name="ri:arrow-left-line" />
+    <span data-404-home-label>{t('404.backHome')}</span>
+  </a>
+</main>

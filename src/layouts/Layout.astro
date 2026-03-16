@@ -11,11 +11,9 @@ import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
 import 'medium-zoom/dist/style.css'
 
-import { getLangFromUrl, getLocaleFromLang } from '@/i18n/utils'
+import { getLangFromUrl, getLocaleFromLang, type Lang } from '@/i18n/utils'
 import { getSiteConfig } from '@/site.config'
 import { useTranslations } from '@/i18n/utils'
-
-const lang = getLangFromUrl(Astro.url)
 
 interface Props {
   title: string
@@ -23,6 +21,8 @@ interface Props {
   image?: string
   ogType?: 'website' | 'article'
   showProgressBar?: boolean
+  lang?: Lang
+  hideChrome?: boolean
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site)
@@ -33,7 +33,11 @@ const {
   image,
   ogType = 'website',
   showProgressBar = false,
+  lang: propLang,
+  hideChrome = false,
 } = Astro.props
+
+const lang = propLang ?? getLangFromUrl(Astro.url)
 
 const site = Astro.site?.toString() ?? ''
 
@@ -121,12 +125,12 @@ const ogImage = image
       {t('a11y.skipToContent')}
     </a>
     <div class="relative flex min-h-dvh flex-col bg-background">
-      <Header showProgressBar={showProgressBar} />
+      {!hideChrome && <Header showProgressBar={showProgressBar} />}
       <div id="main-content"></div>
       <slot />
-      <Footer />
+      {!hideChrome && <Footer />}
     </div>
-    <SearchDialog />
+    {!hideChrome && <SearchDialog />}
   </body>
 </html>
 
