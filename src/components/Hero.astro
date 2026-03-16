@@ -1,7 +1,9 @@
 ---
+import { Image } from 'astro:assets'
 import { getLangFromUrl } from '@/i18n/utils'
 import { getSiteConfig } from '@/site.config'
 import { Icon } from 'astro-icon/components'
+import avatarImg from '@/assets/avatar.jpg'
 
 const lang = getLangFromUrl(Astro.url)
 const siteConfig = getSiteConfig(lang)
@@ -54,11 +56,11 @@ const showPromo = promo.active
     {/* Avatar */}
     <div class="flex shrink-0 items-center justify-center">
       <div class="border-background ring-border relative size-64 overflow-hidden rounded-full border-4 shadow-xl ring-2">
-        <img
-          src="/avatar.jpg"
+        <Image
+          src={avatarImg}
           alt={siteConfig.author}
-          width="256"
-          height="256"
+          width={256}
+          height={256}
           loading="eager"
           fetchpriority="high"
           class="h-full w-full object-cover"

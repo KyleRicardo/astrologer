@@ -88,7 +88,7 @@ async function ensureFonts(): Promise<Font[]> {
 const fontsPromise = ensureFonts()
 
 // Preload avatar as persistent image to avoid re-decoding per render
-const avatarData = readFileSync(join(root, 'public/avatar.jpg'))
+const avatarData = readFileSync(join(root, 'src/assets/avatar.jpg'))
 const persistentImages: ImageSource[] = [
   {
     src: 'avatar',
