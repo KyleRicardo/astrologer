@@ -101,7 +101,9 @@ const coverTransitionName = `post-cover-${lang}-${postSlug}`
             transition:name={coverTransitionName}
           />
         )}
-        <Content components={mdxComponents} />
+        <div class="animate-fade-in-up delay-360">
+          <Content components={mdxComponents} />
+        </div>
       </article>
       <TableOfContents headings={headings} lang={lang} />
     </div>
