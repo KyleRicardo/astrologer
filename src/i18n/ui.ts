@@ -29,7 +29,7 @@ export const ui = {
     'projects.title': '作品',
     'projects.description': '我创作的一些有趣的项目或开源作品',
     'links.title': '友链',
-    'links.description': '我的有趣又有爱的朋友们',
+    'links.description': '我的有爱又有趣的朋友们',
     'toc.title': '目录',
     'post.readingMinutes': ({ minutes }: { minutes: number }) =>
       `阅读约需${minutes}分钟`,
@@ -73,7 +73,7 @@ export const ui = {
     'projects.description':
       'Interesting works or open source projects I created',
     'links.title': 'Links',
-    'links.description': 'My interesting and lovely friends',
+    'links.description': 'My lovely and interesting friends',
     'toc.title': 'Table of Contents',
     'post.readingMinutes': ({ minutes }: { minutes: number }) =>
       `${minutes} min read`,

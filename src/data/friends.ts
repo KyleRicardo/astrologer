@@ -50,13 +50,10 @@ export const friends: Friend[] = [
     href: 'https://antfu.me',
   },
   {
-    name: { zh: '云游君', en: 'YunYouJun' },
-    bio: {
-      zh: '希望能成为一个有趣的人',
-      en: 'Hope to be an interesting person',
-    },
-    avatar: 'https://github.com/YunYouJun.png',
-    href: 'https://www.yunyoujun.cn',
+    name: 'Sakura',
+    bio: '',
+    avatar: 'https://github.com/rikkayoru.png',
+    href: 'https://yoru.me',
   },
   {
     name: { zh: '云芙芙', en: 'Bess Croft' },

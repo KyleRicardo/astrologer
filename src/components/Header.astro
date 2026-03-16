@@ -45,7 +45,7 @@ const { showProgressBar = false } = Astro.props
       class="bg-background absolute top-14 left-0 z-2 h-[calc(100dvh-3.5rem)] w-full overflow-y-auto transition-[opacity,visibility] duration-200 ease-out data-[state=closed]:invisible data-[state=closed]:opacity-0 data-[state=open]:visible data-[state=open]:opacity-100 md:hidden"
       data-state="closed"
     >
-      <div class="flex flex-col gap-8 px-8 pt-6">
+      <div class="flex flex-col gap-8 px-6 py-8">
         <div>
           <span class="text-muted-foreground text-sm">
             {t('nav.group.navigation')}
@@ -87,7 +87,7 @@ const { showProgressBar = false } = Astro.props
           <span class="text-muted-foreground mb-[20px] text-sm">
             {t('nav.group.connect')}
           </span>
-          <ul class="flex flex-col gap-3">
+          <ul class="flex flex-col gap-3 mt-5">
             {siteConfig.socials.map(social => (
               <li>
                 <a
@@ -119,7 +119,7 @@ const { showProgressBar = false } = Astro.props
         class="mr-4 flex items-center gap-2 lg:mr-6"
         href={translatePath('/')}
       >
-        <span class="ml-8 inline-block font-bold md:ml-0">
+        <span class="ml-8 inline-block font-semibold md:ml-0">
           {siteConfig.title}
         </span>
       </a>
