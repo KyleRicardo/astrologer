@@ -32,7 +32,9 @@ const localized404 = Object.fromEntries(
         description: ui[nextLang]['404.description'],
         backHome: ui[nextLang]['404.backHome'],
         homeHref: nextLang === defaultLang ? '/' : `/${nextLang}/`,
-        fullTitle: `${ui[nextLang]['404.title']} | ${siteConfig.title}`,
+        fullTitle: `${
+          ui[nextLang]['404.title']
+        }${siteConfig.titleSeparator}${siteConfig.title}`,
       },
     ]
   }),

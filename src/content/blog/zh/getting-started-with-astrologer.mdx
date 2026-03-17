@@ -1,0 +1,247 @@
+---
+title: "Astrologer 使用指南"
+description: "从零开始搭建你的 Astrologer 博客 —— 配置、自定义、写作到部署的完整指南。"
+date: 2026-03-17
+category: 教程
+tags:
+  - Astro
+  - Astrologer
+  - 教程
+pinned: true
+---
+
+Astrologer 是一个基于 Astro 构建的多语言博客主题。内置暗色模式、全文搜索、OG 图片生成，以及受 shadcn/ui 和 Anthropic 风格启发的暖色设计系统。这篇文章带你从头开始。
+
+## 快速开始
+
+<Steps>
+
+### 克隆并安装
+
+```bash
+git clone https://github.com/KyleRicardo/astrologer.git my-blog
+cd my-blog
+pnpm install
+```
+
+### 启动开发服务器
+
+```bash
+pnpm dev
+```
+
+浏览器打开 `http://localhost:4321`，你应该能看到 demo 站点。
+
+### 修改站点配置
+
+打开 `src/site.config.ts`，把默认值替换成你自己的：
+
+```ts title="src/site.config.ts" {2-4,8-10}
+export const siteConfig: SiteConfig = {
+  domain: 'yourdomain.com',
+  site: 'https://yourdomain.com',
+  authorUrl: 'https://github.com/yourname',
+  startYear: 2024,
+  titleSeparator: ' | ',
+  locales: {
+    zh: {
+      title: '你的站点名',
+      author: '你的名字',
+      subtitle: '你的标语',
+      // ...
+    },
+  },
+}
+```
+
+站点 URL 不需要再去改 `astro.config.ts`，它会直接读取 `siteConfig.site`。
+
+### 写第一篇文章
+
+在 `src/content/blog/zh/` 下新建一个 `.mdx` 文件：
+
+```markdown title="src/content/blog/zh/hello-world.mdx"
+---
+title: "Hello World"
+date: 2024-01-01
+category: 随笔
+tags:
+  - 第一篇
+---
+
+这是我在 Astrologer 上的第一篇文章！
+```
+
+</Steps>
+
+## 文件归属
+
+Astrologer 把**用户文件**和**主题文件**做了明确分离。这在你后续升级主题时非常重要。
+
+> [!IMPORTANT]
+> 自定义之前，建议先阅读项目根目录下的 `CUSTOMIZING.zh.md`。英文对照版位于 `CUSTOMIZING.md`。
+
+核心用户文件一览：
+
+| 文件 | 用途 |
+|------|------|
+| `src/site.config.ts` | 站点元数据、部署 URL、作者链接、社交链接、功能开关 |
+| `src/styles/fonts.ts` | 字体包导入 |
+| `src/styles/tokens.css` | 调色板、字体、圆角 |
+| `src/config/friends.ts` | 友链数据 |
+| `src/config/og-colors.ts` | OG 图配色（对应 tokens.css 的 hex 值） |
+| `src/content/` | 所有博客文章和项目 |
+| `src/assets/avatar.jpg` | 你的头像 |
+
+## 自定义配色
+
+整个配色方案集中在 `src/styles/tokens.css` 里。所有中性色共享同一个 oklch **色相值** —— 修改它就能改变整站的色温。
+
+```css title="src/styles/tokens.css"
+:root {
+  /* 把 107.57 改成你想要的色相 */
+  --background: oklch(0.9766 0.0046 107.57);
+  --foreground: oklch(0.28 0.03 107.57);
+  /* ... 其他 token 同理 */
+}
+```
+
+> [!WARNING]
+> OG 图是服务端渲染成 PNG 的，无法使用 CSS 变量。修改 `tokens.css` 后，**必须同步更新** `src/config/og-colors.ts` 中的 hex 值，然后运行 `pnpm generate:og` 重新生成默认图片。
+> 如果你修改了 `author`、`authorUrl`、`subtitle`、`domain` 或 `src/assets/avatar.jpg`，也应该重新运行 `pnpm generate:og`。
+
+## 自定义字体
+
+字体修改需要联动三个文件：
+
+1. 安装 Fontsource 包：`pnpm add @fontsource-variable/your-font`
+2. 修改 `src/styles/fonts.ts` 中的 Fontsource 导入
+3. 修改 `src/styles/tokens.css` 中的 `--font-sans` 或 `--font-mono`
+
+## 功能开关
+
+`src/site.config.ts` 中的功能开关控制哪些页面会被构建：
+
+```ts title="src/site.config.ts"
+enableProjectsShowcase: true,   // 项目展示页 + OG 路由 + 首页 Recent Projects 是否可用
+enableAboutMe: true,            // 关于页导航链接
+enableFriendLinks: true,        // 友链页
+enableRecentProjectsOnHomepage: true, // 仅在 enableProjectsShowcase 为 true 时生效
+```
+
+当某个开关为 `false` 时，对应的页面在构建时**不会生成** —— 不只是隐藏导航。
+
+> [!NOTE]
+> 关于页是个特殊情况。`enableAboutMe: false` 只隐藏导航链接，页面仍然会构建（因为它是 `.mdx` 文件，没有 `getStaticPaths`）。要完全移除关于页，直接删掉 `src/pages/about.mdx` 即可。
+
+## 写作指南
+
+### 博客文章
+
+文章存放在 `src/content/blog/{lang}/` 下 —— 每个语言一个子目录。
+
+支持的 frontmatter 字段：
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `title` | string | 是 | 文章标题 |
+| `date` | date | 是 | 支持多种格式：`2024-01-01`、`Jan 01 2024` |
+| `description` | string | 否 | 用于 meta 标签和搜索 |
+| `category` | string | 否 | 自由填写，显示在文章卡片上 |
+| `tags` | string[] | 否 | 用于标签页和筛选 |
+| `cover` | string | 否 | 封面图 URL（完整链接） |
+| `draft` | boolean | 否 | 生产构建时排除 |
+| `pinned` | boolean | 否 | 置顶显示 |
+| `updated` | date | 否 | 显示"更新于"日期 |
+
+### MDX 扩展功能
+
+Astrologer 支持丰富的 MDX 扩展：
+
+**Callout 提示框**，使用 GitHub 风格语法：
+
+```markdown
+> [!NOTE]
+> 这是一个提示。
+
+> [!WARNING]- 可折叠的警告
+> 点击展开。
+```
+
+**代码块**，支持标题、行号和行高亮：
+
+````markdown
+```ts title="example.ts" {3} showLineNumbers
+function greet(name: string) {
+  // 这一行会被高亮
+  console.log(`Hello, ${name}!`)
+}
+```
+````
+
+**数学公式**，通过 KaTeX 按需加载：
+
+```markdown
+二次方程求根公式：$x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$
+```
+
+**步骤组件**，用于顺序指引 —— 在 `<Steps>` 内使用 `### 标题`：
+
+```markdown
+<Steps>
+
+### 第一步
+
+先做这个。
+
+### 第二步
+
+再做这个。
+
+</Steps>
+```
+
+### 项目
+
+项目存放在 `src/content/project/{lang}/` 下。每个项目可以有自己的图标（本地图片），以及 GitHub、主页、在线演示等链接。
+
+### 多语言
+
+Astrologer 原生支持多语言：
+
+- 中文（`zh`）是默认语言，URL 没有前缀
+- 英文（`en`）使用 `/en/` 前缀
+- 同名文件在不同语言目录下被视为互译
+
+翻译字符串在 `src/i18n/ui.ts` 中管理。添加新语言的步骤详见 `CUSTOMIZING.zh.md`。
+
+## 部署
+
+Astrologer 生成纯静态站点，任何能托管 HTML 的平台都可以部署：
+
+```bash
+pnpm build    # 输出到 dist/
+```
+
+常用平台：
+
+- **Vercel** —— 零配置，连接仓库即可
+- **Netlify** —— 同上，构建命令设为 `pnpm build`
+- **Cloudflare Pages** —— 构建命令 `pnpm build`，输出目录 `dist`
+- **GitHub Pages** —— 使用 `withastro/action` GitHub Action
+
+## 升级主题
+
+得益于用户文件和主题文件的分离，升级是一个标准的 git merge 操作：
+
+```bash
+git remote add upstream https://github.com/KyleRicardo/astrologer.git
+git fetch upstream
+git merge upstream/main
+```
+
+最容易出现冲突的是你明确自定义过的文件。主题文件（组件、布局、工具函数）通常更容易跟进上游，但如果上游重构碰到了同一段代码，仍然可能需要手工处理冲突。
+
+---
+
+*本文是 Astrologer demo 站的一部分。完整的文件归属参考请查阅项目根目录的 `CUSTOMIZING.zh.md`。*

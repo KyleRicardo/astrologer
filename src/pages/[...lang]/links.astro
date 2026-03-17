@@ -1,12 +1,14 @@
 ---
 import Layout from '@/layouts/Layout.astro'
 import FriendCard from '@/components/FriendCard.astro'
-import { friends } from '@/data/friends'
+import { friends } from '@/config/friends'
 import { languages, defaultLang } from '@/i18n/ui'
 import { useTranslations } from '@/i18n/utils'
 import type { Lang } from '@/i18n/utils'
+import { siteConfig } from '@/site.config'
 
 export function getStaticPaths() {
+  if (!siteConfig.enableFriendLinks) return []
   return Object.keys(languages).map((l) => ({
     params: { lang: l === defaultLang ? undefined : l },
     props: { lang: l as Lang },
@@ -30,9 +32,7 @@ const t = useTranslations(lang)
       class="grid gap-4 md:grid-cols-2"
       data-reveal
     >
-      {friends.map((friend) => (
-        <FriendCard friend={friend} lang={lang} />
-      ))}
+      {friends.map((friend) => <FriendCard friend={friend} lang={lang} />)}
     </section>
   </main>
 </Layout>

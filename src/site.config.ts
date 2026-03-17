@@ -1,29 +1,32 @@
 import { defaultLang } from './i18n/ui'
 import type { Lang } from './i18n/utils'
+import type { Icon as IconName } from 'virtual:astro-icon'
 
 export interface SiteConfig {
   domain: string
-  // 访问的URL
+  // 站点部署 URL（Astro 配置与运行时共享的唯一来源）
   site: string
+  // 作者主页链接（Footer 使用；留空则显示纯文本作者名）
+  authorUrl?: string
   locales: Localized<LocaleConfig>
   // 网站创建时间
   createTime: string
+  // 版权起始年（区别于 createTime，可能比站点创建时间更早）
+  startYear: number
+  // 页面标题分隔符，用于 <title>{pageTitle}{separator}{siteTitle}</title>
+  titleSeparator: string
   // 是否开启作品展柜
   enableProjectsShowcase: boolean
   // 是否开启关于页面
   enableAboutMe: boolean
   // 是否开启友链页面
   enableFriendLinks: boolean
-  // 主页是否显示推广信息
-  enablePromotionOnHomepage: boolean
   // 主页是否显示最近项目
   enableRecentProjectsOnHomepage: boolean
   // 主页最近文章个数
   recentPostsCount: number
   // 主页最近项目个数
   recentProjectsCount: number
-  // 项目页面是否显示推广信息
-  enablePromotionOnProjectsPage: boolean
   // 社交链接
   socials: SocialLink[]
 }
@@ -54,14 +57,15 @@ interface LocaleConfig {
 export interface SocialLink {
   name: string
   url: string
-  icon: string
+  icon: IconName
   showOnHeader?: boolean
 }
 
 export const siteConfig: SiteConfig = {
   domain: 'astrologer-theme.vercel.app',
-  // 访问的URL
+  // 站点部署 URL（Astro 配置与运行时共享的唯一来源）
   site: 'https://astrologer-theme.vercel.app',
+  authorUrl: 'https://github.com/KyleRicardo',
   locales: {
     en: {
       title: "Kyle's Home",
@@ -123,22 +127,22 @@ export const siteConfig: SiteConfig = {
   },
   // 网站创建时间
   createTime: '2025-03-15',
+  // 版权起始年（Footer 显示 "startYear - currentYear"）
+  startYear: 2018,
+  // 页面标题分隔符
+  titleSeparator: ' | ',
   // 是否开启作品展柜
   enableProjectsShowcase: true,
   // 是否开启关于页面
   enableAboutMe: true,
   // 是否开启友链页面
   enableFriendLinks: true,
-  // 主页是否显示推广信息
-  enablePromotionOnHomepage: true,
   // 主页是否显示最近项目
   enableRecentProjectsOnHomepage: true,
   // 主页最近文章个数
   recentPostsCount: 6,
   // 主页最近项目个数
   recentProjectsCount: 3,
-  // 项目页面是否显示推广信息
-  enablePromotionOnProjectsPage: false,
   // 社交链接
   socials: [
     {

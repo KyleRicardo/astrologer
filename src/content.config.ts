@@ -34,9 +34,9 @@ const project = defineCollection({
       // Transform string to Date object
       date: z.coerce.date(),
       updated: z.coerce.date().optional(),
-      github: z.string().url().optional(),
-      homepage: z.string().url().optional(),
-      liveDemo: z.string().url().optional(),
+      github: z.url().optional(),
+      homepage: z.url().optional(),
+      liveDemo: z.url().optional(),
       tags: z.array(z.string()).optional(),
       draft: z.boolean().optional(),
       pinned: z.boolean().optional(),

@@ -3,10 +3,11 @@ import { mkdir } from 'node:fs/promises'
 import { join } from 'node:path'
 import process from 'node:process'
 import { pipeline } from 'node:stream/promises'
-import { ImageResponse } from '@takumi-rs/image-response'
 import type { Font, ImageSource } from '@takumi-rs/core'
+import { ImageResponse } from '@takumi-rs/image-response'
 import { siteConfig, getSiteConfig } from '@/site.config'
 import { useTranslations, type Lang } from '@/i18n/utils'
+import { ogColors } from '@/config/og-colors'
 
 interface OgOptions {
   title: string
@@ -114,7 +115,8 @@ export async function renderOgImage(
       tw='flex flex-col w-full h-full'
       style={{
         padding: '80px 80px 100px 80px',
-        background: 'linear-gradient(180deg, #161611 0%, #292924 100%)',
+        background:
+          `linear-gradient(180deg, ${ogColors.background} 0%, ${ogColors.muted} 100%)`,
         fontFamily: 'Source Han Sans SC',
       }}
     >
@@ -124,9 +126,9 @@ export async function renderOgImage(
           style={{
             padding: '8px 24px',
             fontSize: 24,
-            border: '1px solid rgba(236, 236, 228, 0.2)',
-            backgroundColor: '#292924',
-            color: '#dedfd7',
+            border: `1px solid ${ogColors.border}`,
+            backgroundColor: ogColors.muted,
+            color: ogColors.foreground,
           }}
         >
           {label}
@@ -137,7 +139,7 @@ export async function renderOgImage(
         tw='font-bold mt-6'
         style={{
           fontSize: 64,
-          color: '#dedfd7',
+          color: ogColors.foreground,
           maxWidth: 880,
           maxHeight: 200,
           letterSpacing: '-0.04em',
@@ -154,7 +156,7 @@ export async function renderOgImage(
           tw='mt-6'
           style={{
             fontSize: 40,
-            color: '#909089',
+            color: ogColors.mutedForeground,
             lineHeight: 1.5,
             lineClamp: 2,
             overflow: 'hidden',
@@ -170,13 +172,16 @@ export async function renderOgImage(
           width={80}
           height={80}
           tw='rounded-full'
-          style={{ border: '2px solid rgba(236, 236, 228, 0.2)' }}
+          style={{ border: `2px solid ${ogColors.border}` }}
         />
         <div tw='flex flex-col gap-1'>
-          <div tw='font-semibold' style={{ fontSize: 32, color: '#dedfd7' }}>
+          <div
+            tw='font-semibold'
+            style={{ fontSize: 32, color: ogColors.foreground }}
+          >
             {author}
           </div>
-          <div style={{ fontSize: 24, color: '#909089' }}>
+          <div style={{ fontSize: 24, color: ogColors.mutedForeground }}>
             {siteConfig.domain}
           </div>
         </div>
@@ -204,13 +209,14 @@ export async function renderDefaultCover(lang: Lang): Promise<ImageResponse> {
     <div
       tw='w-full h-full flex relative'
       style={{
-        backgroundColor: '#161611',
+        backgroundColor: ogColors.background,
         fontFamily: 'Outfit',
       }}
     >
       <div
         tw='w-full h-full flex flex-col justify-center items-center'
         style={{
+          // Decorative teal gradient — intentionally distinct from neutral tokens
           background:
             'linear-gradient(180deg, #161612 0%, #171814 18.7%, #181D1B 34.9%, #1A2525 48.8%, #1D2F32 60.56%, #213C41 70.37%, #254952 78.4%, #295764 84.83%, #2D6677 89.84%, #317489 93.6%, #35819A 96.3%, #398EA9 98.1%, #3C98B6 99.2%, #3EA0C0 99.76%, #3FA5C7 99.97%, #40A7C9 100%)',
         }}
@@ -221,14 +227,14 @@ export async function renderDefaultCover(lang: Lang): Promise<ImageResponse> {
             width={256}
             height={256}
             tw='rounded-full'
-            style={{ border: '3px solid rgba(236, 236, 228, 0.2)' }}
+            style={{ border: `3px solid ${ogColors.border}` }}
           />
           <div
             tw='font-semibold'
             style={{
               fontSize: 48,
               letterSpacing: '-0.02em',
-              color: '#e6e4d9',
+              color: ogColors.accentForeground,
             }}
           >
             {author}
@@ -254,7 +260,8 @@ export async function renderDefaultOg(lang: Lang): Promise<ImageResponse> {
     <div
       tw='w-full h-full flex flex-col justify-center items-center'
       style={{
-        background: 'linear-gradient(180deg, #161611 0%, #292924 100%)',
+        background:
+          `linear-gradient(180deg, ${ogColors.background} 0%, ${ogColors.muted} 100%)`,
         fontFamily: 'Outfit',
       }}
     >
@@ -264,7 +271,7 @@ export async function renderDefaultOg(lang: Lang): Promise<ImageResponse> {
           width={256}
           height={256}
           tw='rounded-full'
-          style={{ border: '3px solid rgba(236, 236, 228, 0.2)' }}
+          style={{ border: `3px solid ${ogColors.border}` }}
         />
         <div
           tw='font-semibold'
@@ -272,7 +279,7 @@ export async function renderDefaultOg(lang: Lang): Promise<ImageResponse> {
             marginTop: 16,
             fontSize: 48,
             letterSpacing: '-0.02em',
-            color: '#e6e4d9',
+            color: ogColors.accentForeground,
           }}
         >
           {author}
@@ -281,7 +288,7 @@ export async function renderDefaultOg(lang: Lang): Promise<ImageResponse> {
           style={{
             marginTop: 4,
             fontSize: 32,
-            color: '#878580',
+            color: ogColors.subtitle,
           }}
         >
           {subtitle}
@@ -291,7 +298,7 @@ export async function renderDefaultOg(lang: Lang): Promise<ImageResponse> {
             marginTop: 8,
             fontSize: 24,
             letterSpacing: '0.05em',
-            color: '#b7b5ac',
+            color: ogColors.domain,
           }}
         >
           {siteConfig.domain}

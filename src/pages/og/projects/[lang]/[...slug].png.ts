@@ -1,10 +1,12 @@
 import type { Lang } from '@/i18n/utils'
 import type { APIRoute } from 'astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
+import { siteConfig } from '@/site.config'
 
 import { renderOgImage } from '@/utils/og-image'
 
 export async function getStaticPaths() {
+  if (!siteConfig.enableProjectsShowcase) return []
   const projects = await getCollection('project')
   return projects.map((project) => {
     const [lang, ...rest] = project.id.split('/')

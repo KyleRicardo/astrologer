@@ -5,10 +5,7 @@ import Footer from '@/components/Footer.astro'
 import Header from '@/components/Header.astro'
 import SearchDialog from '@/components/SearchDialog.astro'
 import '@/styles/global.css'
-
-import '@fontsource-variable/noto-sans-sc'
-import '@fontsource-variable/inter'
-import '@fontsource-variable/jetbrains-mono'
+import '@/styles/fonts'
 import 'medium-zoom/dist/style.css'
 
 import { getLangFromUrl, getLocaleFromLang, type Lang } from '@/i18n/utils'
@@ -64,7 +61,7 @@ const ogImage = image
       href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css"
       rel="stylesheet"
       media="print"
-      onload="this.media = 'all'"
+      onload="this.setAttribute('media', 'all')"
     >
     <noscript>
       <link
@@ -101,7 +98,7 @@ const ogImage = image
       title={siteConfig.title}
       href={new URL('rss.xml', Astro.site)}
     />
-    <title>{`${title} | ${siteConfig.title}`}</title>
+    <title>{`${title}${siteConfig.titleSeparator}${siteConfig.title}`}</title>
     <meta name="description" content={description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -128,7 +125,7 @@ const ogImage = image
       {!hideChrome && <Header showProgressBar={showProgressBar} />}
       <div id="main-content"></div>
       <slot />
-      {!hideChrome && <Footer />}
+      {!hideChrome && <Footer lang={lang} />}
     </div>
     {!hideChrome && <SearchDialog />}
   </body>

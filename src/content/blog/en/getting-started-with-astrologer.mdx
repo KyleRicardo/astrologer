@@ -1,0 +1,247 @@
+---
+title: "Getting Started with Astrologer"
+description: "A complete guide to setting up, customizing, and deploying your Astrologer blog — from first clone to production."
+date: 2026-03-17
+category: Guide
+tags:
+  - Astro
+  - Astrologer
+  - Tutorial
+pinned: true
+---
+
+Astrologer is a multilingual, content-driven blog theme built on Astro. It ships with dark mode, full-text search, OG image generation, and a warm design system inspired by shadcn/ui and Anthropic's aesthetic. This guide walks you through everything you need to get up and running.
+
+## Quick Start
+
+<Steps>
+
+### Clone and install
+
+```bash
+git clone https://github.com/KyleRicardo/astrologer.git my-blog
+cd my-blog
+pnpm install
+```
+
+### Start the dev server
+
+```bash
+pnpm dev
+```
+
+Open `http://localhost:4321` in your browser. You should see the demo site.
+
+### Edit your site config
+
+Open `src/site.config.ts` and replace the default values with your own:
+
+```ts title="src/site.config.ts" {2-4,8-10}
+export const siteConfig: SiteConfig = {
+  domain: 'yourdomain.com',
+  site: 'https://yourdomain.com',
+  authorUrl: 'https://github.com/yourname',
+  startYear: 2024,
+  titleSeparator: ' | ',
+  locales: {
+    en: {
+      title: "Your Site Title",
+      author: 'Your Name',
+      subtitle: 'Your tagline here.',
+      // ...
+    },
+  },
+}
+```
+
+You do not need to edit `astro.config.ts` for the site URL. It reads `siteConfig.site` directly.
+
+### Write your first post
+
+Create a file at `src/content/blog/en/hello-world.mdx`:
+
+```markdown title="src/content/blog/en/hello-world.mdx"
+---
+title: "Hello World"
+date: 2024-01-01
+category: General
+tags:
+  - First Post
+---
+
+This is my first post on Astrologer!
+```
+
+</Steps>
+
+## File Ownership
+
+Astrologer separates **user-owned** files from **theme-owned** files. This matters when you upgrade the theme later.
+
+> [!IMPORTANT]
+> Before customizing, read `CUSTOMIZING.md` in the project root. A Chinese reference is also available at `CUSTOMIZING.zh.md`.
+
+The key user-owned files:
+
+| File | What you edit |
+|------|--------------|
+| `src/site.config.ts` | Site metadata, deployment URL, author link, social links, feature flags |
+| `src/styles/fonts.ts` | Font package imports |
+| `src/styles/tokens.css` | Colors, fonts, border radius |
+| `src/config/friends.ts` | Friend links data |
+| `src/config/og-colors.ts` | OG image color palette |
+| `src/content/` | All your blog posts and projects |
+| `src/assets/avatar.jpg` | Your avatar |
+
+## Customizing Colors
+
+The entire color palette lives in `src/styles/tokens.css`. All neutrals share a single oklch **hue** value — change it to shift the color temperature of the entire site.
+
+```css title="src/styles/tokens.css"
+:root {
+  /* Change 107.57 to your preferred hue */
+  --background: oklch(0.9766 0.0046 107.57);
+  --foreground: oklch(0.28 0.03 107.57);
+  /* ... all other tokens use the same hue */
+}
+```
+
+> [!WARNING]
+> OG images are rendered as PNGs — they cannot use CSS variables. After changing `tokens.css`, you must also update the hex equivalents in `src/config/og-colors.ts`, then run `pnpm generate:og` to regenerate default images.
+> If you change `author`, `authorUrl`, `subtitle`, `domain`, or `src/assets/avatar.jpg`, rerun `pnpm generate:og` as well.
+
+## Customizing Fonts
+
+Font changes touch three files:
+
+1. Install the Fontsource package: `pnpm add @fontsource-variable/your-font`
+2. Update the imports in `src/styles/fonts.ts`
+3. Update `--font-sans` or `--font-mono` in `src/styles/tokens.css`
+
+## Feature Flags
+
+Feature flags in `src/site.config.ts` control what gets built:
+
+```ts title="src/site.config.ts"
+enableProjectsShowcase: true,   // Projects pages + OG routes + homepage Recent Projects availability
+enableAboutMe: true,            // About page nav link
+enableFriendLinks: true,        // Friend links page
+enableRecentProjectsOnHomepage: true, // Only takes effect when enableProjectsShowcase is true
+```
+
+When a flag is `false`, the corresponding pages are **not generated** at build time — not just hidden from navigation.
+
+> [!NOTE]
+> The About page is a special case. Setting `enableAboutMe: false` hides the nav link, but the page is still built because it's an `.mdx` file without `getStaticPaths`. To fully remove it, delete `src/pages/about.mdx`.
+
+## Writing Content
+
+### Blog Posts
+
+Posts live in `src/content/blog/{lang}/` — one subdirectory per language.
+
+Available frontmatter fields:
+
+| Field | Type | Required | Notes |
+|-------|------|----------|-------|
+| `title` | string | Yes | |
+| `date` | date | Yes | Supports multiple formats: `2024-01-01`, `Jan 01 2024` |
+| `description` | string | No | Used in meta tags and search |
+| `category` | string | No | Free-form, displayed on article cards |
+| `tags` | string[] | No | Used for tag pages and filtering |
+| `cover` | string | No | Full URL to cover image |
+| `draft` | boolean | No | Excluded from production builds |
+| `pinned` | boolean | No | Pinned to top of post list |
+| `updated` | date | No | Shows "Updated" date on post |
+
+### MDX Features
+
+Astrologer supports several MDX extensions:
+
+**Callouts** using GitHub-style syntax:
+
+```markdown
+> [!NOTE]
+> This is a note callout.
+
+> [!WARNING]- Collapsible warning
+> Click to expand.
+```
+
+**Code blocks** with titles, line numbers, and highlighting:
+
+````markdown
+```ts title="example.ts" {3} showLineNumbers
+function greet(name: string) {
+  // This line is highlighted
+  console.log(`Hello, ${name}!`)
+}
+```
+````
+
+**Math** via KaTeX (loaded on demand):
+
+```markdown
+The quadratic formula: $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$
+```
+
+**Steps** for sequential instructions — wrap `### Heading` blocks inside `<Steps>`:
+
+```markdown
+<Steps>
+
+### Step one
+
+Do this first.
+
+### Step two
+
+Then do this.
+
+</Steps>
+```
+
+### Projects
+
+Projects live in `src/content/project/{lang}/`. Each project can have its own icon (local image via `image()`) and links to GitHub, homepage, or live demo.
+
+### i18n
+
+Astrologer supports multilingual content out of the box:
+
+- Chinese (`zh`) is the default language with no URL prefix
+- English (`en`) gets an `/en/` prefix
+- Same-slug files across language directories are treated as translations of each other
+
+Translation strings live in `src/i18n/ui.ts`. See `CUSTOMIZING.md` for instructions on adding a new language.
+
+## Deployment
+
+Astrologer generates a fully static site. Deploy anywhere that serves HTML:
+
+```bash
+pnpm build    # Output to dist/
+```
+
+Popular options:
+
+- **Vercel** — zero config, just connect your repo
+- **Netlify** — same, with `pnpm build` as the build command
+- **Cloudflare Pages** — set build command to `pnpm build`, output directory to `dist`
+- **GitHub Pages** — use the `withastro/action` GitHub Action
+
+## Upgrading the Theme
+
+Since Astrologer separates user files from theme files, upgrading is a standard git merge:
+
+```bash
+git remote add upstream https://github.com/KyleRicardo/astrologer.git
+git fetch upstream
+git merge upstream/main
+```
+
+Conflicts are most likely in files you've explicitly customized. Theme-owned files are usually easier to merge, but upstream refactors can still require manual conflict resolution.
+
+---
+
+*This post is part of the Astrologer demo site. For the complete file ownership reference, see `CUSTOMIZING.md` in the project root.*

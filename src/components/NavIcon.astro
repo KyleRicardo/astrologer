@@ -1,10 +1,11 @@
 ---
 import { Icon } from 'astro-icon/components'
+import type { Icon as IconName } from 'virtual:astro-icon'
 
 interface Props {
   name: string
   href: string
-  icon: string
+  icon: IconName
   size?: 'sm' | 'md' | 'lg'
   external?: boolean
 }

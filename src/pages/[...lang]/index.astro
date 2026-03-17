@@ -21,8 +21,11 @@ const { lang } = Astro.props as { lang: Lang }
 const posts = await getPostsByLang(lang)
 const recentPosts = posts.slice(0, siteConfig.recentPostsCount)
 
-const projects = await getProjectsByLang(lang)
-const recentProjects = projects.slice(0, siteConfig.recentProjectsCount)
+const showRecentProjects = siteConfig.enableProjectsShowcase &&
+  siteConfig.enableRecentProjectsOnHomepage
+const recentProjects = showRecentProjects
+  ? (await getProjectsByLang(lang)).slice(0, siteConfig.recentProjectsCount)
+  : []
 
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
@@ -49,7 +52,7 @@ const translatePath = useTranslatedPath(lang)
         >{t('home.morePosts')}</Button>
       </footer>
     </section>
-    {siteConfig.enableRecentProjectsOnHomepage && (
+    {showRecentProjects && (
       <section
         aria-label="projects"
         class="mx-auto max-w-lg px-4 py-16 md:max-w-5xl xl:max-w-7xl"

@@ -5,8 +5,10 @@ import Layout from '@/layouts/Layout.astro'
 import ProjectLayout from '@/layouts/ProjectLayout.astro'
 import { getProjectsByLang } from '@/utils/get-contents'
 import { languages, defaultLang } from '@/i18n/ui'
+import { siteConfig } from '@/site.config'
 
 export function getStaticPaths() {
+  if (!siteConfig.enableProjectsShowcase) return []
   return Object.keys(languages).map((l) => ({
     params: { lang: l === defaultLang ? undefined : l },
     props: { lang: l as Lang },

@@ -50,6 +50,7 @@
     "@playwright/test": "^1.58.2",
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.1.18",
+    "@takumi-rs/core": "0.70.3",
     "@takumi-rs/image-response": "^0.70.3",
     "@types/hast": "^3.0.4",
     "@types/react": "^19.2.8",

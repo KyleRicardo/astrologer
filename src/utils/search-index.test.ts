@@ -177,8 +177,8 @@ describe('generateAliases', () => {
   })
 
   it('splits dotted filenames', () => {
-    const result = generateAliases('edit astro.config.mjs')
-    expect(result).toContain('astro config mjs')
+    const result = generateAliases('edit astro.config.ts')
+    expect(result).toContain('astro config ts')
   })
 
   it('strips leading dot from extensions', () => {

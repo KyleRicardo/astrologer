@@ -4,16 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-| Command            | Description                                   |
-| ------------------ | --------------------------------------------- |
-| `pnpm dev`         | Start dev server                              |
-| `pnpm build`       | Production build (static output to `dist/`)   |
-| `pnpm preview`     | Preview production build                      |
-| `pnpm lint`        | Run ESLint                                    |
-| `pnpm lint:fix`    | Auto-fix lint issues                          |
-| `pnpm format`      | Format with dprint                            |
-| `pnpm generate:og` | Generate default OG/cover images to `public/` |
-| `pnpm check`       | Type-check Astro + TS files via `astro check` |
+| Command            | Description                                                 |
+| ------------------ | ----------------------------------------------------------- |
+| `pnpm dev`         | Start dev server                                            |
+| `pnpm build`       | Production build (static output to `dist/`)                 |
+| `pnpm preview`     | Preview production build                                    |
+| `pnpm lint`        | Run ESLint                                                  |
+| `pnpm lint:fix`    | Auto-fix lint issues                                        |
+| `pnpm format`      | Format with dprint                                          |
+| `pnpm generate:og` | Generate default OG to `public/` and cover to `src/assets/` |
+| `pnpm check`       | Type-check Astro + TS files via `astro check`               |
 
 | `pnpm test` | Run Vitest unit tests |
 | `pnpm test:e2e` | Run Playwright e2e tests |
@@ -53,11 +53,20 @@ Content utilities in `src/utils/get-contents.ts` provide filtering by language, 
 
 ### Site Config
 
-`src/site.config.ts` exports `siteConfig` (static) and `getSiteConfig(lang)` (language-merged). Contains author info, social links, feature flags, and per-locale metadata.
+`src/site.config.ts` exports `siteConfig` (static) and `getSiteConfig(lang)` (language-merged). It is also the single source of truth for the deployed site URL (`siteConfig.site`). The config contains author info, optional `authorUrl`, social links, feature flags, and per-locale metadata. Feature flags (`enableProjectsShowcase`, `enableFriendLinks`) control both navigation visibility and route generation (pages return empty `getStaticPaths` when disabled).
+
+### User Configuration Directory
+
+`src/config/` contains user-editable data files:
+
+- `friends.ts` — friend links data (imports `Friend` type from `src/data/friends.ts`)
+- `og-colors.ts` — OG image hex colors mapped to `tokens.css` oklch values (update both together)
+
+See `CUSTOMIZING.md` and `CUSTOMIZING.zh.md` for the full file ownership guide.
 
 ### OG Image Generation
 
-`src/utils/og-image.tsx` uses `@takumi-rs/image-response` (takumi) to render JSX directly to PNG. The JSX here is compiled via `react/jsx-runtime` (configured in `tsconfig.json`) but is not a React component — it produces element trees for takumi's image renderer. Fonts (Outfit, Source Han Sans SC) are downloaded as TTF from CDN and cached in `node_modules/.cache/fonts`. Avatar is preloaded as a `persistentImage`. Three functions:
+`src/utils/og-image.tsx` uses `@takumi-rs/image-response` (takumi) to render JSX directly to PNG. The JSX here is compiled via `react/jsx-runtime` (configured in `tsconfig.json`) but is not a React component — it produces element trees for takumi's image renderer. Fonts (Outfit, Source Han Sans SC) are downloaded as TTF from CDN and cached in `node_modules/.cache/fonts`. Avatar is preloaded as a `persistentImage`. Color constants are centralized in `src/config/og-colors.ts` with documented mapping to `tokens.css` oklch values. Three functions:
 
 - `renderOgImage()` — dynamic per-post/project images (1200x630)
 - `renderDefaultOg()` — site-wide OG image (1200x630)
@@ -67,7 +76,8 @@ Dynamic routes at `/og/posts/[lang]/[...slug].png` and `/og/projects/[lang]/[...
 
 ### Styling
 
-- Tailwind CSS v4 with inline `@theme` configuration in `src/styles/global.css`
+- Tailwind CSS v4 with `@theme inline` in `src/styles/global.css`
+- **Design tokens split**: `src/styles/tokens.css` (user-editable: colors, fonts, radius) is imported by `global.css` (theme-owned: component styles, prose overrides, code blocks). Users customize only `tokens.css`; theme upgrades only touch `global.css`.
 - `@tailwindcss/typography` for prose content
 - Dark mode via `.dark` class on `<html>`, persisted to localStorage
 - Utility: `cn()` from `src/lib/utils.ts` (clsx + tailwind-merge)
@@ -75,7 +85,7 @@ Dynamic routes at `/og/posts/[lang]/[...slug].png` and `/og/projects/[lang]/[...
 
 ### MDX Pipeline
 
-Configured in `astro.config.mjs`:
+Configured in `astro.config.ts`:
 
 - **Syntax highlighting**: rehype-pretty-code (not Astro built-in)
 - **Math**: remark-math + rehype-katex
@@ -86,7 +96,7 @@ Configured in `astro.config.mjs`:
 
 - Uses `ClientRouter` from `astro:transitions` in Layout.astro
 - **Lifecycle pattern**: `astro:page-load` to initialize, `astro:before-swap` with `{ once: true }` to clean up. See `src/scripts/scroll-reveal.ts` for the canonical example.
-- **CSS in component `<script>` tags gets lost on navigation** — Astro removes the `<link>` on swap and deduplication prevents re-injection. Always import CSS that must persist in `Layout.astro` frontmatter (e.g., `medium-zoom/dist/style.css`, Fontsource fonts).
+- **CSS in component `<script>` tags gets lost on navigation** — Astro removes the `<link>` on swap and deduplication prevents re-injection. Always import CSS that must persist in `Layout.astro` frontmatter (e.g., `medium-zoom/dist/style.css`, the aggregated `src/styles/fonts.ts` entry).
 - JS libraries that attach to DOM elements (e.g., medium-zoom) must `.detach()` on `astro:before-swap` and re-initialize on `astro:page-load` to avoid stale instances.
 
 ## Design Context

@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 @import 'rehype-callouts/theme/github';
+@import "./tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -14,8 +15,6 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Inter Variable", "PingFang SC", "Noto Sans SC Variable", "Microsoft YaHei UI", "Microsoft YaHei", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, Menlo, monospace;
   --color-ring: var(--ring);
   --color-input: var(--input);
   --color-border: var(--border);
@@ -64,88 +63,6 @@
   --animate-fade-in: fadeIn 0.5s ease-out both;
   --animate-fade-in-up: fadeInUp 0.5s ease-out both;
 
-}
-
-:root {
-  --radius: 0.625rem;
-  /* 基础背景与前景 */
-  --background: oklch(0.9766 0.0046 107.57); /* #f8f9f5 */
-  --foreground: oklch(0.28 0.03 107.57);     /* 深暖灰墨水色 */
-
-  /* 悬浮层：最高层级，接近纯白 */
-  --popover: oklch(0.995 0.002 107.57);
-  --popover-foreground: oklch(0.28 0.03 107.57);
-
-  /* 品牌主色：暗化以满足 WCAG AA 对比度 (≥ 4.5:1) */
-  --primary: oklch(0.50 0.13 233.15);
-  --primary-foreground: oklch(1 0 0); /* 主色上的文字用纯白 */
-
-  /* 次级颜色：徽章/标签的填充底色，比 muted 稍深 */
-  --secondary: oklch(0.935 0.012 107.57);
-  --secondary-foreground: oklch(0.35 0.03 107.57);
-
-  /* 静音色：最柔和的底色，用于 hover 提示、行内代码等 */
-  --muted: oklch(0.95 0.008 107.57);
-  --muted-foreground: oklch(0.55 0.02 107.57);
-
-  /* 强调色：交互 hover/focus 高亮，三者中最醒目 */
-  --accent: oklch(0.925 0.012 107.57);
-  --accent-foreground: oklch(0.28 0.03 107.57);
-
-  /* 破坏/错误色：Flexoki Red */
-  --destructive: oklch(0.6 0.15 25);
-
-  /* 边框与输入框：温暖的浅灰色，去除了冷感 */
-  --border: oklch(0.90 0.01 107.57);
-  --input: oklch(0.90 0.01 107.57);
-  --ring: oklch(0.50 0.13 233.15); /* Focus ring 使用主色 */
-
-  --surface: oklch(0.97 0.005 107.57);
-  --surface-foreground: var(--foreground);
-  --code: var(--surface);
-  --code-foreground: var(--surface-foreground);
-  --code-highlight: oklch(0.96 0.006 107.57);
-  --code-number: oklch(0.56 0.01 107.57);
-}
-
-.dark {
-  /* 基础背景：深沉的暖灰色，对标 Anthropic #141413 */
-  --background: oklch(0.175 0.006 107.57);
-  --foreground: oklch(0.90 0.01 107.57); /* 暖白文字 */
-
-  --popover: oklch(0.255 0.008 107.57);
-  --popover-foreground: oklch(0.90 0.01 107.57);
-
-  /* 品牌色：保持一致，或微调亮度 (0.67 -> 0.70) 增加可读性 */
-  --primary: oklch(0.70 0.122 233.15); 
-  --primary-foreground: oklch(1 0 0); /* 依然用白色保持对比 */
-
-  /* 次级颜色：徽章/标签填充 */
-  --secondary: oklch(0.26 0.012 107.57);
-  --secondary-foreground: oklch(0.85 0.01 107.57);
-
-  /* 静音色 */
-  --muted: oklch(0.27 0.008 107.57);
-  --muted-foreground: oklch(0.70 0.01 107.57);
-
-  /* 强调色：交互 hover/focus 高亮 */
-  --accent: oklch(0.30 0.012 107.57);
-  --accent-foreground: oklch(0.95 0.008 107.57);
-
-  /* 破坏色：降低亮度以适应暗黑模式 */
-  --destructive: oklch(0.5 0.15 25);
-
-  /* 边框：低对比度深灰 */
-  --border: oklch(0.30 0.01 107.57);
-  --input: oklch(0.30 0.01 107.57);
-  --ring: oklch(0.70 0.122 233.15);
-
-  --surface: oklch(0.21 0.008 107.57);
-  --surface-foreground: oklch(0.708 0.008 107.57);
-  --code: var(--surface);
-  --code-foreground: var(--surface-foreground);
-  --code-highlight: oklch(0.27 0.006 107.57);
-  --code-number: oklch(0.72 0.008 107.57);
 }
 
 @layer base {
@@ -398,6 +315,12 @@
 
 html.theme-transition * {
   view-transition-name: none !important;
+  /*
+   * Do not override animation-delay here. Changing it during a theme toggle
+   * restarts delayed entrance animations, which makes revealed content blink.
+   */
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
 }
 
 .theme-transition::view-transition-old(root),

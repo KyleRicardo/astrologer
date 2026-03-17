@@ -1,13 +1,36 @@
+---
+import { getLangFromUrl } from '@/i18n/utils'
+import { getSiteConfig } from '@/site.config'
+
+interface Props {
+  lang?: import('@/i18n/utils').Lang
+}
+
+const lang = Astro.props.lang ?? getLangFromUrl(Astro.url)
+const siteConfig = getSiteConfig(lang)
+
+const author = siteConfig.author
+const authorUrl = siteConfig.authorUrl
+const startYear = siteConfig.startYear
+const currentYear = new Date().getFullYear()
+const yearRange = startYear === currentYear
+  ? `${currentYear}`
+  : `${startYear} - ${currentYear}`
+---
 <footer class="border-grid border-t py-6 md:py-0">
   <div class="container mx-auto max-w-[1400px] p-4">
     <div class="text-muted-foreground flex flex-col items-center text-sm leading-loose text-nowrap md:flex-row md:justify-between gap-2 md:gap-4">
       <div>
-        Copyright © 2018 - 2026 <a
-          href="https://github.com/KyleRicardo"
-          target="_blank"
-          rel="noreferrer"
-          class="font-medium underline underline-offset-4"
-        >Kyle Ricardo</a>
+        Copyright &copy; {yearRange} {authorUrl
+          ? (
+            <a
+              href={authorUrl}
+              target="_blank"
+              rel="noreferrer"
+              class="font-medium underline underline-offset-4"
+            >{author}</a>
+          )
+          : <span class="font-medium">{author}</span>}
       </div>
       <div>
         Powered by <a
@@ -16,7 +39,7 @@
           rel="noreferrer"
           class="font-medium underline underline-offset-4"
         >Astro</a>
-        • Theme <a
+        &bull; Theme <a
           href="https://github.com/KyleRicardo/astrologer"
           target="_blank"
           rel="noreferrer"

@@ -155,7 +155,7 @@ export function splitSections(
  * Generate search-friendly aliases for code-style terms.
  *
  * - `@astrojs/mdx` → also indexes `astrojs mdx`
- * - `astro.config.mjs` → also indexes `astro config mjs`
+ * - `astro.config.ts` → also indexes `astro config ts`
  * - `.astro` → also indexes `astro`
  */
 export function generateAliases(text: string): string {
