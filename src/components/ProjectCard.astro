@@ -35,7 +35,7 @@ const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
           alt={title}
           width={720}
           height={450}
-          class="aspect-16/10 w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
+          class="aspect-video w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
           transition:name={coverTransitionName}
         />
       ) : (
@@ -44,7 +44,7 @@ const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
            alt={title}
            width={720}
            height={450}
-           class="aspect-16/10 w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
+           class="aspect-video w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
            transition:name={coverTransitionName}
          />
        )}
@@ -53,7 +53,7 @@ const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
     <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset group-hover:ring-black/10 dark:ring-white/10 dark:group-hover:ring-white/15">
     </div>
 
-    <div class="flex flex-1 flex-col gap-4 px-6 py-4">
+    <div class="flex flex-1 flex-col gap-1 p-3">
       <div class="flex items-center gap-4">
         <div class="relative size-12 shrink-0 overflow-clip rounded-lg">
           <Image src={icon} alt={title} />
@@ -74,7 +74,7 @@ const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
           </p>
         </div>
       </div>
-      <div aria-label="footer" class="mt-auto flex items-center">
+      <div aria-label="footer" class="mt-auto flex items-end">
         {tags && tags.length > 0 && (
           <div aria-label="project tags">
             <ul>

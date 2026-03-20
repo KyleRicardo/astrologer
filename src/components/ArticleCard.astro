@@ -35,18 +35,18 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || '' // F
 ---
 
 <article
-  class="group relative flex flex-col overflow-hidden rounded-xl md:flex-row"
+  class="group relative flex flex-col overflow-hidden rounded-xl md:h-40 md:flex-row"
   transition:name={cardTransitionName}
 >
   <!-- Cover Image -->
-  <div class="relative w-full shrink-0 overflow-hidden md:w-1/3">
+  <div class="relative w-full shrink-0 overflow-hidden md:w-60">
     {cover ? (
       <Image
         src={cover}
         alt={title}
         width={720}
         height={360}
-        class="h-full w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:rounded-t-none md:rounded-l-xl"
+        class="aspect-video w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:h-full md:aspect-auto md:rounded-t-none md:rounded-l-xl"
         transition:name={coverTransitionName}
       />
     ) : (
@@ -55,7 +55,7 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || '' // F
          alt={title}
          width={720}
          height={360}
-         class="h-full w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:rounded-t-none md:rounded-l-xl"
+         class="aspect-video w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:h-full md:aspect-auto md:rounded-t-none md:rounded-l-xl"
          transition:name={coverTransitionName}
        />
      )}
@@ -65,7 +65,7 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || '' // F
   </div>
 
   <!-- Content -->
-  <div class="flex flex-1 flex-col p-4 tracking-wide md:p-6">
+  <div class="flex flex-1 flex-col px-4 py-6 tracking-wide md:px-6">
     <div class="text-muted-foreground mb-2 flex overflow-hidden font-medium text-xs whitespace-nowrap">
       <time datetime={date.toISOString()} transition:name={timeTransitionName}>
         {formattedDate}
@@ -97,7 +97,7 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || '' // F
         </span>
       </a>
     </h2>
-    <p class="text-muted-foreground mt-2 line-clamp-3 text-sm">
+    <p class="text-muted-foreground mt-2 line-clamp-3 text-sm md:line-clamp-2">
       {displayExcerpt}
     </p>
   </div>

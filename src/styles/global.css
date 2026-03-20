@@ -150,6 +150,10 @@
   img {
     @apply mx-auto;
   }
+
+  & > :first-child > :first-child {
+    margin-top: 0;
+  }
 }
 
 @layer utilities {
