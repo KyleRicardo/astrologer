@@ -1,0 +1,108 @@
+---
+import { useTranslations, type Lang } from '@/i18n/utils'
+import { localeByLang } from '@/i18n/ui'
+import { commentsConfig } from '@/config/comments'
+
+interface Props {
+  lang: Lang
+}
+
+const { lang } = Astro.props
+const t = useTranslations(lang)
+
+const { giscus } = commentsConfig
+const giscusLang = localeByLang[lang]
+
+// 自定义主题 CSS 完整 URL（Giscus iframe 需要绝对路径）
+const origin = Astro.url.origin
+const lightTheme = `${origin}/giscus-light.css`
+const darkTheme = `${origin}/giscus-dark.css`
+---
+
+<section class="mt-16 border-t border-dashed pt-8">
+  <h2 class="text-muted-foreground mb-8 text-center text-sm font-medium">
+    {t('comments.title')}
+  </h2>
+  <div
+    id="comments-container"
+    data-repo={giscus.repo}
+    data-repo-id={giscus.repoId}
+    data-category={giscus.category}
+    data-category-id={giscus.categoryId}
+    data-mapping={giscus.mapping}
+    data-reactions-enabled={giscus.reactionsEnabled !== false ? '1' : '0'}
+    data-input-position={giscus.inputPosition ?? 'bottom'}
+    data-strict={giscus.strict !== false ? '1' : '0'}
+    data-lang={giscusLang}
+    data-theme-light={lightTheme}
+    data-theme-dark={darkTheme}
+  >
+  </div>
+</section>
+
+<script>
+import 'giscus'
+
+function initComments() {
+  const _container = document.getElementById('comments-container')
+  if (!_container) return
+  const container = _container
+
+  // 已经初始化过（VT 重用时可能）
+  if (container.querySelector('giscus-widget')) return
+
+  const isDark = document.documentElement.classList.contains('dark')
+  const theme = isDark
+    ? container.dataset.themeDark!
+    : container.dataset.themeLight!
+
+  const widget = document.createElement('giscus-widget')
+  widget.setAttribute('repo', container.dataset.repo!)
+  widget.setAttribute('repoid', container.dataset.repoId!)
+  widget.setAttribute('category', container.dataset.category!)
+  widget.setAttribute('categoryid', container.dataset.categoryId!)
+  widget.setAttribute('mapping', container.dataset.mapping!)
+  widget.setAttribute('reactionsenabled', container.dataset.reactionsEnabled!)
+  widget.setAttribute('inputposition', container.dataset.inputPosition!)
+  widget.setAttribute('strict', container.dataset.strict!)
+  widget.setAttribute('lang', container.dataset.lang!)
+  widget.setAttribute('theme', theme)
+  widget.setAttribute('loading', 'lazy')
+
+  container.appendChild(widget)
+
+  // 监听暗黑模式切换，同步 Giscus 主题
+  const observer = new MutationObserver(() => {
+    const dark = document.documentElement.classList.contains('dark')
+    const newTheme = dark
+      ? container.dataset.themeDark!
+      : container.dataset.themeLight!
+
+    // giscus web component 使用 Shadow DOM，需要从 shadow root 查询 iframe
+    const iframe = widget.shadowRoot?.querySelector<HTMLIFrameElement>(
+      'iframe.giscus-frame',
+    )
+    iframe?.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme: newTheme } } },
+      'https://giscus.app',
+    )
+  })
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['class'],
+  })
+
+  // View Transitions 清理
+  document.addEventListener(
+    'astro:before-swap',
+    () => {
+      observer.disconnect()
+      container.innerHTML = ''
+    },
+    { once: true },
+  )
+}
+
+document.addEventListener('astro:page-load', initComments)
+</script>

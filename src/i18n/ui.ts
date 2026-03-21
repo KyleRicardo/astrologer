@@ -49,6 +49,7 @@ export const ui = {
     'a11y.copied': '已复制',
     'a11y.socialLinks': '社交链接',
     'a11y.blogNav': '博客导航',
+    'comments.title': '评论',
   },
   en: {
     'nav.home': 'Home',
@@ -93,6 +94,7 @@ export const ui = {
     'a11y.copied': 'Copied',
     'a11y.socialLinks': 'Social links',
     'a11y.blogNav': 'Blog navigation',
+    'comments.title': 'Comments',
   },
 } as const
 

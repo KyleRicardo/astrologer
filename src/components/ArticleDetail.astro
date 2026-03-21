@@ -12,6 +12,8 @@ import {
   sanitizeSlug,
 } from '@/utils/get-contents'
 import { mdxComponents } from './mdx/mdx-components'
+import Comments from '@/components/Comments.astro'
+import { siteConfig } from '@/site.config'
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -107,6 +109,7 @@ const coverTransitionName = `post-cover-${lang}-${postSlug}`
       </article>
       <TableOfContents headings={headings} lang={lang} />
     </div>
+    {siteConfig.enableComments && <Comments lang={lang} />}
   </main>
 </Layout>
 

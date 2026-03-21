@@ -21,6 +21,8 @@ export interface SiteConfig {
   enableAboutMe: boolean
   // 是否开启友链页面
   enableFriendLinks: boolean
+  // 是否开启文章评论
+  enableComments: boolean
   // 主页是否显示最近项目
   enableRecentProjectsOnHomepage: boolean
   // 主页最近文章个数
@@ -137,6 +139,8 @@ export const siteConfig: SiteConfig = {
   enableAboutMe: true,
   // 是否开启友链页面
   enableFriendLinks: true,
+  // 是否开启文章评论（需先在 src/config/comments.ts 填写 Giscus 配置）
+  enableComments: true,
   // 主页是否显示最近项目
   enableRecentProjectsOnHomepage: true,
   // 主页最近文章个数
