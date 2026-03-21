@@ -108,7 +108,12 @@ export async function getPostsByLang(lang: Lang) {
       ...post,
       slug: getSlugById(post.id),
     }))
-    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .toSorted((a, b) => {
+      const aPinned = a.data.pinned ? 1 : 0
+      const bPinned = b.data.pinned ? 1 : 0
+      if (aPinned !== bPinned) return bPinned - aPinned
+      return b.data.date.getTime() - a.data.date.getTime()
+    })
 }
 
 export function getProjectOgImagePath(id: string) {
