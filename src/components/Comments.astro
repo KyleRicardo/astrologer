@@ -51,10 +51,11 @@ function initComments() {
   // 已经初始化过（VT 重用时可能）
   if (container.querySelector('giscus-widget')) return
 
-  const isDark = document.documentElement.classList.contains('dark')
-  const theme = isDark
-    ? container.dataset.themeDark!
-    : container.dataset.themeLight!
+  function getTheme() {
+    return document.documentElement.classList.contains('dark')
+      ? container.dataset.themeDark!
+      : container.dataset.themeLight!
+  }
 
   const widget = document.createElement('giscus-widget')
   widget.setAttribute('repo', container.dataset.repo!)
@@ -66,28 +67,33 @@ function initComments() {
   widget.setAttribute('inputposition', container.dataset.inputPosition!)
   widget.setAttribute('strict', container.dataset.strict!)
   widget.setAttribute('lang', container.dataset.lang!)
-  widget.setAttribute('theme', theme)
+  widget.setAttribute('theme', getTheme())
   widget.setAttribute('loading', 'lazy')
 
   container.appendChild(widget)
 
-  // 监听暗黑模式切换，同步 Giscus 主题
-  const observer = new MutationObserver(() => {
-    const dark = document.documentElement.classList.contains('dark')
-    const newTheme = dark
-      ? container.dataset.themeDark!
-      : container.dataset.themeLight!
-
-    // giscus web component 使用 Shadow DOM，需要从 shadow root 查询 iframe
+  // 发送主题到 Giscus iframe
+  function sendTheme() {
     const iframe = widget.shadowRoot?.querySelector<HTMLIFrameElement>(
       'iframe.giscus-frame',
     )
     iframe?.contentWindow?.postMessage(
-      { giscus: { setConfig: { theme: newTheme } } },
+      { giscus: { setConfig: { theme: getTheme() } } },
       'https://giscus.app',
     )
-  })
+  }
 
+  // 等待 Giscus iframe 就绪（监听它发出的第一条消息），再同步主题
+  function onGiscusReady(event: MessageEvent) {
+    if (event.origin !== 'https://giscus.app') return
+    if (!(typeof event.data === 'object' && event.data.giscus)) return
+    sendTheme()
+    window.removeEventListener('message', onGiscusReady)
+  }
+  window.addEventListener('message', onGiscusReady)
+
+  // 监听暗黑模式切换，实时同步 Giscus 主题
+  const observer = new MutationObserver(sendTheme)
   observer.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['class'],
@@ -98,6 +104,7 @@ function initComments() {
     'astro:before-swap',
     () => {
       observer.disconnect()
+      window.removeEventListener('message', onGiscusReady)
       container.innerHTML = ''
     },
     { once: true },
