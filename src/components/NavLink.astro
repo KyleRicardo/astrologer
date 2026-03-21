@@ -8,7 +8,12 @@ const pathname = Astro.url.pathname
 
 const { name, href } = Astro.props
 
-const active = href === pathname
+// Normalize trailing slashes so the match works on both dev
+// server (/posts) and static hosts that append slashes (/posts/).
+// startsWith lets sub-pages (e.g. /categories/slug) highlight
+// the parent nav item (/categories).
+const norm = (p: string) => (p.endsWith('/') ? p : p + '/')
+const active = norm(pathname).startsWith(norm(href))
 ---
 
 <a
