@@ -125,4 +125,20 @@ test.describe('Dark Mode', () => {
       )
     })
   })
+
+  test.describe('giscus', () => {
+    test('keeps giscus theme in sync with site theme', async ({ page }) => {
+      await page.emulateMedia({ colorScheme: 'light' })
+      await page.goto('/posts/getting-started-with-astrologer')
+
+      const giscus = page.locator('giscus-widget')
+      await expect(giscus).toHaveCount(1)
+      await expect(giscus).toHaveAttribute('theme', /giscus-light\.css$/)
+
+      await page.getByRole('button', { name: 'Toggle theme' }).click()
+
+      await expect(page.locator('html')).toHaveClass(/dark/)
+      await expect(giscus).toHaveAttribute('theme', /giscus-dark\.css$/)
+    })
+  })
 })

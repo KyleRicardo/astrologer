@@ -72,28 +72,33 @@ function initComments() {
 
   container.appendChild(widget)
 
-  // 发送主题到 Giscus iframe
-  function sendTheme() {
+  // 同步 widget 属性，确保 iframe 延迟加载后也会拿到最新主题
+  function syncTheme() {
+    const theme = getTheme()
+    widget.setAttribute('theme', theme)
+
     const iframe = widget.shadowRoot?.querySelector<HTMLIFrameElement>(
       'iframe.giscus-frame',
     )
     iframe?.contentWindow?.postMessage(
-      { giscus: { setConfig: { theme: getTheme() } } },
+      { giscus: { setConfig: { theme } } },
       'https://giscus.app',
     )
   }
 
-  // 等待 Giscus iframe 就绪（监听它发出的第一条消息），再同步主题
+  // 等待 Giscus iframe 真正就绪（resizeHeight）后，再补发一次主题同步
   function onGiscusReady(event: MessageEvent) {
     if (event.origin !== 'https://giscus.app') return
     if (!(typeof event.data === 'object' && event.data.giscus)) return
-    sendTheme()
+    if (!('resizeHeight' in event.data.giscus)) return
+
+    syncTheme()
     window.removeEventListener('message', onGiscusReady)
   }
   window.addEventListener('message', onGiscusReady)
 
   // 监听暗黑模式切换，实时同步 Giscus 主题
-  const observer = new MutationObserver(sendTheme)
+  const observer = new MutationObserver(syncTheme)
   observer.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ['class'],
