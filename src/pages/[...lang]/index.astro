@@ -8,6 +8,7 @@ import ProjectCard from '@/components/ProjectCard.astro'
 import { siteConfig } from '@/site.config'
 import Hero from '@/components/Hero.astro'
 import { getPostsByLang, getProjectsByLang } from '@/utils/get-contents'
+import { getAuthorSchema } from '@/utils/schema'
 
 export function getStaticPaths() {
   return Object.keys(languages).map((l) => ({
@@ -29,9 +30,25 @@ const recentProjects = showRecentProjects
 
 const t = useTranslations(lang)
 const translatePath = useTranslatedPath(lang)
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.locales[lang].title,
+  url: siteConfig.site,
+  description: siteConfig.locales[lang].description,
+  inLanguage: lang,
+  author: getAuthorSchema(lang),
+}
 ---
 
 <Layout title={t('nav.home')}>
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(websiteSchema)}
+  />
   <main>
     <Hero />
     <section

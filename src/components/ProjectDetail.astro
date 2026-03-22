@@ -13,6 +13,8 @@ import {
 import { Image } from 'astro:assets'
 import { type CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
+import { getAuthorSchema } from '@/utils/schema'
+import { siteConfig } from '@/site.config'
 
 export async function getStaticPaths() {
   return getProjectPaths(defaultLang)
@@ -25,8 +27,17 @@ interface Props {
 
 const { project, lang } = Astro.props
 const { Content } = await render(project)
-const { cover, title, description, date, tags, github, homepage, liveDemo } =
-  project.data
+const {
+  cover,
+  title,
+  description,
+  date,
+  updated,
+  tags,
+  github,
+  homepage,
+  liveDemo,
+} = project.data
 
 const formattedDate = date.toLocaleDateString(lang, { dateStyle: 'medium' })
 
@@ -36,6 +47,24 @@ const projectSlug = getSlugById(project.id)
 
 const titleTransitionName = `project-title-${lang}-${sanitizeSlug(projectSlug)}`
 const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
+
+const canonicalURL = new URL(Astro.url.pathname, siteConfig.site).href
+const absoluteOgImage = new URL(ogImage, siteConfig.site).href
+
+const projectSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareSourceCode',
+  name: title,
+  description,
+  datePublished: date.toISOString(),
+  dateModified: (updated ?? date).toISOString(),
+  author: getAuthorSchema(lang),
+  image: absoluteOgImage,
+  mainEntityOfPage: canonicalURL,
+  ...(github ? { codeRepository: String(github) } : {}),
+  ...(homepage ? { url: String(homepage) } : {}),
+  ...(tags?.length ? { keywords: tags.join(', ') } : {}),
+}
 ---
 
 <Layout
@@ -44,6 +73,12 @@ const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
   image={ogImage}
   ogType="article"
 >
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(projectSchema)}
+  />
   <main class="mx-auto my-16 flex w-full max-w-3xl flex-1 flex-col px-4">
     <header class="flex flex-col items-center gap-4 tracking-wide md:gap-6">
       <div aria-label="cover" class="mb-4 w-full md:mb-6">

@@ -11,6 +11,7 @@ import {
   getSlugById,
   sanitizeSlug,
 } from '@/utils/get-contents'
+import { getAuthorSchema } from '@/utils/schema'
 import { mdxComponents } from './mdx/mdx-components'
 import Comments from '@/components/Comments.astro'
 import { siteConfig } from '@/site.config'
@@ -24,7 +25,7 @@ const { post, lang } = Astro.props
 
 const t = useTranslations(lang)
 
-const { title, description, date, category, tags, cover } = post.data
+const { title, description, date, updated, category, tags, cover } = post.data
 const { Content, remarkPluginFrontmatter, headings } = await render(post)
 
 const ogImage = cover ?? getPostOgImagePath(post.id)
@@ -42,6 +43,27 @@ const categoryInfo = getCategoryInfo(category, lang)
 
 const hasCustomCover = cover !== undefined
 const coverTransitionName = `post-cover-${lang}-${postSlug}`
+
+const postDescription = description
+  ?? (remarkPluginFrontmatter.excerpt as string | undefined)
+  ?? ''
+
+const canonicalURL = new URL(Astro.url.pathname, siteConfig.site).href
+const absoluteOgImage = new URL(ogImage, siteConfig.site).href
+
+const blogPostingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description: postDescription,
+  datePublished: date.toISOString(),
+  dateModified: (updated ?? date).toISOString(),
+  author: getAuthorSchema(lang),
+  image: absoluteOgImage,
+  mainEntityOfPage: canonicalURL,
+  ...(category ? { articleSection: category } : {}),
+  ...(tags?.length ? { keywords: tags.join(', ') } : {}),
+}
 ---
 
 <Layout
@@ -51,6 +73,12 @@ const coverTransitionName = `post-cover-${lang}-${postSlug}`
   ogType="article"
   showProgressBar={true}
 >
+  <script
+    is:inline
+    slot="head"
+    type="application/ld+json"
+    set:html={JSON.stringify(blogPostingSchema)}
+  />
   <main
     class="mx-auto my-8 flex w-full max-w-5xl flex-1 flex-col p-4 md:my-16 md:p-8"
     astro-content
