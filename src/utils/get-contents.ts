@@ -1,7 +1,8 @@
 import type { Lang } from '@/i18n/utils'
 import { getCollection, type CollectionEntry } from 'astro:content'
 
-export { default as defaultCover } from '@/assets/default-cover.png'
+export { default as defaultPostCover } from '@/assets/default-post-cover.svg'
+export { default as defaultProjectCover } from '@/assets/default-project-cover.svg'
 
 interface GroupedPosts {
   year: number

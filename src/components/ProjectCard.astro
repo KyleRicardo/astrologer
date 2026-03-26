@@ -3,7 +3,11 @@ import { Image } from 'astro:assets'
 import type { CollectionEntry } from 'astro:content'
 import NavIcon from './NavIcon.astro'
 import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
-import { defaultCover, getSlugById, sanitizeSlug } from '@/utils/get-contents'
+import {
+  defaultProjectCover,
+  getSlugById,
+  sanitizeSlug,
+} from '@/utils/get-contents'
 
 interface Props {
   project: CollectionEntry<'project'>
@@ -39,21 +43,23 @@ const coverTransitionName = `project-cover-${lang}-${sanitizeSlug(projectSlug)}`
           transition:name={coverTransitionName}
         />
       ) : (
-         <Image
-           src={defaultCover}
-           alt={title}
-           width={720}
-           height={450}
-           class="aspect-video w-full rounded-t-xl object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
-           transition:name={coverTransitionName}
-         />
+         <div class="aspect-video w-full rounded-t-xl bg-muted flex items-center justify-center">
+           <Image
+             src={defaultProjectCover}
+             alt={title}
+             width={500}
+             height={500}
+             class="size-32 aspect-square object-cover transition-transform duration-400 will-change-transform group-hover:scale-103"
+             transition:name={coverTransitionName}
+           />
+         </div>
        )}
     </div>
 
     <div class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-black/5 ring-inset group-hover:ring-black/10 dark:ring-white/10 dark:group-hover:ring-white/15">
     </div>
 
-    <div class="flex flex-1 flex-col gap-1 p-3">
+    <div class="flex flex-1 flex-col gap-1 px-6 py-4">
       <div class="flex items-center gap-4">
         <div class="relative size-12 shrink-0 overflow-clip rounded-lg">
           <Image src={icon} alt={title} />

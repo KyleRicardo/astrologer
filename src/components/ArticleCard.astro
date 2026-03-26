@@ -4,7 +4,11 @@ import { getLangFromUrl, useTranslatedPath } from '@/i18n/utils'
 import { getCategoryInfo } from '@/utils/get-categories'
 import { render, type CollectionEntry } from 'astro:content'
 import { Image } from 'astro:assets'
-import { defaultCover, getSlugById, sanitizeSlug } from '@/utils/get-contents'
+import {
+  defaultPostCover,
+  getSlugById,
+  sanitizeSlug,
+} from '@/utils/get-contents'
 
 interface Props {
   post: CollectionEntry<'blog'>
@@ -51,21 +55,23 @@ const displayExcerpt = description || remarkPluginFrontmatter.excerpt || '' // F
         transition:name={coverTransitionName}
       />
     ) : (
-       <Image
-         src={defaultCover}
-         alt={title}
-         width={720}
-         height={360}
-         class="aspect-video w-full rounded-t-xl object-cover transition-transform duration-300 ease-out group-hover:scale-103 md:h-full md:aspect-auto md:rounded-t-none md:rounded-l-xl"
-         transition:name={coverTransitionName}
-       />
+       <div class="aspect-video w-full rounded-t-xl md:h-full md:aspect-auto md:rounded-t-none md:rounded-l-xl bg-muted flex items-center justify-center">
+         <Image
+           src={defaultPostCover}
+           alt={title}
+           width={720}
+           height={360}
+           class="size-32 md:size-24 object-cover transition-transform duration-300 ease-out group-hover:scale-103"
+           transition:name={coverTransitionName}
+         />
+       </div>
      )}
     {post.data.pinned && (
       <div class="absolute top-0 left-0 size-14">
-        <div class="absolute inset-0 bg-black/60 [clip-path:polygon(0_0,100%_0,0_100%)]" />
+        <div class="absolute inset-0 bg-black/60 dark:bg-white/60 [clip-path:polygon(0_0,100%_0,0_100%)]" />
         <Icon
           name="ri:pushpin-fill"
-          class="absolute top-2 left-2 size-4 -rotate-10 text-white"
+          class="absolute top-2 left-2 size-4 -rotate-10 text-white dark:text-black"
         />
       </div>
     )}
