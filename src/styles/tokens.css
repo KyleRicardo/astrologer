@@ -17,6 +17,7 @@
 
 :root {
   --radius: 0.625rem;
+  color-scheme: light;
   /* 基础背景与前景 */
   --background: oklch(0.9766 0.0046 107.57); /* #f8f9f5 */
   --foreground: oklch(0.28 0.03 107.57);     /* 深暖灰墨水色 */
@@ -58,6 +59,7 @@
 }
 
 .dark {
+  color-scheme: dark;
   /* 基础背景：深沉的暖灰色，对标 Anthropic #141413 */
   --background: oklch(0.175 0.006 107.57);
   --foreground: oklch(0.90 0.01 107.57); /* 暖白文字 */
@@ -89,7 +91,7 @@
   --input: oklch(0.30 0.01 107.57);
   --ring: oklch(0.70 0.122 233.15);
 
-  --surface: oklch(0.21 0.008 107.57);
+  --surface: oklch(0.2357 0.00241 67.461);
   --surface-foreground: oklch(0.708 0.008 107.57);
   --code: var(--surface);
   --code-foreground: var(--surface-foreground);
