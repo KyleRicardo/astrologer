@@ -99,8 +99,9 @@ const blogPostingSchema = {
             {categoryInfo.name}
           </a>
         )}
-        <span class="mx-2 animate-fade-in delay-120">•</span>
-        <div class="animate-fade-in delay-120">
+        <span class="mx-2 motion-safe:animate-fade-in motion-safe:delay-120"
+        >•</span>
+        <div class="motion-safe:animate-fade-in motion-safe:delay-120">
           {readingMinuteText}
         </div>
       </div>
@@ -109,7 +110,7 @@ const blogPostingSchema = {
           {title}
         </span>
       </h1>
-      <div class="animate-fade-in-up delay-240 text-muted-foreground flex flex-wrap justify-center gap-4 text-sm font-medium md:font-semibold lg:justify-start">
+      <div class="motion-safe:animate-fade-in-up motion-safe:delay-240 text-muted-foreground flex flex-wrap justify-center gap-4 text-sm font-medium md:font-semibold lg:justify-start">
         {tags
           && tags.map((tag) => (
             <a
@@ -131,7 +132,7 @@ const blogPostingSchema = {
             transition:name={coverTransitionName}
           />
         )}
-        <div class="animate-fade-in-up delay-360">
+        <div class="motion-safe:animate-fade-in-up motion-safe:delay-360">
           <Content components={mdxComponents} />
         </div>
       </article>
